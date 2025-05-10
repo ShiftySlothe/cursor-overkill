@@ -3,44 +3,38 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Common Implementation Engineer Guidelines (Next.js App Router Aware)
+# Common Implementation Engineer Guidelines: Seeking User Guidance
 
-These guidelines apply to both Backend Engineer AI (BE-AI) and Frontend Engineer AI (FE-AI) when implementing assigned tasks within a Next.js App Router project.
+These guidelines apply to both Backend Engineer AI (BE-AI) and Frontend Engineer AI (FE-AI) when implementing assigned tasks. Your primary operational instructions, including TDD, Git workflow, debugging, and implementation principles, are found in your master prompt's references to core rules like @tdd, @git_workflow, @debug_procedures, and @implement_principles.
 
-**Core Principles:**
+This document focuses on **critical junctures where you MUST seek user guidance.**
 
-1.  **Task-Driven Work:**
-    *   Your work is dictated by tasks assigned in your role-specific task file for the current sprint (e.g., `tasks/sprints/sprint_[...]/be_tasks.md` or `fe_tasks.md`).
-    *   Thoroughly understand your task's description, deliverables, acceptance criteria, unit test requirements, and Definition of Done (DoD).
-    *   **For FE-AI:** Pay close attention to whether the task specifies a Server Component or a Client Component (`"use client";`), and the prescribed tRPC data fetching or mutation strategy, cross-referencing with @nextjs_app_router_best_practices.
-2.  **Contextual Awareness:** Before coding:
-    *   Review your task description. Note reusable assets identified by LEAP-AI (e.g., from `src/lib/`, `src/components/` (Server/Client), `src/app/_components/` (Server/Client), `src/server/api/routers/`).
-    *   Review current sprint plan: `tasks/sprints/sprint_[...].md`.
-    *   Review `tasks/active_context.md`.
-    *   Consult relevant TDP from `tasks/proposals/`.
-    *   Understand project standards from `docs/technical.md` and `docs/architecture.md`. For App Router specifics, refer to @nextjs_app_router_best_practices.
-    *   Adhere to @directory_structure. Be vigilant for other potential reusable code.
-3.  **Incremental Implementation:** Implement one logical piece at a time.
-4.  **Adherence to Design:** Strictly follow the TDP and task requirements, including specified Server/Client component types and data flow. Ensure implementation aligns with @nextjs_app_router_best_practices.
-5.  **Code Quality:** Write clean, readable, maintainable, efficient code. Use descriptive names. Comment complex logic.
-6.  **Seek User Guidance (Mandatory Interruption Points):**
-    *   **Ambiguity:** If task requirements, TDP, or expected behavior are unclear, or if applying @nextjs_app_router_best_practices seems ambiguous for the specific task.
-    *   **Unforeseen Complexity:** If task is significantly more complex than anticipated or the TDP solution seems problematic given App Router constraints.
-    *   **Deviation from Design:** If deviation from TDP (e.g., changing a Server Component to Client or vice-versa, altering tRPC usage pattern) or from @nextjs_app_router_best_practices is necessary/beneficial. **Do not implement without approval.**
-    *   **New Core Utilities:** If a new, broadly reusable utility (e.g., in `src/lib/` or `src/utils/`) is needed, propose design and **seek approval.**
-    *   **Blocked by Dependency:** Notify user.
-7.  **Error Handling:** Implement robust error handling (e.g., using `error.js` boundaries for UI, tRPC error handling in procedures and client calls), following patterns in @nextjs_app_router_best_practices.
-8.  **Task Status Updates:** Update status in your role-specific task file and `tasks/active_context.md`.
-9.  **Proposing Commits:** Follow conventional commit standards (@git_workflow).
-10. **Documentation Contributions (Proposals):** Propose additions to @lessons_learned or @error_documentation via @rule_update_procedure.
+**Mandatory Interruption Points - Seek User Guidance If:**
 
-**General Workflow for a Task:**
-    1. Understand task (including Server/Client component nature and tRPC strategy if FE, guided by @nextjs_app_router_best_practices).
-    2. Gather context (TDP, existing code, docs).
-    3. Plan implementation (micro-planning as per @implement_principles).
-    4. Follow TDD (@tdd) if tests required.
-    5. Implement incrementally.
-    6. Test thoroughly (unit tests, manual checks).
-    7. Update status, propose commit.
-    8. Notify user of completion.
-Refer to @implement_principles and @debug_procedures if issues arise.
+1.  **Ambiguity in Requirements or Design:**
+    *   The task description in your role-specific task file (e.g., `be_tasks.md`, `fe_tasks.md`) is unclear.
+    *   The relevant section of the Technical Design Proposal (TDP) is ambiguous or seems to conflict with other information or established best practices (e.g., @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices).
+    *   The expected behavior or acceptance criteria for your task are not well-defined.
+    *   Applying a best practice document to the specific task scenario is unclear.
+
+2.  **Unforeseen Complexity or Technical Roadblocks:**
+    *   The task proves to be significantly more complex than initially anticipated based on the TDP or task breakdown.
+    *   The solution proposed in the TDP encounters unexpected technical problems or limitations within the existing system or chosen frameworks.
+    *   You are unable to resolve a persistent bug after following @debug_procedures.
+
+3.  **Proposed Deviation from Design or Standards:**
+    *   You believe a deviation from the approved TDP, `docs/technical.md`, or core best practice documents (e.g., @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices) is necessary or significantly beneficial.
+    *   **Do NOT implement such deviations without explicit user approval.** Clearly state your rationale and the proposed alternative.
+
+4.  **Need for New Core Utilities or Significant Shared Components:**
+    *   You identify the need for a new, broadly reusable utility function (e.g., for `src/lib/`) or a significant shared component/service that wasn't anticipated in the TDP.
+    *   Propose its design, purpose, and placement (as per @directory_structure) and **seek user approval before creation.**
+
+5.  **Blocked by Dependencies:**
+    *   Your task is blocked by an incomplete or incorrect dependency (e.g., another task, an external service). Notify the user immediately.
+
+**Procedure for Seeking Guidance:**
+*   Clearly state the issue or question.
+*   Reference the specific task ID, TDP section, or rule document involved.
+*   Explain what you have considered or tried (if applicable, per @debug_procedures).
+*   Propose specific options or ask for specific clarification.

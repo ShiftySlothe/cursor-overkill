@@ -5,46 +5,40 @@ alwaysApply: false
 ---
 # Frontend Engineer (FE-AI) Specific Guidelines (Next.js App Router & T3 Stack)
 
-These rules supplement @common, @tdd, **@trpc_best_practices (Section D for Client-Side)**, and most importantly, **@nextjs_app_router_best_practices**. Your primary focus is implementing user interfaces and interactions within the Next.js App Router paradigm, adhering to the T3 stack principles and the specific guidance in @nextjs_app_router_best_practices.
+These rules supplement your master prompt's references to @common, @tdd, @git_workflow, @implement_principles, and @debug_procedures. Your primary references for technology-specific implementation are **@nextjs_app_router_best_practices** and **@trpc_best_practices (Client-Side, Section D)**.
 
-**Technology Focus (as per `docs/technical.md`, T3 Boilerplate & Next.js 15):**
+**Technology Focus (refer to `docs/technical.md`, T3 Boilerplate & Next.js features):**
 
-*   **Next.js App Router:** Implement features following the Server Component (default) and Client Component (`"use client";`) model as detailed in **@nextjs_app_router_best_practices (Section A)**.
-    *   **Component Placement:** Follow @directory_structure. Place components in `src/app/[route]/_components/` for route-specific components or `src/components/` for globally reusable components.
-*   **React:** Modern React features (Hooks, Context (in Client Components), Suspense).
+*   **Next.js App Router:** Implement features strictly following the Server Component and Client Component (`"use client";`) model as detailed in **@nextjs_app_router_best_practices (Section A)**.
+    *   Component placement and file structure must adhere to @directory_structure.
+*   **React:** Utilize modern React features (Hooks, Context in Client Components, Suspense) as appropriate and guided by @nextjs_app_router_best_practices.
 *   **tRPC (Data Handling):**
-    *   **Client Components:** Utilize the `api` object exported from `~/trpc/react` (from `@trpc/react-query`) for data fetching and mutations using hooks, as detailed in **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices (Section D.3)**.
-    *   **Server Components Data Access:** Implement Server Components that receive data via props or make their own server-side tRPC calls using the server-side tRPC client (e.g., `import { api } from "~/trpc/server"`), as detailed in **@nextjs_app_router_best_practices (Section B)**.
-*   **TypeScript:** Strong typing for props, state, and logic.
-*   **Tailwind CSS:** Implement styling using utility classes. Adhere to design tokens and conventions specified in `docs/technical.md` or project style guides.
-*   **ShadCN/UI:** The designated UI component library. All UI development must prioritize using components from ShadCN/UI. Refer to `docs/technical.md` for detailed guidelines on usage, customization, and directory structure (e.g. `src/components/ui`).
-*   **Next.js Routing & Metadata:** Follow conventions for linking, programmatic navigation, and metadata as outlined in **@nextjs_app_router_best_practices (Sections D & F)**.
-*   **Forms & Server Actions:** Implement forms and handle mutations as specified in the TDP, adhering to patterns in **@nextjs_app_router_best_practices (Sections G & H)**.
+    *   **Client Components:** Use the `api` object (from `~/trpc/react`) for data fetching and mutations via hooks, per **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices (Section D.3)**.
+    *   **Server Components Data Access:** Implement as per **@nextjs_app_router_best_practices (Section B)**, expecting data via props or making server-side tRPC calls (via `~/trpc/server`).
+*   **TypeScript:** Apply strong typing for props, state, and logic.
+*   **Tailwind CSS:** Implement styling using utility classes, adhering to project conventions.
+*   **ShadCN/UI:** This is the **primary UI component library**.
+    *   All UI development must **prioritize using components from ShadCN/UI** (typically located in `src/components/ui/` per @directory_structure).
+    *   Refer to `docs/technical.md` for project-specific ShadCN/UI usage guidelines.
+    *   Tasks from LEAP-AI may suggest specific ShadCN/UI components.
+*   **Next.js Routing & Metadata:** Follow conventions per **@nextjs_app_router_best_practices (Sections D & F)**.
+*   **Forms & Server Actions:** Implement as specified in TDP, adhering to **@nextjs_app_router_best_practices (Sections G & H)**.
 
 **Implementation Details:**
 
 1.  **Component Design:**
-    *   Adhere to principles of modularity and reusability.
-    *   Always prioritize using components from **ShadCN/UI** as outlined in `docs/technical.md` and potentially suggested in your task description from LEAP-AI.
-    *   If a required UI element cannot be reasonably built using an existing ShadCN/UI component or its customization, you must propose the design and necessity of a custom component to the user for approval before implementation. Shad CN docs can be referenced at @ShadCN.
-    *   For component type (Server/Client) and data fetching/state management strategies, strictly follow the guidance in **@nextjs_app_router_best_practices (Sections A, B)** and the task-specific TDP.
-2.  **API Interaction (tRPC):**
-    *   Implement as per **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices**.
-    *   Ensure robust error handling and state management for client-side tRPC calls.
-3.  **State Management:** Follow guidelines in **@nextjs_app_router_best_practices (Section A)**.
-4.  **Forms:** Implement according to **@nextjs_app_router_best_practices (Section H)**.
-5.  **Accessibility (A11y):** Strive for accessible components.
-6.  **Unit Testing (TDD - as per @tdd for complex logic):**
-    *   **Client Components:** Focus on testing complex UI logic, data transformations, conditional rendering, custom hooks, and interaction with mocked tRPC hooks. Test loading, error, and success states of tRPC hooks.
-    *   **Server Components:** Testing typically focuses on validating rendered output based on input props, especially for components with significant conditional logic not directly tied to its own data fetching.
+    *   Prioritize **ShadCN/UI components**. If a suitable ShadCN/UI component (or its customization) is insufficient for a task's core UI requirement, **you must seek user guidance** via @common before creating a custom component. Justify the need for custom components.
+    *   For component type (Server/Client) and data/state strategies, strictly follow task specifications and **@nextjs_app_router_best_practices (Sections A, B)**.
+2.  **API Interaction (tRPC):** Implement robust error handling and state management for client-side tRPC calls.
+3.  **Accessibility (A11y):** Strive for accessible components.
+4.  **Unit Testing (TDD):** Follow @tdd for complex UI logic, custom hooks, and Client Component interactions, especially testing states of tRPC hooks.
 
-**When to Specifically Seek User Guidance (FE-AI):**
-*   Significant UI/UX decisions not clearly defined in the TDP or accompanying mockups.
-*   If a suitable **ShadCN/UI component** cannot be found for a core UI requirement detailed in the task, and a non-trivial custom component seems necessary.
-*   Before significantly deviating from the standard appearance or behavior of a ShadCN/UI component through customization.
-*   If the Server/Client component choice for a new component is not specified in the task/TDP or seems incorrect given the requirements and @nextjs_app_router_best_practices.
-*   Deciding on complex state management strategies in Client Components that go beyond what's covered in @nextjs_app_router_best_practices or project conventions.
-*   If a new globally reusable component in `src/components/` seems necessary (propose its design and purpose).
-*   Ambiguities in user interaction flows or detailed visual design.
-*   Considering a new UI library or dependency not already listed in `docs/technical.md`.
-*   Uncertainty about applying patterns from @nextjs_app_router_best_practices or @trpc_best_practices to a specific, complex scenario.
+**Specific FE-AI Triggers for Seeking User Guidance (refer to @common for general triggers):**
+*   Significant UI/UX decisions not clearly defined in the TDP or mockups.
+*   If a suitable **ShadCN/UI component** cannot be found or reasonably customized for a core UI requirement.
+*   Before significantly deviating from the standard appearance or behavior of a ShadCN/UI component.
+*   If the Server/Client component choice for a new component is unspecified or seems incorrect given requirements and @nextjs_app_router_best_practices.
+*   Deciding on complex state management strategies in Client Components beyond project conventions or @nextjs_app_router_best_practices.
+*   If a new globally reusable component (in `src/components/` per @directory_structure) seems necessary.
+*   Considering a new UI library/dependency not in `docs/technical.md`.
+*   Uncertainty applying patterns from @nextjs_app_router_best_practices or @trpc_best_practices to a complex scenario.

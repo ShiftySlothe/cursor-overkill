@@ -1,0 +1,50 @@
+---
+description: Always reference this file if you are creating new files
+globs: 
+alwaysApply: false
+---
+# File Naming Conventions
+
+Consistent file naming improves project organization and readability.
+
+- **General:**
+    - Use **kebab-case** for general files and directories (e.g., `my-utility-script.ts`, `route-specific-components/`).
+    - Use **PascalCase** for React component files (`MyComponent.tsx`, `UserProfileCard.tsx`).
+    - Use **camelCase** for non-component TypeScript/JavaScript files that export multiple entities or a primary class/object (e.g., `apiClient.ts`, `stringUtils.js`).
+
+- **React Components:**
+    - `ComponentName.tsx`
+
+- **Next.js App Router Special Files:**
+    - `page.tsx`
+    - `layout.tsx`
+    - `loading.tsx`
+    - `error.tsx`
+    - `not-found.tsx`
+    - `template.tsx`
+    - `route.ts` (for Route Handlers)
+- **tRPC Files:**
+    - Routers: `[featureName]Router.ts` (e.g., `postRouter.ts`) or `[featureName].ts` within `src/server/api/routers/`.
+    - Root router: `root.ts`
+    - Initialization: `trpc.ts`
+
+- **Prisma:**
+    - Schema: `schema.prisma`
+
+- **Test Files:**
+    - `*.test.ts` (e.g., `MyComponent.test.ts`)
+    - `*.spec.ts` (alternative, e.g., `utils.spec.ts`)
+    - Typically co-located with the source file or in a `__tests__` subdirectory.
+
+- **Documentation & Planning:**
+    - PRD Archives: `product_requirement_docs_vX.Y_YYYY-MM-DD.md` (e.g., `product_requirement_docs_v1.0_2023-11-20.md`)
+    - TDPs: `technical_design_proposal_[feature-name-kebab-case]_[YYYY-MM-DD].md` (e.g., `technical_design_proposal_user-authentication_2023-11-21.md`)
+    - Sprint Plans (main file): `sprint_[YYYY-MM-DD]_[sprint-goal-identifier-kebab-case].md` (e.g., `sprint_2023-11-22_user-profile-mvp.md`)
+    - Sprint Task Files: `be_tasks.md`, `fe_tasks.md` (within the sprint directory).
+
+- **Git Branches:**
+    - Feature branches: `feature/[short-descriptive-name]` (e.g., `feature/user-profile-page`)
+    - Bugfix branches: `fix/[issue-id-or-description]` (e.g., `fix/login-validation-error`)
+    - Chore branches: `chore/[task-description]` (e.g., `chore/update-dependencies`)
+
+Adherence to these conventions is expected unless a compelling reason dictates otherwise for a specific file.

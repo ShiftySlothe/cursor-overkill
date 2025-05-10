@@ -5,80 +5,56 @@ alwaysApply: false
 ---
 # Technical Design Proposal (TDP) Generation (Next.js App Router Focused)
 
-Your primary output is a Technical Design Proposal (TDP). This document details the high-level technical solution for the requirements outlined in `docs/product_requirement_docs.md`. The TDP serves as the blueprint for the Lead Engineer / Agile Planner AI (LEAP-AI).
-This process must adhere to the universal tenets outlined in @planning_principles.
+Your primary output is a Technical Design Proposal (TDP). This document details the high-level technical solution for the requirements in `docs/product_requirement_docs.md`. The TDP serves as the blueprint for the LEAP-AI. Adhere to @planning_principles.
 
 **Procedure:**
 
 1.  **Input Analysis:**
     *   Thoroughly review the approved `docs/product_requirement_docs.md`.
-    *   Carefully analyze the current system architecture documented in `docs/architecture.md`.
-    *   Understand the existing technology stack, patterns, and constraints outlined in `docs/technical.md`.
-    *   **Crucially, understand and apply principles from @nextjs_app_router_best_practices.**
-    *   Review the codebase in `src/` for existing patterns, reusable components (Server and Client), and modules. Use `@Docs Next.js [query]`, `@Docs tRPC [query]`, or similar for framework specifics if needed.
-    *   Consult @directory_structure for file organization conventions.
-    *   Consult **@prisma_best_practices** if the feature involves database interaction.
-    *   Consult **@trpc_best_practices** for API design.
-    *   Reference @system_analysis for guidance on analysis.
-    *   Ensure your approach aligns with @planning_principles.
+    *   Analyze `docs/architecture.md` and `docs/technical.md`.
+    *   **Crucially, understand and apply principles from @nextjs_app_router_best_practices, @prisma_best_practices (if DB interaction), and @trpc_best_practices (for API design).**
+    *   Review `src/` for existing patterns and reusability, per @directory_structure.
+    *   Consult @system_analysis for guidance on analysis.
+    *   Use `@Docs [FrameworkName] [query]` for specific framework questions.
 
 2.  **TDP Document Creation:**
-    *   Create a new TDP file in `tasks/proposals/` using the naming convention: `technical_design_proposal_[feature-name]_[YYYY-MM-DD].md` (as per @file_naming). Replace `[feature-name]` with a concise identifier for the feature and use the current date.
+    *   Create a new TDP file in the location specified by @directory_structure (`tasks/proposals/`) using the naming convention from @file_naming.
     *   The TDP must include the following sections:
 
-        *   **1. Introduction:**
-            *   Brief overview of the feature being addressed (link to or summarize from `docs/product_requirement_docs.md`).
-            *   Purpose of this TDP.
+        *   **1. Introduction:** Overview of the feature (link/summarize PRD) and TDP purpose.
         *   **2. Proposed Technical Solution:**
-            *   **High-level description:** How the feature will be implemented within the Next.js App Router architecture.
-            *   **Component Strategy (Server vs. Client):** Following @nextjs_app_router_best_practices (Section A). Identify key new/modified UI components. Specify if they are Server or Client Components. **For UI elements, explicitly recommend or mandate the use of specific ShadCN/UI components** (e.g., "User login form should use ShadCN/UI Input, Button, and Form components"). If custom components are deemed necessary, justify this decision and ensure their design aligns with the ShadCN/UI aesthetic.
-            *   **Architectural changes:** Detail any new components, services, or modules required. Illustrate with Mermaid diagrams if complex, showing interaction between Server Components, Client Components, and tRPC API. Explain how they integrate with `docs/architecture.md`.
-            *   **Data Model Changes (Prisma):**
-                *   Specify any new database tables/models, columns, or relationships for Prisma.
-                *   **All Prisma schema design proposals must align with @prisma_best_practices (Section B).**
-            *   **API Design (tRPC):**
-                *   Outline new or modified tRPC procedures (queries/mutations), their Zod input schemas, and high-level outputs.
-                *   Specify if procedures are public or protected (requiring authentication).
-                *   **All tRPC API design proposals must align with @trpc_best_practices (Sections C & D).**
-            *   **Data Fetching Strategy:** Describe how data will be fetched for this feature, adhering to @nextjs_app_router_best_practices (Section B). Detail specific tRPC procedures used by Server Components (server-side calls) and Client Components (hooks), including any initial data hydration patterns for Client Components.
-            *   **Caching Strategy (Data Layer):** Propose caching strategies for data fetched by this feature, adhering to @nextjs_app_router_best_practices (Section C). Specify use of `unstable_cache` for tRPC calls if persistent caching beyond a render pass is needed, or relevant `fetch` options.
-            *   **State Management:** Clarify where state resides, following @nextjs_app_router_best_practices (Section A).
-            *   **Forms and Mutations:** Propose form handling mechanisms (Server Actions calling tRPC, or tRPC hooks in Client Components) as per @nextjs_app_router_best_practices (Section G & H).
-            *   **Loading UI and Error Handling:** Briefly outline how `loading.js` and `error.js` will be utilized for the feature's routes, aligning with @nextjs_app_router_best_practices (Section E).
+            *   **High-level description:** How the feature will be implemented within the Next.js App Router architecture, adhering to @nextjs_app_router_best_practices.
+            *   **Component Strategy (Server vs. Client):** Per @nextjs_app_router_best_practices (Section A). Identify key UI components, specify Server/Client type. **Recommend/mandate specific ShadCN/UI components** as per `docs/technical.md`; justify custom components.
+            *   **Architectural changes:** Detail new components/services. Illustrate with Mermaid diagrams if complex, showing interactions. Explain integration with `docs/architecture.md`.
+            *   **Data Model Changes (Prisma):** Specify new models/fields per @prisma_best_practices (Section B).
+            *   **API Design (tRPC):** Outline new/modified tRPC procedures (inputs, outputs, auth) per @trpc_best_practices (Sections C & D).
+            *   **Data Fetching Strategy:** Describe data flow per @nextjs_app_router_best_practices (Section B), detailing tRPC usage by Server/Client components.
+            *   **Caching Strategy (Data Layer):** Propose caching strategies per @nextjs_app_router_best_practices (Section C).
+            *   **State Management:** Clarify state location per @nextjs_app_router_best_practices (Section A).
+            *   **Forms and Mutations:** Propose form handling (Server Actions or client-side) per @nextjs_app_router_best_practices (Sections G & H).
+            *   **Loading UI and Error Handling:** Outline use of `loading.js`/`error.js` per @nextjs_app_router_best_practices (Section E).
             *   **Key algorithms or logic flows.**
-        *   **3. Impact on Existing System:**
-            *   Identify which existing modules, components (Server/Client), services, or tRPC routers/procedures will be affected.
-            *   Describe the nature of the impact (e.g., modification, extension, deprecation).
-        *   **4. Technology & Patterns:**
-            *   Confirm adherence to `docs/technical.md` and @nextjs_app_router_best_practices.
-            *   If new technologies, libraries, or significant design patterns are proposed (and not already in `docs/technical.md` or diverging from @nextjs_app_router_best_practices), justify their use, discuss alternatives, and **seek user guidance** (see point 3). This includes significant deviations from established @prisma_best_practices or @trpc_best_practices.
-        *   **5. Integration Points:**
-            *   Detail how new components will interact with existing ones or external services.
-        *   **6. Scalability, Performance, and Security Considerations:**
-            *   **Performance:** Impact of Server/Client component choices on client bundle size and interactivity. Efficiency of data fetching and tRPC procedure design.
-            *   **Caching:** Effectiveness of proposed caching strategies for data and rendered components.
-            *   **Security:** Input validation (Zod for tRPC inputs on server-side). Authorization for protected tRPC procedures. Security of Server Actions if used (authorization checks within the action). Protection of environment variables.
-        *   **7. Out of Scope for this Design / Future Considerations (Technical):**
-            *   Technical aspects deferred or potential future technical enhancements related to this design.
-        *   **8. Open Questions / Points for Discussion:**
-            *   List any unresolved technical questions or areas needing further user input.
+        *   **3. Impact on Existing System:** Identify affected modules/components.
+        *   **4. Technology & Patterns:** Confirm adherence to `docs/technical.md` and core best practices. Justify new technologies/patterns and **seek user guidance** (see point 3).
+        *   **5. Integration Points:** Detail interactions.
+        *   **6. Scalability, Performance, and Security Considerations:** Address performance (Server/Client choices, tRPC/Prisma efficiency), caching, and security (input validation, tRPC/Server Action auth) per relevant best practices.
+        *   **7. Out of Scope for this Design / Future Considerations (Technical):** Deferred technical aspects.
+        *   **8. Open Questions / Points for Discussion:** List unresolved technical questions.
 
 3.  **Decision Making & User Guidance:**
-    *   If proposing significant architectural changes diverging from `docs/architecture.md`, or introducing new core technologies/libraries not listed in `docs/technical.md`, clearly present the rationale, alternatives considered, and **explicitly seek user guidance and approval** before finalizing these parts of the TDP.
-    *   If technical ambiguities arise from the PRD that impact the design, list them in "Open Questions" and seek clarification.
+    *   If proposing significant architectural changes, new core technologies, or deviations from established best practices (@nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices), clearly present rationale, alternatives, and **explicitly seek user guidance and approval.**
+    *   If technical ambiguities arise from the PRD, list them in "Open Questions."
 
-4.  **Review and Iteration:**
-    *   Present the draft TDP to the user for review.
-    *   Incorporate feedback and iterate on the design until approved.
+4.  **Review and Iteration:** Present draft TDP for user review and iterate until approved.
 
 **Definition of Done for TDP Generation:**
-*   A complete TDP document is created in `tasks/proposals/` following the specified structure and naming convention from @file_naming.
-*   The TDP accurately reflects a viable high-level technical solution for the PRD, fully leveraging Next.js App Router capabilities (guided by @nextjs_app_router_best_practices) and the tRPC/Prisma stack.
-*   Component strategies (Server/Client), data fetching via tRPC, and caching are clearly articulated in the context of the feature.
-*   All major technical decisions have been justified, and user guidance has been sought and incorporated where necessary.
-*   The TDP has been reviewed and approved by the user.
-*   Inform the user that the TDP is complete and ready for the Lead Engineer / Agile Planner AI (LEAP-AI).
+*   A complete TDP document created per @directory_structure and @file_naming.
+*   TDP reflects a viable solution adhering to @nextjs_app_router_best_practices, @prisma_best_practices, and @trpc_best_practices.
+*   Component strategies, data fetching, and caching are clearly articulated.
+*   User guidance sought and incorporated where necessary.
+*   TDP reviewed and approved by the user.
+*   Inform user that TDP is ready for LEAP-AI.
 
 **Important Notes:**
-*   You do **not** update `docs/architecture.md` or `docs/technical.md` directly. These documents reflect the *current built state* of the application. Your TDP *proposes changes* that, if implemented, will later lead to updates in those core documents (per @documentation_update).
-*   Avoid overly detailed implementation specifics; focus on the architectural and design level. The LEAP-AI will break this down further.
+*   You do **not** update `docs/architecture.md` or `docs/technical.md` directly.
+*   Focus on architectural/design level. LEAP-AI will detail tasks.

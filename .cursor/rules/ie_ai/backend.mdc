@@ -5,38 +5,32 @@ alwaysApply: false
 ---
 # Backend Engineer (BE-AI) Specific Guidelines (T3 Stack)
 
-These rules supplement @common, @tdd, @prisma_best_practices, and @trpc_best_practices (Server-Side).
+These rules supplement your master prompt's references to @common, @tdd, @git_workflow, @implement_principles, and @debug_procedures. Your primary references for technology-specific implementation are **@prisma_best_practices** and **@trpc_best_practices (Server-Side, Section C)**.
 
-**Technology Focus (as per `docs/technical.md` & T3 Boilerplate):**
+**Technology Focus (refer to `docs/technical.md` & T3 Boilerplate):**
 
-*   **tRPC:** Implement API logic in tRPC routers (e.g., `src/server/api/routers/exampleRouter.ts`). Define procedures with Zod schemas. Follow server-side guidelines in **@trpc_best_practices (Section C)**. Base procedures (`publicProcedure`, `protectedProcedure`) and context are defined in `src/server/api/trpc.ts`.
-*   **Prisma ORM:** Interact with PostgreSQL via Prisma client (`ctx.db` from `src/server/db.ts`). **All Prisma usage must adhere to @prisma_best_practices.**
-    *   **Schema Management:** Detail `prisma/schema.prisma` changes. Human executes `pnpm db:generate` / `pnpm db:push`.
-*   **TypeScript/Node.js:** Strong typing, Node.js best practices.
-*   **NextAuth.js:** Understand session structure (`ctx.session`) if using `protectedProcedure`. Auth config in `src/server/auth/`.
+*   **tRPC:** Implement API logic in tRPC routers (e.g., in `src/server/api/routers/` as per @directory_structure).
+    *   Base procedures (`publicProcedure`, `protectedProcedure`) and context are typically defined in `src/server/api/trpc.ts`.
+    *   Adhere strictly to server-side guidelines in **@trpc_best_practices (Section C)**.
+*   **Prisma ORM:** Interact with the database via the Prisma client (typically `ctx.db` from `src/server/db.ts`).
+    *   **All Prisma usage must adhere to @prisma_best_practices.**
+    *   For schema changes (`prisma/schema.prisma`), detail them clearly. The human user will execute `pnpm db:generate` / `pnpm db:migrate` / `pnpm db:push`.
+*   **TypeScript/Node.js:** Employ strong typing and Node.js best practices.
+*   **NextAuth.js:** Understand session structure (`ctx.session`) when using `protectedProcedure`. Auth configuration is typically in `src/server/auth/` (per @directory_structure).
 
 **Implementation Details:**
 
 1.  **Router and Procedure Structure:**
     *   Organize tRPC procedures into logical routers.
-    *   Validate inputs with Zod schemas (co-locate with router or in `src/lib/schemas/`).
+    *   Validate all inputs using Zod schemas (co-locate or in `src/lib/schemas/` as per @directory_structure).
 2.  **Service Layer (for complex logic):**
-    *   Consider `src/server/services/` for reusable complex logic. **Seek user guidance** for new services.
-3.  **Database Interactions (Prisma):**
-    *   Structure interactions per @prisma_best_practices (Section C).
-    *   Use transactions (`await ctx.db.$transaction([...])`).
-    *   Map Prisma errors to `TRPCError`.
-4.  **Authentication and Authorization:**
-    *   Use `protectedProcedure` (from `src/server/api/trpc.ts`) for authenticated procedures. Access session via `ctx.session`.
-    *   Implement authorization logic within procedures/middleware.
-5.  **Error Handling:** Throw `TRPCError`. Log server errors.
-6.  **Configuration and Environment Variables:** Access via `env` from `src/env.js`.
-7.  **Unit Testing (TDD - as per @tdd):**
-    *   Test tRPC procedures/services. Mock `ctx.db` (Prisma) and `ctx.session`. Test Zod validation.
+    *   For complex business logic not suitable for resolvers, consider placement in `src/server/services/` (per @directory_structure). **Seek user guidance** via @common before creating new services.
+3.  **Error Handling:** Throw `TRPCError` as appropriate. Log server-side errors.
+4.  **Configuration and Environment Variables:** Access via `env` from `src/env.js`.
+5.  **Unit Testing (TDD):** Follow @tdd. For tRPC procedures, mock `ctx.db` (Prisma) and `ctx.session` as detailed in @prisma_best_practices (Section E) and @trpc_best_practices.
 
-**When to Specifically Seek User Guidance (BE-AI):**
-*   Before significant `prisma/schema.prisma` changes deviating from TDP.
-*   For complex DB queries/transactions with performance implications.
-*   If a new shared service in `src/server/services/` or utility in `src/lib/` seems necessary.
-*   Ambiguities in API contracts or data transformations.
-*   Considering tRPC middleware/context modifications not in @trpc_best_practices or existing patterns.
+**Specific BE-AI Triggers for Seeking User Guidance (refer to @common for general triggers):**
+*   Before proposing significant `prisma/schema.prisma` changes that deviate from the TDP.
+*   For highly complex database queries or transactions with potential performance implications not covered by TDP or @prisma_best_practices.
+*   If a new shared service in `src/server/services/` or a core utility in `src/lib/` seems necessary and wasn't planned.
+*   Ambiguities in API contracts, data transformations, or specific tRPC middleware/context modifications not covered by @trpc_best_practices or existing project patterns.

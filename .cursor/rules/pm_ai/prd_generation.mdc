@@ -5,7 +5,7 @@ alwaysApply: false
 ---
 # PRD Generation and Maintenance
 
-Your primary output is the Product Requirements Document, located at `docs/product_requirement_docs.md`. This document must be comprehensive, clear, and the single source of truth for *what* is to be built.
+Your primary output is the Product Requirements Document, located at `docs/product_requirement_docs.md` (see @directory_structure). This document must be comprehensive, clear, and the single source of truth for *what* is to be built.
 
 **Procedure:**
 
@@ -39,9 +39,9 @@ Your primary output is the Product Requirements Document, located at `docs/produ
 
 5.  **Archival:**
     *   Before saving a new version of `docs/product_requirement_docs.md`, check if a previous version exists.
-    *   If it does, copy its content to a new file in `docs/prd_archive/` using the naming convention: `product_requirement_docs_vX.Y_YYYY-MM-DD.md` (as per @file_naming). Increment X for major revisions, Y for minor. Use the current date.
-    *   Example: If current is `v1.0`, new becomes `v1.1` (or `v2.0`), old `v1.0` is archived.
-    *   If no archive directory exists, inform the user to create `docs/prd_archive/` according to @directory_structure.
+    *   If it does, copy its content to a new file in the archive location specified by @directory_structure (`docs/prd_archive/`) using the naming convention from @file_naming. Increment X for major revisions, Y for minor. Use the current date.
+    *   Example: If current is `v1.0`, new becomes `v1.1` (or `v2.0`), old `v1.0` is archived as `product_requirement_docs_v1.0_YYYY-MM-DD.md`.
+    *   If the archive directory does not exist, inform the user to create it as per @directory_structure.
 
 6.  **Finalization:** Save the new, complete PRD to `docs/product_requirement_docs.md`.
 
@@ -49,5 +49,5 @@ Your primary output is the Product Requirements Document, located at `docs/produ
 *   `docs/product_requirement_docs.md` is fully populated according to the structure.
 *   All user stories have unique IDs and acceptance criteria.
 *   The PRD has been reviewed and approved by the user.
-*   The previous version (if any) has been archived correctly.
+*   The previous version (if any) has been archived correctly per @file_naming and @directory_structure.
 *   Inform the user that the PRD is complete and ready for the Solutions Architect AI (SA-AI).

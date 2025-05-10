@@ -11,54 +11,54 @@ alwaysApply: true # This map is fundamental for all roles.
 
 # Project Memory Structure and Principles (Next.js App Router Focused)
 
-This project relies on a structured set of documents to maintain context, guide development, and capture knowledge. All AI roles must be familiar with this structure. These are living documents and should reflect the most current understanding and state of the project. The `README.md` file in the project root provides a human-readable overview of this workflow.
+This project relies on a structured set of documents to maintain context, guide development, and capture knowledge. All AI roles must be familiar with this structure. These are living documents and should reflect the most current understanding and state of the project. The `README.md` file in the project root provides a human-readable overview of this workflow. All file paths and naming conventions must adhere to @directory_structure and @file_naming.
 
 **Core Document Hierarchy and Workflow Diagram:**
 
 ```mermaid
 graph TD
     A[User Input/Feature Idea] --> B(PM-AI);
-    B -- Generates/Updates --> PRD[docs/product_requirement_docs.md];
-    B -- Archives --> PRD_Archive[docs/prd_archive/];
+    B -- Generates/Updates (per @prd_generation) --> PRD[docs/product_requirement_docs.md];
+    B -- Archives (per @prd_generation, @file_naming) --> PRD_Archive[docs/prd_archive/];
 
     PRD --> C(SA-AI);
-    C -- Reads --> Arch_Current[docs/architecture.md - Next.js App Router];
-    C -- Reads --> Tech_Current[docs/technical.md - Next.js App Router, tRPC, Prisma];
-    C -- Reads --> CodeBase[src/ - Existing Server/Client Components, tRPC routers];
+    C -- Reads --> Arch_Current[docs/architecture.md - Adheres to @nextjs_app_router_best_practices];
+    C -- Reads --> Tech_Current[docs/technical.md - Adheres to @nextjs_app_router_best_practices, @trpc_best_practices, @prisma_best_practices];
+    C -- Reads --> CodeBase[src/ - Existing code, per @directory_structure];
     C -- Reads --> DirStructureRule[ @directory_structure ];
-    C -- Generates --> TDP[tasks/proposals/technical_design_proposal_[feature].md - App Router Focused];
+    C -- Reads --> NextJsBPRule[ @nextjs_app_router_best_practices ];
+    C -- Reads --> PrismaBPRule[ @prisma_best_practices ];
+    C -- Reads --> TrpcBPRule[ @trpc_best_practices ];
+    C -- Generates (per @tdp_generation, @file_naming) --> TDP[tasks/proposals/technical_design_proposal_[feature].md];
 
     TDP --> D(LEAP-AI);
-    D -- Updates --> Epics[tasks/epics_plan.md];
-    D -- Generates/Updates --> SprintPlan[tasks/sprints/sprint_[date_goal].md];
-    SprintPlan -- Leads to --> BE_Tasks[tasks/sprints/sprint_[date_goal]/be_tasks.md - tRPC, Prisma];
-    SprintPlan -- Leads to --> FE_Tasks[tasks/sprints/sprint_[date_goal]/fe_tasks.md - Server/Client Components, tRPC client usage];
-    D -- Initializes/Updates --> ActiveContext[tasks/active_context.md];
+    D -- Updates (per @planning) --> Epics[tasks/epics_plan.md];
+    D -- Generates/Updates (per @planning, @file_naming) --> SprintPlan[tasks/sprints/sprint_[date_goal].md];
+    SprintPlan -- Leads to (per @planning) --> BE_Tasks[tasks/sprints/sprint_[date_goal]/be_tasks.md];
+    SprintPlan -- Leads to (per @planning) --> FE_Tasks[tasks/sprints/sprint_[date_goal]/fe_tasks.md];
+    D -- Initializes/Updates (per @active_context_management) --> ActiveContext[tasks/active_context.md];
 
     BE_Tasks --> E_BE(BE-AI);
     FE_Tasks --> F_FE(FE-AI);
-    E_BE -- Implements & Tests tRPC procedures --> CodeChanges_BE[src/ (Backend: tRPC Routers, Services & Tests)];
-    F_FE -- Implements & Tests Server/Client Components, calls tRPC (server-side or client-side) --> CodeChanges_FE[src/ (Frontend: Server & Client Components, FE Tests in src/app, src/components)];
-    E_BE -- Updates Status in their task file & --> ActiveContext;
-    F_FE -- Updates Status in their task file & --> ActiveContext;
+    E_BE -- Implements & Tests (per @backend, @tdd, @prisma_best_practices, @trpc_best_practices) --> CodeChanges_BE[src/ (Backend)];
+    F_FE -- Implements & Tests (per @frontend, @tdd, @nextjs_app_router_best_practices, @trpc_best_practices) --> CodeChanges_FE[src/ (Frontend)];
+    E_BE -- Updates Status & --> ActiveContext;
+    F_FE -- Updates Status & --> ActiveContext;
 
     CodeChanges_BE --> ReviewProcess(Human orchestrates SRE-Gemini Review);
     CodeChanges_FE --> ReviewProcess;
-    ReviewProcess -- Feedback --> Human_For_Task_Update[Human updates Task Status/Creates new tasks in Sprint Plan];
+    ReviewProcess -- Feedback --> Human_For_Task_Update[Human updates Task Status/Creates new tasks];
 
-    MergedCode[Merged Code (Main Branch - Human Action)] --> D_DocUpdate(LEAP-AI for Doc Updates);
-    D_DocUpdate -- Proposes Updates based on TDP & Merged Code --> Arch_Update_Proposal[Proposal for docs/architecture.md];
-    D_DocUpdate -- Proposes Updates based on TDP & Merged Code --> Tech_Update_Proposal[Proposal for docs/technical.md];
+    MergedCode[Merged Code (Main Branch - Human Action)] --> D_DocUpdate(LEAP-AI for Doc Updates as per @documentation_update);
+    D_DocUpdate -- Proposes Updates --> Arch_Update_Proposal[Proposal for docs/architecture.md];
+    D_DocUpdate -- Proposes Updates --> Tech_Update_Proposal[Proposal for docs/technical.md];
     Arch_Update_Proposal --> Human_Applies_Doc_Update1[Human updates docs/architecture.md];
     Tech_Update_Proposal --> Human_Applies_Doc_Update2[Human updates docs/technical.md];
 
-    subgraph SharedKnowledgeBase [Shared Knowledge - All AIs Read, Human Curates based on AI suggestions]
-        NARBP[.cursor/rules/core/nextjs_app_router_best_practices.mdc - @nextjs_app_router_best_practices]
-        Lessons[.cursor/rules/knowledge_capture/lessons_learned.mdc - @lessons_learned];
-        Errors[.cursor/rules/knowledge_capture/error_documentation.mdc - @error_documentation];
-        PrismaBP[.cursor/rules/core/prisma_best_practices.mdc - @prisma_best_practices];
-        TRPC_BP[.cursor/rules/core/trpc_best_practices.mdc - @trpc_best_practices];
-        ProjectRulesDir[.cursor/rules/ (all subdirectories and files)];
+    subgraph SharedKnowledgeBase [Shared Knowledge - All AIs Read, Human Curates based on AI suggestions via @rule_update_procedure]
+        CoreRulesDir[.cursor/rules/core/ (includes @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices, @directory_structure, @file_naming, etc.)];
+        ProcessRulesDir[.cursor/rules/processes/];
+        KnowledgeRulesDir[.cursor/rules/knowledge_capture/ (@lessons_learned, @error_documentation)];
     end
 
     style PRD fill:#90EE90,stroke:#333,stroke-width:2px;
@@ -72,29 +72,26 @@ graph TD
     style Epics fill:#D3D3D3,stroke:#333,stroke-width:2px;
     style SharedKnowledgeBase fill:#FFFACD,stroke:#333,stroke-width:2px;
 
-
+    
 Key Document Buckets & Primary AI Interactions (Next.js App Router Focused):
+Refer to @directory_structure for file locations.
 AI Guidance & Knowledge Base (.cursor/):
 prompts/master/: Master system instructions for each AI role.
-rules/core/: Fundamental guiding principles (@memory, @planning_principles, @implement_principles, @debug_procedures, @directory_structure, @general_ai_rules, @file_naming, @prisma_best_practices, @trpc_best_practices, @nextjs_app_router_best_practices).
-rules/[role_name]/: Role-specific operational rules (e.g., @prd_generation for PM-AI, App Router focused rules for SA-AI, LEAP-AI, IE-AIs).
-rules/processes/: Rules for common procedures (e.g., @git_workflow, @documentation_update).
-rules/knowledge_capture/: Living documents for project learning (@lessons_learned, @error_documentation).
+rules/: All rule files, categorized.
+core/: Contains fundamental guiding principles and best practices including @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices, @directory_structure, @file_naming.
+Role-specific rules (e.g., @prd_generation for PM-AI).
+Process rules (e.g., @git_workflow, @documentation_update).
+Knowledge capture templates (@lessons_learned, @error_documentation).
 Project Definition & Design (docs/):
-product_requirement_docs.md: The "what" and "why" (PM-AI generates).
-prd_archive/: Historical PRDs (PM-AI manages).
-architecture.md: Current system architecture diagram and description, reflecting Next.js App Router structure (Server/Client Components, tRPC integration) (SA-AI initially proposes for new projects; LEAP-AI proposes updates post-merge; Human finalizes).
-technical.md: Current tech stack, core patterns (including Next.js App Router data fetching as per @nextjs_app_router_best_practices, Server Actions, caching strategies for tRPC/Prisma), and constraints (SA-AI initially proposes; LEAP-AI proposes updates post-merge; Human finalizes).
+product_requirement_docs.md: The "what" and "why" (PM-AI generates per @prd_generation).
+prd_archive/: Historical PRDs.
+architecture.md: Current system architecture (SA-AI initially proposes; LEAP-AI proposes updates per @documentation_update; Human finalizes). Must reflect practices from @nextjs_app_router_best_practices.
+technical.md: Current tech stack, core patterns, and constraints (SA-AI initially proposes; LEAP-AI proposes updates per @documentation_update; Human finalizes). Must reflect practices from relevant core rules.
 Planning & Task Management (tasks/):
-proposals/technical_design_proposal_[feature].md: Detailed technical solution design, App Router focused (SA-AI generates).
-epics_plan.md: High-level feature themes (LEAP-AI manages).
-sprints/sprint_[date_goal].md: Sprint-level plan (LEAP-AI generates).
-sprints/sprint_[date_goal]/be_tasks.md & fe_tasks.md: Granular tasks for IE-AIs (LEAP-AI generates, FE tasks specify Server/Client component type and tRPC usage as per @nextjs_app_router_best_practices).
-active_context.md: Current sprint focus snapshot (LEAP-AI initializes).
+proposals/technical_design_proposal_[feature].md: Detailed technical solution design (SA-AI generates per @tdp_generation).
+epics_plan.md: High-level feature themes (LEAP-AI manages per @planning).
+sprints/sprint_[date_goal].md & sub-task files: Sprint-level plans (LEAP-AI generates per @planning).
+active_context.md: Current sprint focus (LEAP-AI initializes per @active_context_management).
 Application Code (src/ & prisma/):
-src/app/: Next.js App Router specific files (layout.js, page.js, loading.js, error.js, Server Components, Client Components ("use client";)).
-src/components/: Reusable UI components (Server or Client).
-src/lib/: Utility functions.
-src/server/api/: tRPC routers and procedures.
-src/trpc/: tRPC client setup (react.tsx for client hooks, server.ts for server-side calls).
-prisma/: Database schema (schema.prisma) and migrations (BE-AI identifies schema changes, Human executes migrations).
+Code implementation adhering to all relevant best practice documents (e.g., @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices) and role-specific guidelines (@frontend, @backend).
+
