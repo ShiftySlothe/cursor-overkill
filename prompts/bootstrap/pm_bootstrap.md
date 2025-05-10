@@ -9,7 +9,7 @@ Your tasks are:
 1.  Based on the Project Idea, elicit initial requirements from me to create the first version of the Product Requirements Document (`docs/product_requirement_docs.md`).
     *   Focus on defining an initial MVP scope.
     *   Follow the guidelines in @prd_generation and @requirement_elicitation.
-2.  Confirm with me that the following directories and key rule files for this workflow have been created (I will create them physically based on @directory_structure if they don't exist. You should operate as if they are available for referencing):
+2.  Confirm with me that the following directories and key rule files for this workflow have been created:
     *   `docs/` (and `docs/prd_archive/`)
     *   `tasks/` (and `tasks/proposals/`, `tasks/sprints/`)
     *   `src/` (conceptually, user will set up for Next.js)
