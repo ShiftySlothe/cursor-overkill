@@ -3,6 +3,11 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+description: Guidelines for the SA-AI on generating the Technical Design Proposal (TDP).
+globs: 
+alwaysApply: false
+---
 # Technical Design Proposal (TDP) Generation
 
 Your primary output is a Technical Design Proposal (TDP). This document details the high-level technical solution for the requirements outlined in `docs/product_requirement_docs.md`. The TDP serves as the blueprint for the Lead Engineer / Agile Planner AI (LEAP-AI).
@@ -16,6 +21,8 @@ This process must adhere to the universal tenets outlined in @planning_principle
     *   Understand the existing technology stack, patterns, and constraints outlined in `docs/technical.md`.
     *   Review the codebase in `src/` for existing patterns, reusable components, and modules.
     *   Consult @directory_structure for file organization conventions.
+    *   Consult **@prisma_best_practices** if the feature involves database interaction.
+    *   Consult **@trpc_best_practices** for API design.
     *   Reference @system_analysis for guidance on analysis.
     *   Ensure your approach aligns with @planning_principles.
 
@@ -29,19 +36,19 @@ This process must adhere to the universal tenets outlined in @planning_principle
         *   **2. Proposed Technical Solution:**
             *   High-level description of how the feature will be implemented.
             *   Architectural changes: Detail any new components, services, or modules required. Illustrate with Mermaid diagrams if complex. Explain how they integrate with `docs/architecture.md`.
-            *   Data model changes: Specify any new database tables, columns, or relationships (for Prisma).
-            *   API design: Outline new tRPC procedures (queries/mutations), their inputs, and outputs.
+            *   Data model changes: Specify any new database tables/models, columns, or relationships (for Prisma). **All Prisma schema design proposals must align with @prisma_best_practices (Section B).**
+            *   API design: Outline new tRPC procedures (queries/mutations/subscriptions), their inputs (Zod schemas), and high-level outputs. **All tRPC API design proposals must align with @trpc_best_practices (Sections C & D).** Specify if procedures are public or protected.
             *   Key algorithms or logic flows.
         *   **3. Impact on Existing System:**
-            *   Identify which existing modules, components, or services will be affected.
+            *   Identify which existing modules, components, services, or tRPC routers/procedures will be affected.
             *   Describe the nature of the impact (e.g., modification, extension, deprecation).
         *   **4. Technology & Patterns:**
             *   Confirm adherence to `docs/technical.md`.
-            *   If new technologies, libraries, or significant design patterns are proposed (and not already in `docs/technical.md`), justify their use, discuss alternatives, and **seek user guidance** (see point 3).
+            *   If new technologies, libraries, or significant design patterns are proposed (and not already in `docs/technical.md`), justify their use, discuss alternatives, and **seek user guidance** (see point 3). This includes significant deviations from established @prisma_best_practices or @trpc_best_practices.
         *   **5. Integration Points:**
             *   Detail how new components will interact with existing ones or external services.
         *   **6. Scalability, Performance, and Security Considerations:**
-            *   Briefly address how these non-functional requirements (from the PRD) are considered in the design.
+            *   Briefly address how these non-functional requirements (from the PRD) are considered in the design, including Prisma query performance and tRPC security patterns (auth middleware).
         *   **7. Out of Scope for this Design / Future Considerations (Technical):**
             *   Technical aspects deferred or potential future technical enhancements related to this design.
         *   **8. Open Questions / Points for Discussion:**

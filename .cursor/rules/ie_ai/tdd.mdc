@@ -3,9 +3,14 @@ description: Test-Driven Development (TDD) guidelines for Implementation Enginee
 globs: 
 alwaysApply: false
 ---
+---
+description: Test-Driven Development (TDD) guidelines for Implementation Engineer AIs.
+globs: 
+alwaysApply: false
+---
 # Test-Driven Development (TDD) with Jest
 
-For tasks requiring unit tests (as specified in your task's "Unit Test Requirement"), you must follow a Test-Driven Development approach. All tests will use the Jest testing framework (as specified in `docs/technical.md`) and be written in TypeScript (`*.test.ts`).
+For tasks requiring unit tests (as specified in your task's "Unit Test Requirement"), you must follow a Test-Driven Development approach. All tests will use the Jest testing framework (as specified in `docs/technical.md`) and be written in TypeScript (`*.test.ts` or `*.spec.ts`).
 
 **TDD Cycle (Red-Green-Refactor):**
 
@@ -13,12 +18,14 @@ For tasks requiring unit tests (as specified in your task's "Unit Test Requireme
     *   **Propose Test Cases:** Before writing any implementation code for a piece of logic, first analyze the requirement and **propose a set of test cases in plain language**. These should cover:
         *   Happy path / expected behavior.
         *   Edge cases.
-        *   Invalid inputs / error conditions.
+        *   Invalid inputs / error conditions (including Zod validation failures for tRPC).
+        *   Specific business logic paths.
+        *   For tRPC procedures, consider testing different context states (e.g., authenticated vs. unauthenticated if applicable).
     *   **Seek User Approval for Test Cases:** Present your proposed test cases to the user. **Do not proceed to write test code until the user approves the test cases.**
     *   **Write Test Code:** Once test cases are approved, write the Jest test code for *one specific piece of functionality* or *one specific test case*.
         *   Ensure the test clearly describes what it's testing.
         *   Make assertions that will initially fail (because the implementation code doesn't exist yet).
-        *   Place test files adjacent to the code they are testing or in a `__tests__` subdirectory, (e.g., `src/lib/utils.test.ts` for `src/lib/utils.ts`) as per project convention and @file_naming.
+        *   Place test files adjacent to the code they are testing or in a `__tests__` subdirectory, (e.g., `src/lib/utils.test.ts` for `src/lib/utils.ts`, or `src/server/api/routers/user.test.ts` for `userRouter.ts`) as per project convention and @file_naming.
 
 2.  **GREEN - Write Code to Make the Test Pass:**
     *   Write the *minimum amount* of implementation code necessary to make the failing test pass.
@@ -33,12 +40,12 @@ For tasks requiring unit tests (as specified in your task's "Unit Test Requireme
 
 *   **`describe` Blocks:** Group related tests for a module or function.
 *   **`it` or `test` Blocks:** Define individual test cases with clear, descriptive names.
-*   **Assertions:** Use Jest's built-in matchers (e.g., `expect(...).toBe(...)`, `toEqual()`, `toThrow()`, etc.).
-*   **Mocking:** Use Jest's mocking capabilities (`jest.fn()`, `jest.spyOn()`, `jest.mock()`) to isolate units of code and mock dependencies (e.g., database calls via Prisma client, external API calls, other modules).
-    *   When testing tRPC procedures, you will typically mock the Prisma client (`ctx.db`) and session (`ctx.session`).
-    *   When testing React components, you might mock child components or tRPC hooks.
-*   **Setup and Teardown:** Use `beforeEach`, `afterEach`, `beforeAll`, `afterAll` for setup and cleanup.
-*   **Asynchronous Tests:** Handle promises correctly using `async/await` or by returning a Promise from the test.
+*   **Assertions:** Use Jest's built-in matchers (e.g., `expect(...).toBe(...)`, `toEqual()`, `toThrow()`, `toThrowError(TRPCError)` etc.).
+*   **Mocking:** Use Jest's mocking capabilities (`jest.fn()`, `jest.spyOn()`, `jest.mock()`) to isolate units of code and mock dependencies.
+    *   When testing tRPC procedures, you will typically mock the Prisma client (`ctx.db`) and session/user context (`ctx.session`, `ctx.user`). Refer to @prisma_best_practices (Section E) for Prisma mocking and **@trpc_best_practices** for context mocking patterns.
+    *   When testing React components using tRPC hooks (FE-AI), you might mock the tRPC client/hooks or use tools like MSW if available. Test loading, success, and error states of hooks.
+*   **Setup and Teardown:** Use `beforeEach`, `afterEach`, `beforeAll`, `afterAll` for setup and cleanup (e.g., resetting mocks).
+*   **Asynchronous Tests:** Handle promises correctly using `async/await` or by returning a Promise from the test. Test for both resolved and rejected promises.
 
 **Definition of Done for TDD within a Task:**
 *   All approved unit test cases are implemented.
@@ -46,6 +53,6 @@ For tasks requiring unit tests (as specified in your task's "Unit Test Requireme
 *   Implementation code satisfies the requirements and is refactored.
 
 **Seeking User Guidance:**
-*   If you are unsure how to test a particular piece of logic.
-*   If mocking a complex dependency is proving difficult.
+*   If you are unsure how to test a particular piece of logic, especially complex tRPC procedures or React hooks.
+*   If mocking a complex dependency (like Prisma Client or tRPC context) is proving difficult.
 *   If a test case proposed by the user seems untestable or problematic.

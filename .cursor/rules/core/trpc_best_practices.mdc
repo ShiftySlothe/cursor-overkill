@@ -1,0 +1,164 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Comprehensive best practices for using tRPC (v11+) with Next.js (App Router) and TanStack Query (v5+). Covers server setup, client integration, procedures, error handling, and more.
+globs: 
+alwaysApply: false # Referenced explicitly by other rules and master prompts when tRPC context is needed.
+---
+# tRPC Best Practices (v11+ with Next.js App Router & TanStack Query v5+)
+
+This document outlines best practices for developing applications using tRPC, focusing on integration with Next.js App Router and TanStack Query v5+. All AI roles involved in API design, backend implementation, or frontend integration must adhere to these guidelines.
+
+**A. Core tRPC Concepts:**
+*   **Routers:** Define collections of procedures. Sub-routers can be merged into a main `appRouter` (or `rootRouter`).
+*   **Procedures:** Individual API endpoints (queries, mutations, subscriptions). They handle input validation, business logic, and data fetching/manipulation.
+*   **Context (`createContext`):** An object available in every procedure, typically holding request-specific information like user sessions, database connections.
+*   **Middleware:** Functions that run before procedures, used for concerns like authentication, logging, or context enrichment.
+*   **Adapters:** Connect tRPC to HTTP servers/frameworks (e.g., `fetchRequestHandler` for Next.js App Router).
+*   **Links (Client-side):** Control the flow of data from client to server (e.g., `httpBatchLink`, `httpBatchStreamLink`).
+*   **Input/Output Validation:** Use libraries like Zod to define and enforce schemas for procedure inputs and (optionally) outputs.
+*   **Data Transformers:** (e.g., SuperJSON) to handle serialization/deserialization of types not native to JSON, like `Date`, `Map`, `Set`.
+
+**B. Recommended Project Structure (Illustrative for Next.js App Router):**src/
+├── app/
+│ ├── api/
+│ │ └── trpc/
+│ │ └── [trpc]/
+│ │ └── route.ts # Next.js App Router API handler (using fetchRequestHandler)
+│ └── (features)/ # Feature-specific Server and Client Components
+│ └── _components/ # Client components for a feature
+│ └── page.tsx # Server component for a feature route
+├── lib/ # Or utils/, services/
+│ └── trpc/
+│ ├── client.tsx # Client-side TRPCProvider, useTRPC hook (using TanStack Query v5 integration)
+│ ├── query-client.ts # Factory for creating QueryClient instances
+│ └── server.ts # Server-side caller & prefetching/hydration helpers (createTRPCOptionsProxy, getQueryClient, HydrateClient)
+├── server/
+│ └── api/
+│ ├── trpc.ts # initTRPC, procedure helpers (publicProcedure, protectedProcedure), createCallerFactory
+│ ├── root.ts # Main appRouter (merging sub-routers)
+│ ├── routers/ # Sub-routers
+│ │ ├── post.ts
+│ │ └── user.ts
+│ └── context.ts # createContext function for tRPC
+└── prisma/ # (If using Prisma)
+└── schema.prisma
+
+*   This structure promotes separation of concerns and aligns with Next.js App Router conventions. Adapt as needed but maintain clarity.
+
+**C. Server-Side Best Practices (typically in `src/server/api/`):**
+
+1.  **Initialization (`trpc.ts`):**
+    *   Use `initTRPC.context<ContextType>().create()` to initialize `t`.
+    *   Export base procedures: `export const publicProcedure = t.procedure;` and `export const protectedProcedure = t.procedure.use(authMiddleware);`.
+    *   Export `t.router`, `t.mergeRouters`, and `t.createCallerFactory`.
+    *   If using SuperJSON: `initTRPC.create({ transformer: superjson });`.
+2.  **Context (`context.ts`):**
+    *   Define `createContext` function. This function receives the request object (`opts: FetchCreateContextFnOptions` for App Router).
+    *   Populate context with authenticated user, database client (`prisma`), etc. Use `React.cache` if creating context within Server Components for request memoization.
+    *   Export the `Context` type: `export type Context = Awaited<ReturnType<typeof createContext>>;`.
+3.  **Routers (`root.ts`, `routers/*.ts`):**
+    *   Organize procedures into feature-specific routers (e.g., `userRouter`, `postRouter`).
+    *   Merge sub-routers into a single `rootRouter` (or `appRouter`) in `root.ts` using `t.mergeRouters` or by nesting.
+    *   Use shorthand router definitions where appropriate: `t.router({ subRouter: { procedureName: publicProcedure... } })`.
+4.  **Procedures:**
+    *   Use `publicProcedure.query()`, `publicProcedure.mutation()`, `publicProcedure.subscription()`.
+    *   Apply input validation using `.input(zodSchema)`.
+    *   Optionally apply output validation using `.output(zodSchema)`.
+    *   Implement business logic within the resolver function `(opts) => { ... }`.
+    *   Access context via `opts.ctx` and input via `opts.input`.
+5.  **Input/Output Validation:**
+    *   **Use Zod primarily.** Define schemas for all inputs.
+    *   Output validation is optional but recommended for complex outputs or to ensure no sensitive data is leaked.
+    *   For `FormData` or binary inputs, use `z.instanceof(FormData)` or `octetInputParser` respectively.
+6.  **Error Handling:**
+    *   Throw `TRPCError` for expected errors (e.g., `UNAUTHORIZED`, `NOT_FOUND`, `BAD_REQUEST`).
+    *   Provide meaningful error messages.
+    *   Use the `cause` property of `TRPCError` to pass original errors if needed.
+    *   Utilize the `onError` handler in your adapter setup (e.g., `fetchRequestHandler`) for global error logging/reporting.
+    *   Customize error formatting using `errorFormatter` in `initTRPC.create()` if needed.
+7.  **Middleware:**
+    *   Use `t.middleware()` to define reusable logic (e.g., authentication, logging, context enrichment).
+    *   Apply middleware to procedures using `.use(myMiddleware)`.
+    *   Protected procedures should be base procedures composed with authentication middleware.
+    *   Leverage context extension within middleware to provide typed, augmented context to subsequent middlewares or procedures.
+
+**D. Client-Side Best Practices (Next.js App Router & TanStack Query v5+):**
+
+1.  **Setup (`lib/trpc/client.tsx` and `lib/trpc/query-client.ts`):**
+    *   **`query-client.ts`**: Export `makeQueryClient()` function to create `QueryClient` instances. Configure defaults like `staleTime`, `gcTime`, and `dehydrate`/`hydrate` options (especially `shouldDehydrateQuery` for RSC promise hydration).
+    *   **`client.tsx`**:
+        *   `'use client';` directive.
+        *   Import `AppRouter` type.
+        *   Use `createTRPCContext<AppRouter>()` to get `TRPCProvider` and `useTRPC` hook.
+        *   Implement `TRPCReactProvider` component:
+            *   Manages `QueryClient` (singleton for browser, new per request for SSR).
+            *   Creates `trpcClient` using `createTRPCClient` with `httpBatchLink` (or `httpBatchStreamLink`). Configure URL and headers.
+            *   Wraps children with `QueryClientProvider` and `TRPCProvider`.
+        *   Mount `TRPCReactProvider` in your root layout (`app/layout.tsx`).
+2.  **Server Component Integration (`lib/trpc/server.tsx`):**
+    *   `'server-only';` directive.
+    *   Use `createTRPCOptionsProxy<AppRouter>({ client: serverTrpcClient, queryClient: getQueryClient })` if calling a separate tRPC server.
+    *   Or, more commonly for monoliths, `createTRPCOptionsProxy({ router: appRouter, ctx: createTRPCContext, queryClient: getQueryClient })`.
+    *   Export `getQueryClient = cache(makeQueryClient)` for stable query client instances per request.
+    *   Export `trpc` proxy from `createTRPCOptionsProxy`.
+    *   Optionally, create and export `HydrateClient` component wrapping `HydrationBoundary` and `prefetch` helpers.
+3.  **Fetching Data in Server Components:**
+    *   Use `queryClient.prefetchQuery(trpc.path.to.procedure.queryOptions(...))` for pre-fetching.
+    *   Or, use `await queryClient.fetchQuery(trpc.path.to.procedure.queryOptions(...))` if you need data directly in the Server Component and intend to hydrate.
+    *   Wrap page/layout with `HydrateClient` (or manually with `HydrationBoundary state={dehydrate(queryClient)}`).
+4.  **Fetching Data in Client Components (`_components/*.tsx`):**
+    *   `'use client';`
+    *   `const trpc = useTRPC();`
+    *   Use TanStack Query hooks:
+        *   `useQuery(trpc.path.to.procedure.queryOptions(input, options))`
+        *   `useSuspenseQuery(trpc.path.to.procedure.queryOptions(input, options))`
+        *   `useInfiniteQuery(trpc.path.to.procedure.infiniteQueryOptions(input, { getNextPageParam, ... }))`
+        *   `useMutation(trpc.path.to.procedure.mutationOptions(options))`
+    *   Utilize `trpc.path.to.procedure.queryKey()` or `trpc.path.pathFilter()` for query invalidation or manual cache updates with `useQueryClient()`.
+5.  **Mutations:**
+    *   Define using `useMutation(trpc.path.to.procedure.mutationOptions({ onSuccess, onError, ... }))`.
+    *   Call `mutate(input)` or `mutateAsync(input)`.
+    *   Invalidate relevant queries in `onSuccess` using `queryClient.invalidateQueries(trpc.path.to.procedure.queryFilter(...))` or `queryClient.invalidateQueries({ queryKey: trpc.path.to.router.pathKey() })`.
+    *   Consider optimistic updates for better UX.
+6.  **Streaming with `httpBatchStreamLink`:**
+    *   If backend procedures use async generators (`async function* () { yield ... }`), configure `httpBatchStreamLink` on the client.
+    *   `useQuery` will provide `data` as an array that updates as chunks arrive. `fetchStatus` remains `'fetching'` until complete.
+7.  **Subscriptions (SSE or WebSockets):**
+    *   Use `useSubscription(trpc.path.to.procedure.subscriptionOptions(input, { onData, onError, ... }))`.
+    *   Requires appropriate client link (`httpSubscriptionLink` for SSE, `wsLink` for WebSockets) and server adapter setup.
+    *   Implement `tracked()` events on the server for robust reconnections.
+
+**E. Advanced Topics & Other Considerations:**
+
+1.  **Non-JSON Content Types (FormData, Files):**
+    *   Server-side: Use `z.instanceof(FormData)` or `octetInputParser` in `.input()`.
+    *   Client-side:
+        *   `httpLink` supports this natively.
+        *   If using `httpBatchLink` or `httpBatchStreamLink`, use `splitLink` with `isNonJsonSerializable(op.input)` to route FormData/binary requests through `httpLink`.
+2.  **Server-Side Calls (from other backend services or within the same app outside procedure context):**
+    *   Use `createCallerFactory(appRouter)(createContext())`.
+    *   This bypasses the HTTP layer but still runs middleware and validation.
+    *   Avoid calling procedures from within other procedures using the caller; extract shared logic into functions instead.
+3.  **Caching:**
+    *   Leverage TanStack Query's caching on the client.
+    *   For HTTP-level caching of public GET requests, use `responseMeta` in the server adapter setup to set `Cache-Control` headers. Be cautious with authenticated data.
+4.  **Security:**
+    *   Implement robust authentication and authorization (typically via context and middleware).
+    *   Rely on input validation (Zod) to prevent malformed data.
+    *   Prisma (if used) helps prevent SQL injection.
+    *   Be mindful of what data is exposed in outputs.
+5.  **File Structure within Routers:**
+    *   For larger routers, consider co-locating Zod schemas with procedure definitions or in a dedicated `schemas.ts` file within the router's directory.
+
+**F. Version Compatibility & Further Resources:**
+
+*   This guide assumes tRPC v11+ and TanStack Query v5+.
+*   Always refer to the official [tRPC Documentation](https://trpc.io/docs) and [TanStack Query Documentation](https://tanstack.com/query/latest/docs/react/overview) for the most up-to-date and detailed information.
+*   The tRPC GitHub repository examples are excellent resources.
+
+By adhering to these practices, AIs can build robust, maintainable, and highly typesafe APIs with tRPC.
+</file>
