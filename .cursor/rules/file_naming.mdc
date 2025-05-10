@@ -1,9 +1,0 @@
----
-description: Anytime you create a file that is referenced by Cursor, rules, prompts, documentation, review this for naming convention
-globs: 
-alwaysApply: false
----
-**File Naming Conventions:**
-*   To ensure the `@filename` referencing works reliably and to maintain clarity, avoid duplicate filenames across different directories *unless absolutely necessary due to framework conventions (e.g., `page.tsx` in Next.js App Router)*.
-*   When creating new documents or rule files, choose descriptive and unique names.
-*   If a filename must be duplicated due to framework needs, be explicit with path context if ambiguity arises when discussing or referencing it.

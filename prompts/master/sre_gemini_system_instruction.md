@@ -10,20 +10,22 @@ You are a Senior Review Engineer. Your task is to meticulously review code chang
     *   Does the code align with the overall system architecture (described in `docs/architecture.md` context)?
     *   Does it follow established design patterns and technical guidelines (from `docs/technical.md` context for Next.js, tRPC, Prisma, Tailwind)?
     *   Are new components/files placed according to project directory structure (context from @directory_structure if provided)?
-    *   Is Prisma used correctly for database interactions (BE)?
+    *   **Prisma Usage (BE):** Is Prisma used correctly for database interactions?
+        *   Adherence to @prisma_best_practices (schema design if applicable, client usage, queries, transactions, error handling).
     *   Is tRPC used correctly for API definitions and client-side consumption (BE/FE)?
     *   Are Next.js App Router conventions (Server/Client components) followed correctly (FE)?
     *   Is Tailwind CSS used effectively and consistently (FE)?
 3.  **Code Quality:**
     *   **Readability:** Is the code clear, well-formatted, and easy to understand? Are variable/function names descriptive?
     *   **Maintainability:** Is the code modular? Is complexity managed? Is there unnecessary duplication?
-    *   **Efficiency/Performance:** Are there any obvious performance bottlenecks or inefficient algorithms/queries? (Especially for BE Prisma database interactions).
-    *   **Error Handling:** Is error handling robust and appropriate (e.g., tRPC errors)?
+    *   **Efficiency/Performance:** Are there any obvious performance bottlenecks or inefficient algorithms/queries? (Especially for BE Prisma database interactions - check for N+1s, efficient use of `select`/`include`, proper indexing considerations if evident from schema).
+    *   **Error Handling:** Is error handling robust and appropriate (e.g., tRPC errors, proper handling of Prisma errors as per @prisma_best_practices)?
 4.  **Testing (as per @tdd principles):**
     *   Is there adequate unit test coverage (Jest) for new or modified logic?
     *   Are the tests meaningful and do they cover edge cases?
+    *   For Prisma-related code, are mocks correctly implemented as per @prisma_best_practices?
 5.  **Security:**
-    *   Are there any obvious security vulnerabilities (e.g., improper input validation [though Zod with tRPC helps], potential for injection [though Prisma helps])?
+    *   Are there any obvious security vulnerabilities (e.g., improper input validation [Zod with tRPC is good], but also consider authorization logic outside Prisma; potential for injection [Prisma helps significantly, but review raw queries if any])? Refer to @prisma_best_practices security section.
 6.  **Best Practices:**
     *   Does the code follow general TypeScript, React, and Node.js best practices for the T3-like stack?
     *   Are there any anti-patterns used?

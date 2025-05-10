@@ -11,11 +11,9 @@ alwaysApply: true # This map is fundamental for all roles.
 
 # Project Memory Structure and Principles
 
-This project relies on a structured set of documents to maintain context, guide development, and capture knowledge. All AI roles must be familiar with this structure and contribute to relevant files as per their responsibilities. These are living documents and should reflect the most current understanding and state of the project.
+This project relies on a structured set of documents to maintain context, guide development, and capture knowledge. All AI roles must be familiar with this structure. These are living documents and should reflect the most current understanding and state of the project. The `README.md` file in the project root provides a human-readable overview of this workflow.
 
-**Core Document Hierarchy and Workflow:**
-
-The diagram below illustrates the flow of information and the primary AI roles involved with each key document:
+**Core Document Hierarchy and Workflow Diagram:**
 
 ```mermaid
 graph TD
@@ -27,7 +25,7 @@ graph TD
     C -- Reads --> Arch_Current[docs/architecture.md];
     C -- Reads --> Tech_Current[docs/technical.md];
     C -- Reads --> CodeBase[src/];
-    C -- Reads --> DirStructureRule[.cursor/rules/core/directory_structure.mdc];
+    C -- Reads --> DirStructureRule[ @directory_structure ];
     C -- Generates --> TDP[tasks/proposals/technical_design_proposal_[feature].md];
 
     TDP --> D(LEAP-AI);
@@ -55,8 +53,9 @@ graph TD
     Tech_Update_Proposal --> Human_Applies_Doc_Update2[Human updates docs/technical.md];
 
     subgraph SharedKnowledgeBase [Shared Knowledge - All AIs Read, Human Curates based on AI suggestions]
-        Lessons[.cursor/rules/knowledge_capture/lessons_learned.mdc];
-        Errors[.cursor/rules/knowledge_capture/error_documentation.mdc];
+        Lessons[.cursor/rules/knowledge_capture/lessons_learned.mdc - @lessons_learned];
+        Errors[.cursor/rules/knowledge_capture/error_documentation.mdc - @error_documentation];
+        PrismaBP[.cursor/rules/core/prisma_best_practices.mdc - @prisma_best_practices];
         ProjectRulesDir[.cursor/rules/ (all subdirectories and files)];
     end
 
@@ -71,31 +70,24 @@ graph TD
     style Epics fill:#D3D3D3,stroke:#333,stroke-width:2px;
     style SharedKnowledgeBase fill:#FFFACD,stroke:#333,stroke-width:2px;
 
-    Key Document Purposes & Locations:
-Core AI Guidance:
-.cursor/prompts/master/: Master system instructions for each AI role.
-.cursor/rules/core/: Fundamental AI guiding principles (this file @memory, @planning_principles, @implement_principles, @debug_procedures, @directory_structure, @general_ai_rules, @file_naming).
-.cursor/rules/[role_name]/: Role-specific operational rules (e.g., @prd_generation).
-.cursor/rules/processes/: Rules for common, multi-step procedures (e.g., @git_workflow).
-.cursor/rules/knowledge_capture/lessons_learned.mdc (referenced as @lessons_learned): Captures important patterns, preferences, project intelligence.
-.cursor/rules/knowledge_capture/error_documentation.mdc (referenced as @error_documentation): Documents known issues, context, resolutions.
-Project Definition & Design Documentation:
-docs/product_requirement_docs.md: The "what" and "why." (PM-AI primary).
-docs/prd_archive/: Historical PRDs. (PM-AI manages).
-docs/architecture.md: Current system architecture. Reflects built state. (Human primary; LEAP-AI proposes updates).
-docs/technical.md: Current tech stack, patterns, constraints. Reflects built state. (Human primary; LEAP-AI proposes updates).
-Planning & Task Management Artifacts:
-tasks/proposals/technical_design_proposal_[feature].md: Proposed technical solution. (SA-AI primary).
-tasks/epics_plan.md: High-level feature themes. (LEAP-AI primary).
-tasks/sprints/sprint_[date_goal].md: Plan for a specific sprint. (LEAP-AI primary).
-tasks/sprints/sprint_[date_goal]/be_tasks.md: Detailed backend tasks for the sprint. (LEAP-AI defines; BE-AI executes).
-tasks/sprints/sprint_[date_goal]/fe_tasks.md: Detailed frontend tasks for the sprint. (LEAP-AI defines; FE-AI executes).
-tasks/active_context.md: Snapshot of current sprint focus and priorities. (LEAP-AI initializes; all AIs contribute status indirectly by updating their task files or explicitly if blocked).
-Source Code:
-src/: The application codebase. (IE-AIs implement; SA-AI analyzes).
-General Principles for Memory Usage:
-Read Before Acting: Always consult relevant memory files (as per your role and current task) before making decisions or starting work. Use this document (@memory) as your map.
-Context is Key: Understand how your current task fits within the broader project context provided by these documents.
-Contribute Appropriately: Update or propose updates to documents as defined by your role and specific rules.
-Seek Clarification: If documentation is unclear, seems contradictory, or doesn't cover a necessary decision point, seek user guidance.
-Rule Updates: If a broadly applicable decision is made by the user that isn't captured in the existing .cursor/rules/, suggest an update via the procedure in @rule_update_procedure.
+    Key Document Buckets & Primary AI Interactions:
+AI Guidance & Knowledge Base (.cursor/):
+prompts/master/: Master system instructions for each AI role.
+rules/core/: Fundamental guiding principles (@memory, @planning_principles, @implement_principles, @debug_procedures, @directory_structure, @general_ai_rules, @file_naming, @prisma_best_practices).
+rules/[role_name]/: Role-specific operational rules (e.g., @prd_generation for PM-AI).
+rules/processes/: Rules for common procedures (e.g., @git_workflow for IE-AIs/LEAP-AI).
+rules/knowledge_capture/: Living documents for project learning (@lessons_learned, @error_documentation).
+Project Definition & Design (docs/):
+product_requirement_docs.md: The "what" and "why" (PM-AI generates).
+prd_archive/: Historical PRDs (PM-AI manages).
+architecture.md: Current system architecture diagram and description (SA-AI initially proposes for new projects; LEAP-AI proposes updates post-merge; Human finalizes).
+technical.md: Current tech stack, core patterns, and constraints (SA-AI initially proposes; LEAP-AI proposes updates post-merge; Human finalizes).
+Planning & Task Management (tasks/):
+proposals/technical_design_proposal_[feature].md: Detailed technical solution design (SA-AI generates).
+epics_plan.md: High-level feature themes (LEAP-AI manages).
+sprints/sprint_[date_goal].md: Sprint-level plan (LEAP-AI generates).
+sprints/sprint_[date_goal]/be_tasks.md & fe_tasks.md: Granular tasks for IE-AIs (LEAP-AI generates).
+active_context.md: Current sprint focus snapshot (LEAP-AI initializes).
+Application Code (src/ & prisma/):
+src/: Main application source code (IE-AIs implement).
+prisma/: Database schema (schema.prisma) and migrations (BE-AI identifies needs, Human executes migrations).
