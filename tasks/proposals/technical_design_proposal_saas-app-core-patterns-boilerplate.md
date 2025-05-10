@@ -19,7 +19,7 @@ This Technical Design Proposal (TDP) outlines the high-level technical solution 
 ### 2.2 Component Strategy (Server vs. Client)
 - **Server Components**: Default for all pages and layouts, responsible for data fetching and passing props to Client Components.
 - **Client Components**: Used for interactivity (forms, modals, notifications, onboarding wizard, etc.).
-- **ShadCN/UI**: All UI elements should use ShadCN/UI components from `src/components/ui/` unless a strong justification for custom components exists.
+- **ShadCN/UI**: All UI elements should use ShadCN/UI components from `app/srccomponents/ui/` unless a strong justification for custom components exists.
 - **Key UI Components**:
   - Layouts: `layout.tsx` (public, authenticated)
   - Auth pages: `page.tsx` under `app/(auth)/`
@@ -28,8 +28,8 @@ This Technical Design Proposal (TDP) outlines the high-level technical solution 
   - Notifications: `Toaster.tsx` (ShadCN/UI)
 
 ### 2.3 Architectural Changes
-- Introduce a `services/` directory under `src/server/` for business logic.
-- Expand `src/components/ui/` with required ShadCN/UI components.
+- Introduce a `services/` directory under `app/srcserver/` for business logic.
+- Expand `app/srccomponents/ui/` with required ShadCN/UI components.
 - Add onboarding and help components as optional features.
 - Integrate file upload handling (profile pictures, documents) with secure validation.
 - Update Prisma schema as needed for new features (see below).
@@ -63,7 +63,7 @@ graph TD
 ### 2.5 API Design (tRPC)
 - Organize routers by feature (e.g., `userRouter`, `fileRouter`, `onboardingRouter`).
 - Use `publicProcedure` for unauthenticated endpoints, `protectedProcedure` for authenticated ones.
-- Input validation with Zod schemas (centralized in `src/lib/schemas/` if complex).
+- Input validation with Zod schemas (centralized in `app/srclib/schemas/` if complex).
 - Service layer functions called from tRPC procedures.
 - Standardized error handling and responses.
 - Pagination, filtering, and sorting for list endpoints.
@@ -103,7 +103,7 @@ graph TD
 ## 3. Impact on Existing System
 - Extends the current architecture with new feature routers, service layer, and UI components.
 - May require updates to the Prisma schema and migrations.
-- Adds new pages and components under `src/app/` and `src/components/ui/`.
+- Adds new pages and components under `app/srcapp/` and `app/srccomponents/ui/`.
 - No breaking changes to existing features anticipated if best practices are followed.
 
 ---

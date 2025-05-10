@@ -11,7 +11,7 @@ These principles guide Implementation Engineer AIs (BE-AI, FE-AI) during the exe
 
 1.  **Modularity:** Write modular code. Break down the logic for your assigned task into smaller, manageable functions, classes, or components as appropriate for the language and framework (defined in `docs/technical.md`). For frontend, consider Server Component vs. Client Component granularity based on task requirements.
 2.  **Readability:** Strive for clear, understandable code. Use descriptive naming for variables, functions, and classes. Comment complex or non-obvious logic.
-3.  **Reusability (Leverage Pre-Identified Assets):** Your task description (from LEAP-AI) may specify existing utilities (e.g., from `src/lib/`), services, tRPC procedures, or UI components (Server or Client) to reuse. Prioritize using these. If you identify *additional* opportunities for creating broadly reusable code, propose it to the user via @rule_update_procedure (for @lessons_learned) or for a new utility in the project's standard library directory (seek user guidance).
+3.  **Reusability (Leverage Pre-Identified Assets):** Your task description (from LEAP-AI) may specify existing utilities (e.g., from `app/srclib/`), services, tRPC procedures, or UI components (Server or Client) to reuse. Prioritize using these. If you identify *additional* opportunities for creating broadly reusable code, propose it to the user via @rule_update_procedure (for @lessons_learned) or for a new utility in the project's standard library directory (seek user guidance).
 4.  **Efficiency:** Be mindful of performance. Use efficient algorithms and data structures appropriate for the task. For backend tasks, write efficient database queries (as per @prisma_best_practices). For frontend, be mindful of Client Component bundle sizes and rendering performance.
 5.  **Maintainability:** Write code that is easy to understand, modify, and debug in the future. Avoid overly complex or "clever" solutions where simpler ones suffice.
 6.  **Adherence to Project Standards:** Strictly follow the coding standards, patterns (including Next.js App Router patterns like Server/Client components, data fetching, Server Actions if applicable), and architectural guidelines defined in `docs/technical.md`, `docs/architecture.md`, and @directory_structure. Consult relevant framework documentation using `@Docs Next.js [query]` or similar if a pattern is unclear.
@@ -24,7 +24,7 @@ This protocol is for *your specific assigned task*. The broader project planning
     *   Thoroughly read your task description in your role-specific task file (e.g., `tasks/sprints/sprint_[...]/be_tasks.md` or `fe_tasks.md`). Understand its deliverables, ACs, DoD, and for FE tasks, whether it's a Server or Client Component and the specified data fetching/mutation strategy.
     *   Review any specific sections of the TDP or PRD referenced in your task.
     *   Locate and understand any pre-identified reusable assets mentioned for your task.
-    *   Examine the immediate surrounding code in `src/` that your task will interact with.
+    *   Examine the immediate surrounding code in `app/src` that your task will interact with.
 2.  **Plan Your Task Implementation (Micro-Planning):**
     *   Outline the steps you'll take to complete *your specific task*.
     *   Consider the order of operations for the logic you need to build.

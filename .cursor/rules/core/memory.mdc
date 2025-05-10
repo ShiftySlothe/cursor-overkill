@@ -24,7 +24,7 @@ graph TD
     PRD --> C(SA-AI);
     C -- Reads --> Arch_Current[docs/architecture.md - Adheres to @nextjs_app_router_best_practices];
     C -- Reads --> Tech_Current[docs/technical.md - Adheres to @nextjs_app_router_best_practices, @trpc_best_practices, @prisma_best_practices];
-    C -- Reads --> CodeBase[src/ - Existing code, per @directory_structure];
+    C -- Reads --> CodeBase[app/src - Existing code, per @directory_structure];
     C -- Reads --> DirStructureRule[ @directory_structure ];
     C -- Reads --> NextJsBPRule[ @nextjs_app_router_best_practices ];
     C -- Reads --> PrismaBPRule[ @prisma_best_practices ];
@@ -40,8 +40,8 @@ graph TD
 
     BE_Tasks --> E_BE(BE-AI);
     FE_Tasks --> F_FE(FE-AI);
-    E_BE -- Implements & Tests (per @backend, @tdd, @prisma_best_practices, @trpc_best_practices) --> CodeChanges_BE[src/ (Backend)];
-    F_FE -- Implements & Tests (per @frontend, @tdd, @nextjs_app_router_best_practices, @trpc_best_practices) --> CodeChanges_FE[src/ (Frontend)];
+    E_BE -- Implements & Tests (per @backend, @tdd, @prisma_best_practices, @trpc_best_practices) --> CodeChanges_BE[app/src (Backend)];
+    F_FE -- Implements & Tests (per @frontend, @tdd, @nextjs_app_router_best_practices, @trpc_best_practices) --> CodeChanges_FE[app/src (Frontend)];
     E_BE -- Updates Status & --> ActiveContext;
     F_FE -- Updates Status & --> ActiveContext;
 
@@ -92,6 +92,6 @@ proposals/technical_design_proposal_[feature].md: Detailed technical solution de
 epics_plan.md: High-level feature themes (LEAP-AI manages per @planning).
 sprints/sprint_[date_goal].md & sub-task files: Sprint-level plans (LEAP-AI generates per @planning).
 active_context.md: Current sprint focus (LEAP-AI initializes per @active_context_management).
-Application Code (src/ & prisma/):
+Application Code (app/src & prisma/):
 Code implementation adhering to all relevant best practice documents (e.g., @nextjs_app_router_best_practices, @prisma_best_practices, @trpc_best_practices) and role-specific guidelines (@frontend, @backend).
 

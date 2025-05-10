@@ -9,8 +9,8 @@ Context Files:
 - tasks/proposals/technical_design_proposal_shape-comments_YYYY-MM-DD.md (relevant TDP sections, including API design and FE component strategy)
 - docs/technical.md (Next.js App Router & tRPC patterns)
 - docs/architecture.md
-- src/server/api/routers/ (existing tRPC routers for BE-AI)
-- src/app/ (existing Server/Client components for FE-AI)
+- app/srcserver/api/routers/ (existing tRPC routers for BE-AI)
+- app/srcapp/ (existing Server/Client components for FE-AI)
 - prisma/schema.prisma (for comment data model if BE-AI)
 - Use `@Docs tRPC`, `@Docs Prisma`, `@Docs Next.js App Router`, `@Docs React` for framework-specific guidance if needed.
 

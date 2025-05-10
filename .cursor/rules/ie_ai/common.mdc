@@ -27,7 +27,7 @@ This document focuses on **critical junctures where you MUST seek user guidance.
     *   **Do NOT implement such deviations without explicit user approval.** Clearly state your rationale and the proposed alternative.
 
 4.  **Need for New Core Utilities or Significant Shared Components:**
-    *   You identify the need for a new, broadly reusable utility function (e.g., for `src/lib/`) or a significant shared component/service that wasn't anticipated in the TDP.
+    *   You identify the need for a new, broadly reusable utility function (e.g., for `app/srclib/`) or a significant shared component/service that wasn't anticipated in the TDP.
     *   Propose its design, purpose, and placement (as per @directory_structure) and **seek user approval before creation.**
 
 5.  **Blocked by Dependencies:**

@@ -13,19 +13,19 @@ Before proposing a technical solution, thoroughly understand the current T3 Stac
 2.  **Review Core Architectural & Technical Documents:**
     *   **`docs/architecture.md`:** System components, relationships, data flow. Pay attention to how Next.js App Router components (Server/Client) are structured.
     *   **`docs/technical.md`:** Tech stack (Next.js App Router, tRPC, Prisma, TypeScript, Tailwind CSS), established patterns, and constraints. Specifically understand:
-        *   Authentication flow: `src/server/auth/config.ts`, `src/server/auth/index.ts`.
-        *   Database access: `src/server/db.ts`, `prisma/schema.prisma`.
-        *   tRPC server setup: `src/server/api/trpc.ts`, `src/server/api/root.ts`, existing routers in `src/server/api/routers/`.
-        *   tRPC client setup for App Router: `src/trpc/react.tsx` (Client Component hooks), `src/trpc/server.ts` (Server Component calls), `src/trpc/query-client.ts`.
+        *   Authentication flow: `app/srcserver/auth/config.ts`, `app/srcserver/auth/index.ts`.
+        *   Database access: `app/srcserver/db.ts`, `prisma/schema.prisma`.
+        *   tRPC server setup: `app/srcserver/api/trpc.ts`, `app/srcserver/api/root.ts`, existing routers in `app/srcserver/api/routers/`.
+        *   tRPC client setup for App Router: `app/srctrpc/react.tsx` (Client Component hooks), `app/srctrpc/server.ts` (Server Component calls), `app/srctrpc/query-client.ts`.
         *   Next.js App Router specific conventions: `layout.js`, `page.js`, `loading.js`, `error.js`, `not-found.js`, `template.js`, use of `generateMetadata` or static `metadata` objects, and Server Actions if in use.
-        *   Environment variables: `src/env.js`.
+        *   Environment variables: `app/srcenv.js`.
     *   **@directory_structure:** File organization, especially within the `app/` directory.
 
-3.  **Examine Relevant Code (`src/`):**
+3.  **Examine Relevant Code (`app/src`):**
     *   **Identify Reusable Code:**
-        *   Utilities in `src/lib/` or `src/utils/`.
-        *   Existing tRPC routers/procedures in `src/server/api/routers/`.
-        *   React Server Components and Client Components in `src/app/`, `src/app/_components/` or `src/components/`.
+        *   Utilities in `app/srclib/` or `app/srcutils/`.
+        *   Existing tRPC routers/procedures in `app/srcserver/api/routers/`.
+        *   React Server Components and Client Components in `app/srcapp/`, `app/srcapp/_components/` or `app/srccomponents/`.
     *   **Understand Existing Patterns:**
         *   State management in Client Components.
         *   Data fetching patterns:
@@ -39,7 +39,7 @@ Before proposing a technical solution, thoroughly understand the current T3 Stac
 
 4.  **Data Model Review:**
     *   `prisma/schema.prisma`: Review current schema. Determine new models/modifications. Adhere to @prisma_best_practices.
-    *   `src/env.js`: Check `DATABASE_URL` and other relevant env vars.
+    *   `app/srcenv.js`: Check `DATABASE_URL` and other relevant env vars.
 
 5.  **Identify Constraints and Dependencies:** Note technical limitations, critical module dependencies, or existing UI/UX patterns that new features must align with.
 

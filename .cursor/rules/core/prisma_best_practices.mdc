@@ -26,9 +26,9 @@ You are expected to adhere to these guidelines when working with Prisma ORM. The
 10. **Normalization & DRY:** Keep schemas normalized.
 11. **Indexes:** Use `@@index` for frequently queried fields. Use `@@fulltext` if needed.
 
-**C. Prisma Client Usage (in tRPC resolvers, `src/server/api/routers/`):**
+**C. Prisma Client Usage (in tRPC resolvers, `app/srcserver/api/routers/`):**
 
-1.  **Instantiation:** The Prisma client is instantiated in `src/server/db.ts` and provided as `ctx.db` in tRPC context.
+1.  **Instantiation:** The Prisma client is instantiated in `app/srcserver/db.ts` and provided as `ctx.db` in tRPC context.
 2.  **Type-Safe Operations:** Use generated Prisma Client methods (`findUnique`, `create`, etc.).
 3.  **Selecting Fields (`select` and `include`):**
     *   **Be Specific:** Only select needed data with `select`.
@@ -67,7 +67,7 @@ You are expected to adhere to these guidelines when working with Prisma ORM. The
 1.  **Avoid N+1 Problems:** Be vigilant with `include`.
 2.  **Batch Operations:** Use `createMany`, `updateMany`, `deleteMany` where appropriate.
 3.  **Connection Pooling:** Prisma handles this. Ensure DB server is configured.
-4.  **Query Logging:** Enable in development via `src/server/db.ts` PrismaClient options.
+4.  **Query Logging:** Enable in development via `app/srcserver/db.ts` PrismaClient options.
 5.  **Database Indexes:** Crucial for read performance.
 
 **G. Security Best Practices:**
