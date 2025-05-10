@@ -3,9 +3,9 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Core Documentation Update Procedure (Post-Merge)
+# Core Documentation Update Procedure (Post-Merge, Next.js App Router Focused)
 
-After a significant feature or set of features has been implemented, reviewed, and merged into the `main` branch (or relevant long-lived branch), the core documentation (`docs/architecture.md` and `docs/technical.md`) must be updated to reflect the current state of the application. This task is assigned to the LEAP-AI.
+After a significant feature or set of features has been implemented, reviewed, and merged into the `main` branch (or relevant long-lived branch), the core documentation (`docs/architecture.md` and `docs/technical.md`) must be updated to reflect the current state of the application, including Next.js App Router specifics. This task is assigned to the LEAP-AI.
 
 **Procedure for LEAP-AI:**
 
@@ -14,11 +14,13 @@ After a significant feature or set of features has been implemented, reviewed, a
     *   The actual implemented code from the merged feature branch(es). (Human may need to point to specific commits or provide a diff summary if complex).
     *   The current `docs/architecture.md`.
     *   The current `docs/technical.md`.
+    *   @nextjs_app_router_best_practices for reference on how to document App Router patterns.
+    *   Use `@Docs Next.js App Router` for guidance on documenting specific App Router patterns if needed.
 
 2.  **Analysis:**
     *   Compare the implemented feature(s) against the original TDP. Note any deviations that occurred during implementation (ideally these were approved).
-    *   Analyze how the merged code changes the system's architecture as described in `docs/architecture.md`.
-    *   Analyze if the merged code introduced new technologies, significant patterns, or altered technical constraints documented in `docs/technical.md`.
+    *   Analyze how the merged code changes the system's architecture as described in `docs/architecture.md`. This includes new Server or Client Components, changes in their interaction, or modifications to data flow involving tRPC, all in line with @nextjs_app_router_best_practices.
+    *   Analyze if the merged code introduced new technologies, significant Next.js App Router patterns (e.g., new uses of Server Actions, specific caching strategies for tRPC calls, patterns for `loading.js` or `error.js`), or altered technical constraints documented in `docs/technical.md`.
 
 3.  **Propose Updates:**
     *   **Do NOT directly edit `docs/architecture.md` or `docs/technical.md`.**
@@ -26,12 +28,12 @@ After a significant feature or set of features has been implemented, reviewed, a
         *   **For `docs/architecture.md`:**
             *   Which sections need updating.
             *   The proposed new text or modifications to existing text.
-            *   If new Mermaid diagrams are needed or existing ones require changes, provide the updated Mermaid code.
-            *   Clearly explain *why* each change is necessary based on the merged feature.
+            *   If new Mermaid diagrams are needed or existing ones require changes to reflect new Server/Client components or their interactions, provide the updated Mermaid code.
+            *   Clearly explain *why* each change is necessary based on the merged feature and how it aligns with App Router principles (e.g., "Added `NewFeatureServerComponent` to diagram, which fetches data via tRPC procedure X server-side, as per @nextjs_app_router_best_practices Section B.").
         *   **For `docs/technical.md`:**
             *   Which sections need updating.
             *   The proposed new text or modifications.
-            *   Clearly explain *why* each change is necessary (e.g., "Added 'New Library X' to the tech stack description because it was introduced by feature Y").
+            *   Clearly explain *why* each change is necessary (e.g., "Documented pattern for using React `cache` with server-side tRPC calls in Server Components for feature Y, adhering to @nextjs_app_router_best_practices Section C", "Updated tRPC client-side usage to reflect new hook pattern for optimistic updates for feature Z").
 
 4.  **User Review:**
     *   Present the "Documentation Update Proposal" to the human user for review.
@@ -42,6 +44,6 @@ After a significant feature or set of features has been implemented, reviewed, a
 
 **Definition of Done for LEAP-AI (Documentation Update Task):**
 *   A comprehensive "Documentation Update Proposal" has been generated.
-*   The proposal clearly outlines changes for `docs/architecture.md` and `docs/technical.md` based on the merged feature(s) and original TDP.
+*   The proposal clearly outlines changes for `docs/architecture.md` and `docs/technical.md` based on the merged feature(s), original TDP, and Next.js App Router best practices (as guided by @nextjs_app_router_best_practices).
 *   The proposal has been reviewed by the human user.
 *   Inform the user that the proposal is ready for them to apply to the official documents.

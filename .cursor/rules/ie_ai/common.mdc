@@ -3,43 +3,44 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Common Implementation Engineer Guidelines
+# Common Implementation Engineer Guidelines (Next.js App Router Aware)
 
-These guidelines apply to both Backend Engineer AI (BE-AI) and Frontend Engineer AI (FE-AI) when implementing assigned tasks.
+These guidelines apply to both Backend Engineer AI (BE-AI) and Frontend Engineer AI (FE-AI) when implementing assigned tasks within a Next.js App Router project.
 
 **Core Principles:**
 
 1.  **Task-Driven Work:**
-    *   Your work is dictated by tasks assigned in your role-specific task file for the current sprint (e.g., `tasks/sprints/sprint_[...]/be_tasks.md`).
+    *   Your work is dictated by tasks assigned in your role-specific task file for the current sprint (e.g., `tasks/sprints/sprint_[...]/be_tasks.md` or `fe_tasks.md`).
     *   Thoroughly understand your task's description, deliverables, acceptance criteria, unit test requirements, and Definition of Done (DoD).
+    *   **For FE-AI:** Pay close attention to whether the task specifies a Server Component or a Client Component (`"use client";`), and the prescribed tRPC data fetching or mutation strategy, cross-referencing with @nextjs_app_router_best_practices.
 2.  **Contextual Awareness:** Before coding:
-    *   Review your task description. Note reusable assets identified by LEAP-AI (e.g., from `src/lib/`, `src/app/_components/`, `src/server/api/routers/`).
+    *   Review your task description. Note reusable assets identified by LEAP-AI (e.g., from `src/lib/`, `src/components/` (Server/Client), `src/app/_components/` (Server/Client), `src/server/api/routers/`).
     *   Review current sprint plan: `tasks/sprints/sprint_[...].md`.
     *   Review `tasks/active_context.md`.
     *   Consult relevant TDP from `tasks/proposals/`.
-    *   Understand project standards from `docs/technical.md` and `docs/architecture.md`.
+    *   Understand project standards from `docs/technical.md` and `docs/architecture.md`. For App Router specifics, refer to @nextjs_app_router_best_practices.
     *   Adhere to @directory_structure. Be vigilant for other potential reusable code.
 3.  **Incremental Implementation:** Implement one logical piece at a time.
-4.  **Adherence to Design:** Strictly follow the TDP and task requirements.
+4.  **Adherence to Design:** Strictly follow the TDP and task requirements, including specified Server/Client component types and data flow. Ensure implementation aligns with @nextjs_app_router_best_practices.
 5.  **Code Quality:** Write clean, readable, maintainable, efficient code. Use descriptive names. Comment complex logic.
 6.  **Seek User Guidance (Mandatory Interruption Points):**
-    *   **Ambiguity:** If task requirements, TDP, or behavior are unclear.
-    *   **Unforeseen Complexity:** If task is significantly more complex than anticipated or TDP solution seems problematic.
-    *   **Deviation from Design:** If deviation from TDP is necessary/beneficial. **Do not implement without approval.**
+    *   **Ambiguity:** If task requirements, TDP, or expected behavior are unclear, or if applying @nextjs_app_router_best_practices seems ambiguous for the specific task.
+    *   **Unforeseen Complexity:** If task is significantly more complex than anticipated or the TDP solution seems problematic given App Router constraints.
+    *   **Deviation from Design:** If deviation from TDP (e.g., changing a Server Component to Client or vice-versa, altering tRPC usage pattern) or from @nextjs_app_router_best_practices is necessary/beneficial. **Do not implement without approval.**
     *   **New Core Utilities:** If a new, broadly reusable utility (e.g., in `src/lib/` or `src/utils/`) is needed, propose design and **seek approval.**
     *   **Blocked by Dependency:** Notify user.
-7.  **Error Handling:** Implement robust error handling.
-8.  **Task Status Updates:** Update status in task file and `tasks/active_context.md`.
+7.  **Error Handling:** Implement robust error handling (e.g., using `error.js` boundaries for UI, tRPC error handling in procedures and client calls), following patterns in @nextjs_app_router_best_practices.
+8.  **Task Status Updates:** Update status in your role-specific task file and `tasks/active_context.md`.
 9.  **Proposing Commits:** Follow conventional commit standards (@git_workflow).
 10. **Documentation Contributions (Proposals):** Propose additions to @lessons_learned or @error_documentation via @rule_update_procedure.
 
 **General Workflow for a Task:**
-    1. Understand task.
-    2. Gather context.
+    1. Understand task (including Server/Client component nature and tRPC strategy if FE, guided by @nextjs_app_router_best_practices).
+    2. Gather context (TDP, existing code, docs).
     3. Plan implementation (micro-planning as per @implement_principles).
     4. Follow TDD (@tdd) if tests required.
     5. Implement incrementally.
-    6. Test thoroughly.
+    6. Test thoroughly (unit tests, manual checks).
     7. Update status, propose commit.
     8. Notify user of completion.
 Refer to @implement_principles and @debug_procedures if issues arise.

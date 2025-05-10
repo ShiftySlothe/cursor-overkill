@@ -3,19 +3,20 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Epic, Sprint, and Task Planning
+# Epic, Sprint, and Task Planning (Next.js App Router Focused)
 
-Your primary responsibility is to translate an approved Technical Design Proposal (TDP) into a hierarchical set of plans: an epics plan, sprint plans, and detailed role-specific task lists for Backend (BE-AI) and Frontend (FE-AI) engineers. This process must adhere to @planning_principles.
+Your primary responsibility is to translate an approved Technical Design Proposal (TDP) into a hierarchical set of plans: an epics plan, sprint plans, and detailed role-specific task lists for Backend (BE-AI) and Frontend (FE-AI) engineers. This process must adhere to @planning_principles and fully leverage the Next.js App Router paradigm outlined in the TDP.
 
 **Overall Planning Workflow:**
 
 1.  **Input Review:**
-    *   Thoroughly review the approved Technical Design Proposal (TDP) located in `tasks/proposals/`.
+    *   Thoroughly review the approved Technical Design Proposal (TDP) located in `tasks/proposals/`. Pay close attention to the specified Server/Client component strategy, data fetching approaches for tRPC, and caching requirements.
     *   Reference `docs/product_requirement_docs.md` for user stories and acceptance criteria.
-    *   Consult `docs/architecture.md` and `docs/technical.md` for context.
+    *   Consult `docs/architecture.md` and `docs/technical.md` for context on existing Next.js App Router patterns.
+    *   Use `@Docs Next.js [query]` or similar for framework-specific planning considerations if needed.
 
-2.  **Identify Reusable Code:**
-    *   Analyze `src/lib/`, `src/server/services/` (for BE tasks), `src/components/`, `src/app/_components/` (for FE tasks, or equivalent paths defined in @directory_structure for the project's stack) for existing utility functions, services, or UI components that can be reused or adapted for the tasks derived from the TDP.
+2.  **Identify Reusable Code & Patterns:**
+    *   Analyze existing `src/lib/`, `src/server/services/` (for BE tasks), `src/server/api/routers/` (for tRPC procedures), `src/components/`, and `src/app/_components/` (for FE tasks, distinguishing between Server and Client Components, or equivalent paths defined in @directory_structure) for existing utility functions, services, tRPC procedures, or UI components (Server or Client) that can be reused or adapted.
     *   Document any identified reusable assets and explicitly mention them in the relevant task descriptions for the IE-AIs.
     *   Present this list of potential reusable assets to the user for confirmation and guidance. The user may point out other relevant existing code.
 
@@ -31,7 +32,10 @@ Your primary responsibility is to translate an approved Technical Design Proposa
         *   Sprint Goal.
         *   Linked Epics.
         *   Planned User Stories.
-        *   High-Level Task Overview & Dependencies (including references to reusable code identified in step 2).
+        *   High-Level Task Overview & Dependencies:
+            *   Clearly distinguish between Backend (tRPC procedures, Prisma schema changes) and Frontend (Server Component UI, Client Component UI with interactivity) tasks.
+            *   Reference reusable code identified in step 2.
+            *   Outline data flow, especially how Server Components will get data (via tRPC server-side calls) and how Client Components will get data (via tRPC hooks or props from Server Components).
         *   QA (Manual) Tasks.
         *   Branch Setup Task (referencing @git_workflow).
         *   Documentation Update Task (Post-Merge, referencing @documentation_update).
@@ -40,28 +44,31 @@ Your primary responsibility is to translate an approved Technical Design Proposa
     *   Based on the `tasks/sprints/sprint_[...].md` file, create/update (following @file_naming):
         *   `tasks/sprints/sprint_[...]/be_tasks.md`
         *   `tasks/sprints/sprint_[...]/fe_tasks.md`
-    *   **Decomposition:** Break down high-level tasks, **explicitly noting any reusable components/utilities identified in step 2 within the task descriptions.**
+    *   **Decomposition:** Break down high-level tasks.
+        *   **For FE Tasks:** Clearly specify if a component is a Server Component or a Client Component. Detail the expected data sources (e.g., "Fetch user data using tRPC server-side call `api.user.getCurrent.query()`" for a Server Component, or "Use `api.posts.getFeed.useQuery()` hook" for a Client Component).
+        *   **For BE Tasks:** Detail tRPC procedure requirements (inputs, outputs, Prisma operations).
+        *   Explicitly note any reusable components/utilities/tRPC procedures identified in step 2 within the task descriptions.
     *   **Task Attributes (for each task):**
         *   Unique Task ID.
-        *   Description (mention reusable assets here).
-        *   Assigned Role.
-        *   Dependencies.
-        *   Status.
-        *   Deliverables.
-        *   Acceptance Criteria (Task-Level).
-        *   Unit Test Requirement (referencing @tdd).
+        *   Description (mention reusable assets here, specify Server/Client component type for FE tasks, and data fetching approach).
+        *   Assigned Role (BE-AI / FE-AI).
+        *   Dependencies (e.g., "FE-Task-X depends on BE-Task-Y providing the tRPC procedure").
+        *   Status (e.g., Open, In Progress, Done).
+        *   Deliverables (e.g., "Implemented `UserProfile.tsx` Server Component", "New tRPC `post.create` mutation").
+        *   Acceptance Criteria (Task-Level, testable).
+        *   Unit Test Requirement (referencing @tdd, specifying focus for Server/Client components if FE).
         *   Definition of Done (DoD).
 
 6.  **Review and User Guidance:**
     *   Present the draft sprint plan, the identified reusable assets, and the derived role-specific task lists to the user for review and approval.
     *   The user will confirm the identified reusable code or suggest alternatives.
-    *   If task breakdown, dependency mapping, or role assignments are complex or have ambiguities, **seek user guidance**.
+    *   If task breakdown, dependency mapping, role assignments, or Server/Client component strategy decisions are complex or have ambiguities, **seek user guidance**.
 
 **Definition of Done for Planning Phase:**
 *   `tasks/epics_plan.md` is up-to-date.
 *   A new `tasks/sprints/sprint_[...].md` file is created and approved.
 *   Identified reusable code assets are documented and confirmed by the user.
-*   Corresponding `be_tasks.md` and `fe_tasks.md` are complete, with tasks properly defined (referencing reusable assets) and dependencies mapped.
+*   Corresponding `be_tasks.md` and `fe_tasks.md` are complete, with tasks properly defined (referencing reusable assets, clearly indicating Server/Client component types and tRPC data fetching strategies for FE) and dependencies mapped.
 *   The plan has been reviewed and approved by the user.
 *   `tasks/active_context.md` has been updated for the current sprint as per @active_context_management.
 *   Inform the user that planning is complete.

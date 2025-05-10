@@ -3,40 +3,43 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Frontend Engineer (FE-AI) Specific Guidelines (T3 Stack)
+# Frontend Engineer (FE-AI) Specific Guidelines (Next.js App Router & T3 Stack)
 
-These rules supplement @common, @tdd, and **@trpc_best_practices (Section D for Client-Side)**.
+These rules supplement @common, @tdd, **@trpc_best_practices (Section D for Client-Side)**, and most importantly, **@nextjs_app_router_best_practices**. Your primary focus is implementing user interfaces and interactions within the Next.js App Router paradigm, adhering to the T3 stack principles and the specific guidance in @nextjs_app_router_best_practices.
 
-**Technology Focus (as per `docs/technical.md` & T3 Boilerplate):**
+**Technology Focus (as per `docs/technical.md`, T3 Boilerplate & Next.js 15):**
 
-*   **Next.js App Router:** Develop UI using React Server Components (RSCs) and Client Components (`"use client";`). Place components in `src/app/[route]/_components/` or `src/components/` (global reusable) as per @directory_structure.
-*   **React:** Modern React features (Hooks, Context, Suspense).
-*   **tRPC Client (with TanStack Query v5+):**
-    *   **Client Components:** Utilize the `api` object exported from `~/trpc/react` (setup in `src/trpc/react.tsx`) for hooks like `api.procedure.useQuery()`, `api.procedure.useMutation()`, etc. Refer to **@trpc_best_practices (Section D.3)**.
-    *   **Server Components:** Utilize the `api` object and `HydrateClient` exported from `~/trpc/server` (setup in `src/trpc/server.ts`) for data fetching and hydration. Refer to **@trpc_best_practices (Section D.2)**.
-    *   `src/trpc/query-client.ts` provides the `QueryClient` factory.
-*   **TypeScript:** Strong typing for props, state, logic.
-*   **Tailwind CSS:** Implement styling using utility classes. Adhere to `docs/technical.md`.
+*   **Next.js App Router:** Implement features following the Server Component (default) and Client Component (`"use client";`) model as detailed in **@nextjs_app_router_best_practices (Section A)**.
+    *   **Component Placement:** Follow @directory_structure. Place components in `src/app/[route]/_components/` for route-specific components or `src/components/` for globally reusable components.
+*   **React:** Modern React features (Hooks, Context (in Client Components), Suspense).
+*   **tRPC (Data Handling):**
+    *   **Client Components:** Utilize the `api` object exported from `~/trpc/react` (from `@trpc/react-query`) for data fetching and mutations using hooks, as detailed in **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices (Section D.3)**.
+    *   **Server Components Data Access:** Implement Server Components that receive data via props or make their own server-side tRPC calls using the server-side tRPC client (e.g., `import { api } from "~/trpc/server"`), as detailed in **@nextjs_app_router_best_practices (Section B)**.
+*   **TypeScript:** Strong typing for props, state, and logic.
+*   **Tailwind CSS:** Implement styling using utility classes. Adhere to design tokens and conventions specified in `docs/technical.md` or project style guides.
+*   **Next.js Routing & Metadata:** Follow conventions for linking, programmatic navigation, and metadata as outlined in **@nextjs_app_router_best_practices (Sections D & F)**.
+*   **Forms & Server Actions:** Implement forms and handle mutations as specified in the TDP, adhering to patterns in **@nextjs_app_router_best_practices (Sections G & H)**.
 
 **Implementation Details:**
 
-1.  **Component Design:** Small, reusable components. Typed props.
-2.  **API Interaction (tRPC & TanStack Query):**
-    *   Use appropriate hooks from `api` object (`useQuery`, `useSuspenseQuery`, `useMutation`).
-    *   Handle loading/error/success states.
-    *   Invalidate queries using `const utils = api.useUtils(); utils.path.invalidate();`.
-3.  **State Management:** Prefer local state. Server cache state via TanStack Query.
-4.  **Forms:** Client-side validation for UX, backend Zod validation as truth. Manage submission state.
-5.  **Routing:** Next.js `Link` or `next/navigation`.
-6.  **Accessibility (A11y):** Strive for accessible components.
-7.  **Unit Testing (TDD - as per @tdd for complex logic):**
-    *   Focus on complex data transformations, conditional rendering, custom hooks.
-    *   Mock tRPC hooks/API calls. Test loading, error, success states.
+1.  **Component Design:**
+    *   Adhere to principles of modularity and reusability.
+    *   For component type (Server/Client) and data fetching/state management strategies, strictly follow the guidance in **@nextjs_app_router_best_practices (Sections A, B)** and the task-specific TDP.
+2.  **API Interaction (tRPC):**
+    *   Implement as per **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices**.
+    *   Ensure robust error handling and state management for client-side tRPC calls.
+3.  **State Management:** Follow guidelines in **@nextjs_app_router_best_practices (Section A)**.
+4.  **Forms:** Implement according to **@nextjs_app_router_best_practices (Section H)**.
+5.  **Accessibility (A11y):** Strive for accessible components.
+6.  **Unit Testing (TDD - as per @tdd for complex logic):**
+    *   **Client Components:** Focus on testing complex UI logic, data transformations, conditional rendering, custom hooks, and interaction with mocked tRPC hooks. Test loading, error, and success states of tRPC hooks.
+    *   **Server Components:** Testing typically focuses on validating rendered output based on input props, especially for components with significant conditional logic not directly tied to its own data fetching.
 
 **When to Specifically Seek User Guidance (FE-AI):**
-*   Significant UI/UX decisions not in TDP/mockups.
-*   Choice of complex state management beyond local state or TanStack Query.
-*   If a new globally reusable component in `src/components/` seems necessary.
-*   Ambiguities in user interaction flows or visual design.
-*   Considering a new UI library/dependency not in `docs/technical.md`.
-*   Uncertainty about correct tRPC hook usage or TanStack Query pattern for a specific scenario not clearly covered by @trpc_best_practices.
+*   Significant UI/UX decisions not clearly defined in the TDP or accompanying mockups.
+*   If the Server/Client component choice for a new component is not specified in the task/TDP or seems incorrect given the requirements and @nextjs_app_router_best_practices.
+*   Deciding on complex state management strategies in Client Components that go beyond what's covered in @nextjs_app_router_best_practices or project conventions.
+*   If a new globally reusable component in `src/components/` seems necessary (propose its design and purpose).
+*   Ambiguities in user interaction flows or detailed visual design.
+*   Considering a new UI library or dependency not already listed in `docs/technical.md`.
+*   Uncertainty about applying patterns from @nextjs_app_router_best_practices or @trpc_best_practices to a specific, complex scenario.

@@ -3,56 +3,53 @@ description:
 globs: 
 alwaysApply: false
 ---
----
-description: Test-Driven Development (TDD) guidelines for Implementation Engineer AIs.
-globs: 
-alwaysApply: false
----
-# Test-Driven Development (TDD) with Jest
+# Test-Driven Development (TDD) with Jest (Next.js App Router Aware)
 
-For tasks requiring unit tests (as specified in your task's "Unit Test Requirement"), you must follow a Test-Driven Development approach. All tests will use the Jest testing framework (as specified in `docs/technical.md`) and be written in TypeScript (`*.test.ts` or `*.spec.ts`).
+For tasks requiring unit tests (as specified in your task's "Unit Test Requirement"), you must follow a Test-Driven Development approach. All tests will use the Jest testing framework (as specified in `docs/technical.md`) and be written in TypeScript (`*.test.ts` or `*.spec.ts`). Consult @nextjs_app_router_best_practices for context on Server/Client component behaviors that influence testing.
 
 **TDD Cycle (Red-Green-Refactor):**
 
 1.  **RED - Write a Failing Test:**
-    *   **Propose Test Cases:** Before writing any implementation code for a piece of logic, first analyze the requirement and **propose a set of test cases in plain language**. These should cover:
+    *   **Propose Test Cases:** Before writing any implementation code, analyze the requirement and **propose a set of test cases in plain language**. These should cover:
         *   Happy path / expected behavior.
         *   Edge cases.
-        *   Invalid inputs / error conditions (including Zod validation failures for tRPC).
+        *   Invalid inputs / error conditions.
         *   Specific business logic paths.
-        *   For tRPC procedures, consider testing different context states (e.g., authenticated vs. unauthenticated if applicable).
+        *   **For tRPC procedures (BE-AI):** Test different context states, Prisma interactions (mocked).
+        *   **For Client Components (FE-AI):** Test UI rendering based on props/state, event handler logic, interaction with tRPC hooks (loading, success, error states). (See @nextjs_app_router_best_practices Section A & B).
+        *   **For Server Components (FE-AI, if complex UI logic):** Test conditional rendering based on props or data. (See @nextjs_app_router_best_practices Section A & B).
     *   **Seek User Approval for Test Cases:** Present your proposed test cases to the user. **Do not proceed to write test code until the user approves the test cases.**
-    *   **Write Test Code:** Once test cases are approved, write the Jest test code for *one specific piece of functionality* or *one specific test case*.
+    *   **Write Test Code:** Once test cases are approved, write Jest test code for *one specific piece of functionality* or *one specific test case*.
         *   Ensure the test clearly describes what it's testing.
-        *   Make assertions that will initially fail (because the implementation code doesn't exist yet).
-        *   Place test files adjacent to the code they are testing or in a `__tests__` subdirectory, (e.g., `src/lib/utils.test.ts` for `src/lib/utils.ts`, or `src/server/api/routers/user.test.ts` for `userRouter.ts`) as per project convention and @file_naming.
+        *   Make assertions that will initially fail.
+        *   Place test files as per project convention and @file_naming.
 
 2.  **GREEN - Write Code to Make the Test Pass:**
     *   Write the *minimum amount* of implementation code necessary to make the failing test pass.
-    *   Focus solely on satisfying the requirements of that specific test.
+
 3.  **REFACTOR - Improve the Code:**
-    *   Once the test passes, look for opportunities to refactor both the implementation code and the test code, following @implement_principles.
-    *   Improve clarity, remove duplication, enhance performance, etc., without changing the functionality (i.e., tests should still pass after refactoring).
+    *   Once the test passes, refactor both implementation and test code, following @implement_principles.
+    *   Improve clarity, remove duplication, enhance performance, etc., ensuring tests still pass.
 
-**Repeat:** Continue this Red-Green-Refactor cycle for each piece of functionality or test case until the task's unit test requirements are fully met.
+**Repeat:** Continue this cycle until the task's unit test requirements are met.
 
-**General Jest Test Guidelines (refer to `docs/technical.md` for project specifics):**
+**General Jest Test Guidelines (refer to `docs/technical.md`):**
 
-*   **`describe` Blocks:** Group related tests for a module or function.
-*   **`it` or `test` Blocks:** Define individual test cases with clear, descriptive names.
-*   **Assertions:** Use Jest's built-in matchers (e.g., `expect(...).toBe(...)`, `toEqual()`, `toThrow()`, `toThrowError(TRPCError)` etc.).
-*   **Mocking:** Use Jest's mocking capabilities (`jest.fn()`, `jest.spyOn()`, `jest.mock()`) to isolate units of code and mock dependencies.
-    *   When testing tRPC procedures, you will typically mock the Prisma client (`ctx.db`) and session/user context (`ctx.session`, `ctx.user`). Refer to @prisma_best_practices (Section E) for Prisma mocking and **@trpc_best_practices** for context mocking patterns.
-    *   When testing React components using tRPC hooks (FE-AI), you might mock the tRPC client/hooks or use tools like MSW if available. Test loading, success, and error states of hooks.
-*   **Setup and Teardown:** Use `beforeEach`, `afterEach`, `beforeAll`, `afterAll` for setup and cleanup (e.g., resetting mocks).
-*   **Asynchronous Tests:** Handle promises correctly using `async/await` or by returning a Promise from the test. Test for both resolved and rejected promises.
+*   **`describe` Blocks:** Group related tests.
+*   **`it` or `test` Blocks:** Define individual test cases with clear names.
+*   **Assertions:** Use Jest's built-in matchers.
+*   **Mocking:** Use Jest's mocking capabilities (`jest.fn()`, `jest.spyOn()`, `jest.mock()`).
+    *   **tRPC Procedures (BE-AI):** Mock Prisma client (`ctx.db`) and session context (`ctx.session`) as per @prisma_best_practices (Section E) and **@trpc_best_practices**.
+    *   **Client Components using tRPC Hooks (FE-AI):** Mock tRPC client/hooks (e.g., mock `api.procedure.useQuery` to return specific states). `@testing-library/react` is key.
+    *   **Server Components making tRPC calls (FE-AI):** Mock the tRPC server-side client or the specific tRPC procedure.
+*   **Setup and Teardown:** Use `beforeEach`, `afterEach`, `beforeAll`, `afterAll`.
+*   **Asynchronous Tests:** Handle promises correctly with `async/await`.
 
 **Definition of Done for TDD within a Task:**
-*   All approved unit test cases are implemented.
-*   All unit tests pass.
-*   Implementation code satisfies the requirements and is refactored.
+*   All approved unit test cases are implemented and pass.
+*   Implementation code satisfies requirements and is refactored.
 
 **Seeking User Guidance:**
-*   If you are unsure how to test a particular piece of logic, especially complex tRPC procedures or React hooks.
-*   If mocking a complex dependency (like Prisma Client or tRPC context) is proving difficult.
-*   If a test case proposed by the user seems untestable or problematic.
+*   If unsure how to test specific logic (complex tRPC, Server/Client Components with data dependencies, interactive Client Components).
+*   If mocking complex dependencies is difficult.
+*   If a user-proposed test case seems problematic.

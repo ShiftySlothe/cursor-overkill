@@ -3,39 +3,46 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Existing System Analysis Guidelines (T3 Stack)
+# Existing System Analysis Guidelines (T3 Stack with Next.js App Router)
 
-Before proposing a technical solution, understand the current T3 Stack system.
+Before proposing a technical solution, thoroughly understand the current T3 Stack system, with a focus on Next.js App Router conventions.
 
 **Analysis Checklist:**
 
 1.  **Understand PRD Context:** Grasp feature requirements from `docs/product_requirement_docs.md`.
 2.  **Review Core Architectural & Technical Documents:**
-    *   **`docs/architecture.md`:** System components, relationships, data flow.
-    *   **`docs/technical.md`:** Tech stack (Next.js, tRPC, Prisma, TypeScript, Tailwind CSS), patterns, constraints.
-        *   Understand auth: `src/server/auth/config.ts`, `src/server/auth/index.ts`.
-        *   Understand DB access: `src/server/db.ts`, `prisma/schema.prisma`.
-        *   Understand tRPC server setup: `src/server/api/trpc.ts`, `src/server/api/root.ts`.
-        *   Understand tRPC client setup: `src/trpc/react.tsx`, `src/trpc/server.ts`, `src/trpc/query-client.ts`.
-        *   Understand environment variables: `src/env.js`.
-    *   **@directory_structure:** File organization.
+    *   **`docs/architecture.md`:** System components, relationships, data flow. Pay attention to how Next.js App Router components (Server/Client) are structured.
+    *   **`docs/technical.md`:** Tech stack (Next.js App Router, tRPC, Prisma, TypeScript, Tailwind CSS), established patterns, and constraints. Specifically understand:
+        *   Authentication flow: `src/server/auth/config.ts`, `src/server/auth/index.ts`.
+        *   Database access: `src/server/db.ts`, `prisma/schema.prisma`.
+        *   tRPC server setup: `src/server/api/trpc.ts`, `src/server/api/root.ts`, existing routers in `src/server/api/routers/`.
+        *   tRPC client setup for App Router: `src/trpc/react.tsx` (Client Component hooks), `src/trpc/server.ts` (Server Component calls), `src/trpc/query-client.ts`.
+        *   Next.js App Router specific conventions: `layout.js`, `page.js`, `loading.js`, `error.js`, `not-found.js`, `template.js`, use of `generateMetadata` or static `metadata` objects, and Server Actions if in use.
+        *   Environment variables: `src/env.js`.
+    *   **@directory_structure:** File organization, especially within the `app/` directory.
 
 3.  **Examine Relevant Code (`src/`):**
     *   **Identify Reusable Code:**
         *   Utilities in `src/lib/` or `src/utils/`.
-        *   tRPC routers/procedures in `src/server/api/routers/`.
-        *   React components in `src/app/_components/` or `src/components/`.
+        *   Existing tRPC routers/procedures in `src/server/api/routers/`.
+        *   React Server Components and Client Components in `src/app/`, `src/app/_components/` or `src/components/`.
     *   **Understand Existing Patterns:**
-        *   State management in client components.
+        *   State management in Client Components.
+        *   Data fetching patterns:
+            *   How Server Components fetch data (e.g., direct tRPC server-side calls).
+            *   How Client Components fetch data (e.g., tRPC hooks using `@trpc/react-query`).
         *   tRPC procedure structure and context usage.
         *   Prisma query patterns.
-        *   Tailwind CSS styling.
-    *   **Assess Impact Areas:** Identify files/modules needing modification.
+        *   Tailwind CSS styling conventions.
+        *   Form handling (e.g., with Server Actions or client-side mutations).
+    *   **Assess Impact Areas:** Identify files/modules (Server Components, Client Components, tRPC routers, Prisma schema) needing modification or creation.
 
 4.  **Data Model Review:**
-    *   `prisma/schema.prisma`: Review current schema. Determine new models/modifications.
+    *   `prisma/schema.prisma`: Review current schema. Determine new models/modifications. Adhere to @prisma_best_practices.
     *   `src/env.js`: Check `DATABASE_URL` and other relevant env vars.
 
-5.  **Identify Constraints and Dependencies:** Note technical limitations or critical module dependencies.
+5.  **Identify Constraints and Dependencies:** Note technical limitations, critical module dependencies, or existing UI/UX patterns that new features must align with.
 
-**Purpose of this Analysis:** Ensure your TDP integrates well, promotes reuse, accurately assesses impact, and makes informed design decisions for the T3 Stack.
+**Purpose of this Analysis:**
+Ensure your Technical Design Proposal (TDP) integrates seamlessly with the existing Next.js App Router architecture, promotes reuse of Server/Client components and tRPC procedures, accurately assesses impact, and makes informed design decisions tailored for the T3 Stack.
+Use `@Docs Next.js [query]`, `@Docs tRPC [query]`, etc., for specific framework questions.

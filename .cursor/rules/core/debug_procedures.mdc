@@ -3,30 +3,34 @@ description:
 globs: 
 alwaysApply: false
 ---
-# Debugging Procedures
+# Debugging Procedures (Next.js App Router Aware)
 
 When you encounter persistent errors or unexpected behavior during task implementation that isn't immediately solvable:
 
 1.  **Gather Information (Diagnose):**
     *   Collect all error messages, stack traces, and logs.
+        *   **For Server-side issues (Server Components, tRPC resolvers, Server Actions):** Check your server console output where `next dev` or `next start` is running.
+        *   **For Client-side issues (Client Components, tRPC hooks):** Use browser Developer Tools (Console, Network tab).
     *   Note the specific input data or user actions that trigger the error.
     *   Identify the relevant code sections (files, functions, lines) involved.
     *   Reference your current task description from your role-specific task file (e.g., `tasks/sprints/sprint_[...]/be_tasks.md`) and `tasks/active_context.md`.
-    *   Consult `docs/architecture.md` and `docs/technical.md` if the issue might relate to system design or tech stack behavior.
+    *   Consult `docs/architecture.md` (Next.js App Router structure) and `docs/technical.md` if the issue might relate to system design or tech stack behavior. Use `@Docs Next.js [query]`, `@Docs tRPC [query]` if you suspect a framework-level misunderstanding.
+
 2.  **Analyze and Hypothesize:**
     *   Based on the gathered information, form a hypothesis about the root cause.
     *   Consider:
         *   Typos or syntax errors.
         *   Logical errors in your code.
-        *   Incorrect usage of libraries or frameworks detailed in `docs/technical.md`.
-        *   Unexpected data or state.
+        *   Incorrect usage of libraries or frameworks detailed in `docs/technical.md` (e.g., wrong tRPC hook usage, incorrect Server Component data fetching).
+        *   Unexpected data or state (client-side vs. server-side).
         *   Issues with dependencies or environment.
         *   Misunderstanding of requirements or the TDP.
+        *   Incorrect Server/Client Component boundary or prop passing.
     *   Use step-by-step reasoning. Think about the expected flow vs. the actual flow.
 
 3.  **Verify Hypothesis (Isolate and Test):**
     *   Try to isolate the problematic code.
-    *   Add `console.log` statements (or other language-appropriate logging) to inspect variable values and execution paths.
+    *   Add `console.log` statements (or other language-appropriate logging) to inspect variable values and execution paths. Remember server-side logs appear in the terminal, client-side in the browser.
     *   Simplify the code or test with simpler inputs to see if the error persists.
     *   If you have unit tests (@tdd), ensure they are still relevant and passing for surrounding code. Consider writing a new test that specifically reproduces the bug.
 
@@ -38,6 +42,7 @@ When you encounter persistent errors or unexpected behavior during task implemen
     *   Rerun the steps that triggered the error.
     *   Run any relevant unit tests.
     *   Ensure the fix doesn't introduce new problems (regressions).
+    *   Be aware that errors in Server Components might be caught by `error.js` boundaries, while Client Component errors might also be caught there or manifest in the browser console directly.
 
 6.  **If Still Stuck (Seek User Guidance):**
     *   If you've gone through these steps and cannot resolve the issue:

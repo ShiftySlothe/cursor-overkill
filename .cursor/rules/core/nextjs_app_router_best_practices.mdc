@@ -1,0 +1,103 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Next.js App Router Core Best Practices
+
+This document outlines core principles and best practices for developing applications using the Next.js App Router, in conjunction with tRPC and Prisma as per the project's T3-inspired stack. All relevant AI roles (SA, LEAP, FE, BE, SRE) should adhere to these guidelines.
+
+**A. Component Model: Server and Client Components**
+
+1.  **Server Components (Default):**
+    *   Components within the `app/` directory are Server Components by default.
+    *   **Purpose:** Ideal for UI that does not require direct browser interactivity, fetching data on the server, accessing backend resources directly (e.g., databases via Prisma through tRPC server-side calls), and reducing client-side JavaScript.
+    *   **Data Fetching:** Fetch data directly within them using `async/await`. For this project, this typically means calling tRPC procedures using the server-side tRPC client (e.g., from `~/trpc/server`).
+    *   **No Hooks:** Cannot use React Hooks like `useState`, `useEffect`, or browser-only APIs.
+
+2.  **Client Components (`"use client";`):**
+    *   **Declaration:** Opt-in by adding `"use client";` at the top of the file.
+    *   **Purpose:** Used for UI that requires interactivity (event handlers like `onClick`, `onChange`), state management (`useState`, `useReducer`), lifecycle effects (`useEffect`), or access to browser-only APIs (e.g., `window`, `localStorage`).
+    *   **Data Fetching/Mutations:** Typically interact with the server via tRPC hooks (e.g., `api.router.procedure.useQuery()`, `api.router.procedure.useMutation()`) provided by `@trpc/react-query`.
+    *   **Keep at the Leaves:** Strive to push Client Components to the leaves of your component tree to minimize client-side JavaScript. Wrap only the interactive parts as Client Components.
+
+**B. Data Fetching with tRPC**
+
+1.  **Server Components:**
+    *   Use the server-side tRPC client (e.g., `import { api } from "~/trpc/server"` from the T3 boilerplate) to call tRPC procedures directly within `async` Server Components.
+    *   Data fetched this way is available during server rendering.
+    *   The tRPC server-side client often leverages React `cache` internally for deduplication of identical requests within a single render pass.
+
+2.  **Client Components:**
+    *   Use tRPC hooks provided by `@trpc/react-query` (e.g., `api.router.procedure.useQuery()`, `api.router.procedure.useMutation()`, `api.router.procedure.useSuspenseQuery()`).
+    *   These hooks handle client-side data fetching, caching (via React Query), and state management related to server data.
+
+3.  **Initial Data for Client Components:**
+    *   If a Client Component needs initial data that's available on the server (for SEO or faster perceived load):
+        *   Fetch the data in a parent Server Component and pass it as props to the Client Component.
+        *   Alternatively, for tRPC, use `HydrateClient` and `api.procedure.prefetch()` in a parent Server Component (as per T3 boilerplate for `@trpc/react-query/rsc`) to pre-populate the React Query cache.
+
+**C. Caching and Revalidation**
+
+1.  **Next.js Data Cache (for `fetch`):**
+    *   Next.js extends `fetch` to automatically cache responses.
+    *   Control caching with `fetch(url, { cache: 'force-cache' | 'no-store' })`.
+    *   Control revalidation with `fetch(url, { next: { revalidate: <seconds> } })`.
+    *   Use tags for on-demand revalidation: `fetch(url, { next: { tags: ['myTag'] } })`.
+2.  **Caching Non-`fetch` Operations (e.g., direct DB calls in tRPC resolvers when called server-side):**
+    *   **Deduplication (within a render pass):** tRPC's server-side caller (e.g., `createCaller` in T3 `~/trpc/server.ts`) often uses React `cache` under the hood to deduplicate identical calls.
+    *   **Persistent Caching (across requests):** For tRPC procedures (or other functions not using `fetch`) whose results should be cached persistently across requests, wrap the server-side tRPC call (or the function call) within a Server Component using Next.js `unstable_cache`.
+        ```javascript
+        // Example in a Server Component
+        import { unstable_cache } from 'next/cache';
+        import { api } from '~/trpc/server';
+
+        const getCachedData = unstable_cache(
+          async (userId) => api.user.getProfile({ userId }),
+          ['user-profile'], // Cache key parts
+          { revalidate: 3600, tags: ['user-profile'] } // Options
+        );
+        const userProfile = await getCachedData(params.userId);
+        ```
+
+3.  **On-Demand Revalidation:**
+    *   `revalidateTag(tag: string)`: Purges `fetch` requests and `unstable_cache` entries associated with a specific tag. Use in Server Actions or Route Handlers.
+    *   `revalidatePath(path: string)`: Purges the Next.js Full Route Cache for a specific path and revalidates data. Use in Server Actions or Route Handlers.
+
+**D. Routing and Navigation**
+
+1.  **File-System Routing:** Use `app/` directory conventions (`layout.js`, `page.js`).
+2.  **Linking:** Use `<Link href="...">` from `next/link` for client-side navigation.
+3.  **Programmatic Navigation (Client Components):**
+    *   Use `useRouter()` from `next/navigation` for methods like `router.push()`, `router.replace()`, `router.refresh()`.
+4.  **Accessing Route Info (Client Components):**
+    *   `usePathname()` from `next/navigation` to get the current pathname.
+    *   `useSearchParams()` from `next/navigation` to get URL search parameters.
+    *   `useParams()` from `next/navigation` to get dynamic route parameters.
+5.  **Dynamic Segments:** Use `[folderName]` convention. Use `generateStaticParams` in `page.js` or `layout.js` to pre-render dynamic routes at build time.
+6.  **Redirects:** Use the `redirect()` function from `next/navigation` in Server Components, Server Actions, or Route Handlers.
+
+**E. UI Conventions: Loading, Error, Not Found**
+
+1.  **`loading.js`:** Create instant loading UI for a route segment. Automatically wraps the page in a React Suspense boundary.
+2.  **`error.js`:** Create error UI for a route segment. Must be a Client Component. Catches errors from nested Server and Client Components.
+3.  **`not-found.js`:** Create UI for when `notFound()` is called or a route is not matched.
+
+**F. Metadata**
+
+1.  **Static Metadata:** Export a `metadata` object from `layout.js` or `page.js`.
+2.  **Dynamic Metadata:** Export an `async function generateMetadata({ params, searchParams }, parent)` from `layout.js` or `page.js`.
+3.  Use file-based metadata for icons, Open Graph images, etc. (e.g., `opengraph-image.js`, `icon.js`).
+
+**G. Server Actions**
+
+1.  **Declaration:** Use `"use server";` at the top of an async function (inline) or at the top of a file to mark all exports as Server Actions.
+2.  **Usage:** Can be called from Client Components (e.g., in `<form action={myAction}>` or event handlers) or invoked from Server Components.
+3.  **Purpose:** Handle form submissions and data mutations securely on the server. Often used to call tRPC mutation procedures.
+4.  **Security:** Always validate inputs and perform authorization checks within Server Actions.
+
+**H. Forms**
+1.  **Client Components:** Use tRPC mutation hooks (`api.router.procedure.useMutation()`) combined with standard React form handling (`useState` for form state, event handlers for submission).
+2.  **Server Components / Progressive Enhancement:** Use Next.js Server Actions assigned to the `<form action={...}>` prop. These actions can internally call tRPC mutations. `useFormState` and `useFormStatus` can be used for managing form state and pending UI in Client Components interacting with Server Actions.
+
+This document provides a high-level overview. Always refer to the official Next.js documentation using `@Docs Next.js [query]` for detailed API usage and advanced patterns.
