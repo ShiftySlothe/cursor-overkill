@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: A log of common or tricky errors encountered during development, their root causes, and confirmed resolutions.
+globs:
+alwaysApply: false # Referenced when AIs propose new entries or when debugging.
+---
+
+# Error Documentation & Resolutions
+
+This document tracks specific errors, their diagnosis, and how they were resolved. This helps prevent redundant debugging efforts.
+
+**Structure for New Entries:**
+
+```markdown
+---
+**Date Reported:** YYYY-MM-DD
+**Error Symptom/Message:**
+[Copy the exact error message or a clear description of the symptom.]
+**Context/Environment:**
+[e.g., "Occurred during BE-AI Task BE-S1-004 when calling Prisma `findUnique`.", "Seen in browser console on `/profile` page after tRPC mutation for update."]
+**Suspected Root Cause(s) & Investigation Steps:**
+[Briefly, what was thought to be the issue and how it was investigated.]
+**Confirmed Root Cause:**
+[The actual cause of the error.]
+**Resolution:**
+[Specific steps taken to fix the error. Include code snippets if helpful.]
+**Preventative Measures/Lessons (if any):**
+[e.g., "Ensure all tRPC inputs are validated for field X.", "Always check for null before accessing property Y from API response."]
+**Keywords:** [tag1, tag2, error-code, module-name]
+---

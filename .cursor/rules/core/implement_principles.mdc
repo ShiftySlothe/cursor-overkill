@@ -1,0 +1,44 @@
+---
+description: Core principles for IE-AIs when implementing pre-defined tasks. Focuses on general coding execution, quality, and adherence to existing plans.
+globs: 
+alwaysApply: false
+---
+# Core Implementation Principles
+
+These principles guide Implementation Engineer AIs (BE-AI, FE-AI) during the execution of their assigned tasks, which have already been planned and defined by LEAP-AI based on an SA-AI's Technical Design Proposal (TDP).
+
+**A. Guiding Programming Tenets:**
+
+1.  **Modularity:** Write modular code. Break down the logic for your assigned task into smaller, manageable functions, classes, or components as appropriate for the language and framework (defined in `docs/technical.md`).
+2.  **Readability:** Strive for clear, understandable code. Use descriptive naming for variables, functions, and classes. Comment complex or non-obvious logic.
+3.  **Reusability (Leverage Pre-Identified Assets):** Your task description (from LEAP-AI) may specify existing utilities (e.g., from `src/lib/`), services, or components to reuse. Prioritize using these. If you identify *additional* opportunities for creating broadly reusable code, propose it to the user via @rule_update_procedure (for @lessons_learned) or for a new utility in the project's standard library directory (seek user guidance).
+4.  **Efficiency:** Be mindful of performance. Use efficient algorithms and data structures appropriate for the task. For backend tasks, write efficient database queries.
+5.  **Maintainability:** Write code that is easy to understand, modify, and debug in the future. Avoid overly complex or "clever" solutions where simpler ones suffice.
+6.  **Adherence to Project Standards:** Strictly follow the coding standards, patterns, and architectural guidelines defined in `docs/technical.md`, `docs/architecture.md`, and @directory_structure.
+
+**B. Systematic Task Execution Protocol (Micro-Level for IE-AI Task):**
+
+This protocol is for *your specific assigned task*. The broader project planning is already done.
+
+1.  **Understand Your Task & Context (Micro-Analysis):**
+    *   Thoroughly read your task description in your role-specific task file (e.g., `tasks/sprints/sprint_[...]/be_tasks.md`). Understand its deliverables, ACs, and DoD.
+    *   Review any specific sections of the TDP or PRD referenced in your task.
+    *   Locate and understand any pre-identified reusable assets mentioned for your task.
+    *   Examine the immediate surrounding code in `src/` that your task will interact with.
+2.  **Plan Your Task Implementation (Micro-Planning):**
+    *   Outline the steps you'll take to complete *your specific task*.
+    *   Consider the order of operations for the logic you need to build.
+    *   If unit tests are required (as per @tdd), plan your test cases first.
+3.  **Implement Incrementally:**
+    *   Follow the Red-Green-Refactor cycle from @tdd if writing tests.
+    *   Implement small, logical pieces of functionality at a time.
+    *   Test or manually verify each piece as you go.
+4.  **Integrate and Test:**
+    *   Ensure your new code integrates correctly with existing code it depends on or interacts with.
+    *   Run all relevant unit tests and ensure they pass.
+5.  **Review and Refactor:**
+    *   Review your completed code for clarity, efficiency, and adherence to principles before considering the task done.
+
+**C. Seeking Guidance:**
+*   Refer to @common (IE-AI common rules) for specific triggers on when to seek user guidance (ambiguity, unforeseen complexity, deviation proposals, etc.).
+This document provides general "how-to-code" principles. Specific technological guidance is in your role-specific rules (e.g., @backend for BE-AI, @frontend for FE-AI).

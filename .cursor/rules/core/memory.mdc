@@ -1,0 +1,101 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Defines the project's memory structure, emphasizing the hierarchy and purpose of key documentation and planning files.
+globs:
+alwaysApply: true # This map is fundamental for all roles.
+---
+
+# Project Memory Structure and Principles
+
+This project relies on a structured set of documents to maintain context, guide development, and capture knowledge. All AI roles must be familiar with this structure and contribute to relevant files as per their responsibilities. These are living documents and should reflect the most current understanding and state of the project.
+
+**Core Document Hierarchy and Workflow:**
+
+The diagram below illustrates the flow of information and the primary AI roles involved with each key document:
+
+```mermaid
+graph TD
+    A[User Input/Feature Idea] --> B(PM-AI);
+    B -- Generates/Updates --> PRD[docs/product_requirement_docs.md];
+    B -- Archives --> PRD_Archive[docs/prd_archive/];
+
+    PRD --> C(SA-AI);
+    C -- Reads --> Arch_Current[docs/architecture.md];
+    C -- Reads --> Tech_Current[docs/technical.md];
+    C -- Reads --> CodeBase[src/];
+    C -- Reads --> DirStructureRule[.cursor/rules/core/directory_structure.mdc];
+    C -- Generates --> TDP[tasks/proposals/technical_design_proposal_[feature].md];
+
+    TDP --> D(LEAP-AI);
+    D -- Updates --> Epics[tasks/epics_plan.md];
+    D -- Generates/Updates --> SprintPlan[tasks/sprints/sprint_[date_goal].md];
+    SprintPlan -- Leads to --> BE_Tasks[tasks/sprints/sprint_[date_goal]/be_tasks.md];
+    SprintPlan -- Leads to --> FE_Tasks[tasks/sprints/sprint_[date_goal]/fe_tasks.md];
+    D -- Initializes/Updates --> ActiveContext[tasks/active_context.md];
+
+    BE_Tasks --> E_BE(BE-AI);
+    FE_Tasks --> F_FE(FE-AI);
+    E_BE -- Implements & Tests --> CodeChanges_BE[src/ (Backend Code & Tests)];
+    F_FE -- Implements & Tests --> CodeChanges_FE[src/ (Frontend Code & Tests)];
+    E_BE -- Updates Status in their task file & --> ActiveContext;
+    F_FE -- Updates Status in their task file & --> ActiveContext;
+
+    CodeChanges_BE --> ReviewProcess(Human orchestrates SRE-Gemini Review);
+    CodeChanges_FE --> ReviewProcess;
+    ReviewProcess -- Feedback --> Human_For_Task_Update[Human updates Task Status/Creates new tasks in Sprint Plan];
+
+    MergedCode[Merged Code (Main Branch - Human Action)] --> D_DocUpdate(LEAP-AI for Doc Updates);
+    D_DocUpdate -- Proposes Updates based on TDP & Merged Code --> Arch_Update_Proposal[Proposal for docs/architecture.md];
+    D_DocUpdate -- Proposes Updates based on TDP & Merged Code --> Tech_Update_Proposal[Proposal for docs/technical.md];
+    Arch_Update_Proposal --> Human_Applies_Doc_Update1[Human updates docs/architecture.md];
+    Tech_Update_Proposal --> Human_Applies_Doc_Update2[Human updates docs/technical.md];
+
+    subgraph SharedKnowledgeBase [Shared Knowledge - All AIs Read, Human Curates based on AI suggestions]
+        Lessons[.cursor/rules/knowledge_capture/lessons_learned.mdc];
+        Errors[.cursor/rules/knowledge_capture/error_documentation.mdc];
+        ProjectRulesDir[.cursor/rules/ (all subdirectories and files)];
+    end
+
+    style PRD fill:#90EE90,stroke:#333,stroke-width:2px;
+    style TDP fill:#ADD8E6,stroke:#333,stroke-width:2px;
+    style SprintPlan fill:#FFFFE0,stroke:#333,stroke-width:2px;
+    style BE_Tasks fill:#FFB6C1,stroke:#333,stroke-width:2px;
+    style FE_Tasks fill:#FFB6C1,stroke:#333,stroke-width:2px;
+    style Arch_Current fill:#DDA0DD,stroke:#333,stroke-width:2px;
+    style Tech_Current fill:#DDA0DD,stroke:#333,stroke-width:2px;
+    style ActiveContext fill:#E0FFFF,stroke:#333,stroke-width:2px;
+    style Epics fill:#D3D3D3,stroke:#333,stroke-width:2px;
+    style SharedKnowledgeBase fill:#FFFACD,stroke:#333,stroke-width:2px;
+
+    Key Document Purposes & Locations:
+Core AI Guidance:
+.cursor/prompts/master/: Master system instructions for each AI role.
+.cursor/rules/core/: Fundamental AI guiding principles (this file @memory, @planning_principles, @implement_principles, @debug_procedures, @directory_structure, @general_ai_rules, @file_naming).
+.cursor/rules/[role_name]/: Role-specific operational rules (e.g., @prd_generation).
+.cursor/rules/processes/: Rules for common, multi-step procedures (e.g., @git_workflow).
+.cursor/rules/knowledge_capture/lessons_learned.mdc (referenced as @lessons_learned): Captures important patterns, preferences, project intelligence.
+.cursor/rules/knowledge_capture/error_documentation.mdc (referenced as @error_documentation): Documents known issues, context, resolutions.
+Project Definition & Design Documentation:
+docs/product_requirement_docs.md: The "what" and "why." (PM-AI primary).
+docs/prd_archive/: Historical PRDs. (PM-AI manages).
+docs/architecture.md: Current system architecture. Reflects built state. (Human primary; LEAP-AI proposes updates).
+docs/technical.md: Current tech stack, patterns, constraints. Reflects built state. (Human primary; LEAP-AI proposes updates).
+Planning & Task Management Artifacts:
+tasks/proposals/technical_design_proposal_[feature].md: Proposed technical solution. (SA-AI primary).
+tasks/epics_plan.md: High-level feature themes. (LEAP-AI primary).
+tasks/sprints/sprint_[date_goal].md: Plan for a specific sprint. (LEAP-AI primary).
+tasks/sprints/sprint_[date_goal]/be_tasks.md: Detailed backend tasks for the sprint. (LEAP-AI defines; BE-AI executes).
+tasks/sprints/sprint_[date_goal]/fe_tasks.md: Detailed frontend tasks for the sprint. (LEAP-AI defines; FE-AI executes).
+tasks/active_context.md: Snapshot of current sprint focus and priorities. (LEAP-AI initializes; all AIs contribute status indirectly by updating their task files or explicitly if blocked).
+Source Code:
+src/: The application codebase. (IE-AIs implement; SA-AI analyzes).
+General Principles for Memory Usage:
+Read Before Acting: Always consult relevant memory files (as per your role and current task) before making decisions or starting work. Use this document (@memory) as your map.
+Context is Key: Understand how your current task fits within the broader project context provided by these documents.
+Contribute Appropriately: Update or propose updates to documents as defined by your role and specific rules.
+Seek Clarification: If documentation is unclear, seems contradictory, or doesn't cover a necessary decision point, seek user guidance.
+Rule Updates: If a broadly applicable decision is made by the user that isn't captured in the existing .cursor/rules/, suggest an update via the procedure in @rule_update_procedure.

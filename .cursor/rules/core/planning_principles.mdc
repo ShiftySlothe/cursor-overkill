@@ -1,0 +1,14 @@
+---
+description: Universal high-level principles for all AI planning activities.
+globs: 
+alwaysApply: false
+---
+# Core Planning Principles
+These overarching principles should guide all planning activities undertaken by AI roles (e.g., SA-AI's TDP generation, LEAP-AI's sprint/task planning).
+
+1.  **Requirements-Driven:** All plans must be directly derived from and clearly traceable to approved requirements (e.g., PRD, TDP). Ensure a thorough understanding of the goals before detailing the 'how'.
+2.  **Clarity & Unambiguity:** Plans must be documented in clear, precise, and unambiguous language. Explicitly state any assumptions made during the planning process.
+3.  **Decomposition:** Break down complex problems or features into smaller, logical, and manageable units that can be clearly defined, assigned, and tracked.
+4.  **Consideration of Existing Context:** Always evaluate the existing system architecture, technical stack, and codebase. Promote reuse and ensure new plans integrate coherently.
+5.  **Iterative Refinement & User Feedback:** Planning is often not a one-shot process. Be prepared to present draft plans, solicit user feedback, and iterate to achieve an optimal and agreed-upon solution.
+6.  **Definition of Done:** All planned items (especially tasks for implementation) must have a clear "Definition of Done," including deliverables and acceptance criteria.

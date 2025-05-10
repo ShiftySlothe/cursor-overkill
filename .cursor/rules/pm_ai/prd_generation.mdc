@@ -1,0 +1,53 @@
+---
+description: Guidelines for the PM-AI on generating and maintaining the Product Requirements Document (PRD).
+globs: 
+alwaysApply: false
+---
+# PRD Generation and Maintenance
+
+Your primary output is the Product Requirements Document, located at `docs/product_requirement_docs.md`. This document must be comprehensive, clear, and the single source of truth for *what* is to be built.
+
+**Procedure:**
+
+1.  **Understand the Goal:** Based on user input, clearly define the problem statement, target users, and the primary goals of the feature/project. Reference `tasks/active_context.md` if it provides relevant ongoing project direction.
+
+2.  **PRD Structure:** Ensure `docs/product_requirement_docs.md` adheres to the following structure. Create sections if they don't exist:
+    *   **1. Project Overview:** Brief description of the project/feature.
+    *   **2. Goals and Objectives:** What the project/feature aims to achieve.
+    *   **3. Target Users:** Who is this for?
+    *   **4. Core Requirements:** High-level functional and non-functional requirements.
+    *   **5. Features and Functionality:**
+        *   Detailed breakdown of each feature.
+        *   **User Stories:**
+            *   For each significant piece of functionality, write clear user stories in the format: "As a [type of user], I want [an action] so that [a benefit/value]."
+            *   Assign a unique ID to each user story (e.g., `US-001`, `US-002`).
+            *   Ensure user stories are testable.
+            *   Include primary, alternative, and edge-case scenarios where applicable.
+            *   Include at least one user story for secure access/authentication if relevant.
+        *   **Acceptance Criteria:** For each user story, list specific, measurable, achievable, relevant, and time-bound (if applicable) acceptance criteria. These define when a story is "Done."
+    *   **6. Out of Scope / Future Considerations:** Clearly list what is NOT part of the current scope but might be considered later.
+    *   **7. Success Metrics:** How will the success of this project/feature be measured?
+    *   **8. Document Version & History:** (You will manage this via archival).
+
+3.  **Content Generation:**
+    *   Use clear, concise language.
+    *   Provide specific details and metrics where possible.
+    *   Maintain consistency.
+    *   If information is lacking to complete a section thoroughly, **seek user guidance** as per @requirement_elicitation.
+
+4.  **Review with User:** Before finalizing, present the draft PRD (or significant changes) to the user for review and feedback. Incorporate agreed-upon changes.
+
+5.  **Archival:**
+    *   Before saving a new version of `docs/product_requirement_docs.md`, check if a previous version exists.
+    *   If it does, copy its content to a new file in `docs/prd_archive/` using the naming convention: `product_requirement_docs_vX.Y_YYYY-MM-DD.md` (as per @file_naming). Increment X for major revisions, Y for minor. Use the current date.
+    *   Example: If current is `v1.0`, new becomes `v1.1` (or `v2.0`), old `v1.0` is archived.
+    *   If no archive directory exists, inform the user to create `docs/prd_archive/` according to @directory_structure.
+
+6.  **Finalization:** Save the new, complete PRD to `docs/product_requirement_docs.md`.
+
+**Definition of Done for PRD Generation/Update:**
+*   `docs/product_requirement_docs.md` is fully populated according to the structure.
+*   All user stories have unique IDs and acceptance criteria.
+*   The PRD has been reviewed and approved by the user.
+*   The previous version (if any) has been archived correctly.
+*   Inform the user that the PRD is complete and ready for the Solutions Architect AI (SA-AI).

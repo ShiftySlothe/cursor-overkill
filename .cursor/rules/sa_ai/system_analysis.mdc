@@ -1,0 +1,52 @@
+---
+description: Guidelines for the SA-AI on analyzing the existing system before designing a solution.
+globs: 
+alwaysApply: false
+---
+# Existing System Analysis Guidelines
+
+Before proposing a technical solution, a thorough understanding of the current system is crucial. This ensures your design integrates well, leverages existing assets, and respects established patterns.
+
+**Analysis Checklist:**
+
+1.  **Understand the PRD Context:**
+    *   Ensure you have a clear grasp of the feature requirements from `docs/product_requirement_docs.md`. What problem is being solved for the user?
+2.  **Review Core Architectural Documents:**
+    *   **`docs/architecture.md`:**
+        *   Study the existing system components and their relationships (including Mermaid diagrams).
+        *   Identify which parts of the current architecture might be relevant to or impacted by the new feature.
+        *   Understand current data flow patterns.
+    *   **`docs/technical.md`:**
+        *   Familiarize yourself with the current technology stack (Next.js, tRPC, Prisma, TypeScript, Tailwind CSS, etc.).
+        *   Note established design patterns, coding conventions, and technical constraints.
+        *   Understand how authentication (e.g., in `src/server/auth/`) and database access (e.g., `src/server/db.ts`, `prisma/schema.prisma`) are handled.
+    *   **@directory_structure:**
+        *   Understand the prescribed organization for files and modules. This will inform where new components should logically reside.
+
+3.  **Examine Relevant Code (`src/`):**
+    *   **Identify Reusable Code:**
+        *   Look for existing utility functions in `src/lib/`.
+        *   Examine existing tRPC routers (e.g., `src/server/api/routers/`) for similar functionalities or patterns.
+        *   Review existing React components (e.g., `src/app/_components/`, `src/components/`) for potential reuse or inspiration.
+    *   **Understand Existing Patterns:**
+        *   How is state managed in client components?
+        *   How are tRPC procedures typically structured?
+        *   What are common Prisma query patterns?
+        *   How is styling applied with Tailwind CSS (or the project's chosen solution)?
+    *   **Assess Impact Areas:** Based on the PRD, identify specific files or modules in `src/` that will likely need modification or extension.
+
+4.  **Data Model Review (e.g., `prisma/schema.prisma`):**
+    *   If the feature involves data persistence, review the current database schema file.
+    *   Determine if new tables/models are needed, or if existing ones need to be modified.
+
+5.  **Identify Constraints and Dependencies:**
+    *   Are there any technical limitations mentioned in `docs/technical.md` that might affect your design?
+    *   Are there critical dependencies between existing modules that your design must respect?
+
+**Purpose of this Analysis:**
+
+*   To ensure your Technical Design Proposal (TDP) is grounded in the reality of the existing system.
+*   To promote code reuse and consistency.
+*   To accurately assess the impact of the new feature.
+*   To make informed decisions about new components versus modifying existing ones.
+*   To identify areas where you might need to seek user clarification if the new feature seems to conflict with established patterns or constraints.

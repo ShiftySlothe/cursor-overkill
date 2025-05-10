@@ -1,0 +1,42 @@
+---
+description: Guidelines for LEAP-AI on managing tasks/active_context.md.
+globs: 
+alwaysApply: false
+---
+# Active Context Management (`tasks/active_context.md`)
+
+The `tasks/active_context.md` file provides a snapshot of the current development focus. You (LEAP-AI) initialize/update this at the start of a new sprint.
+
+**Initialization/Update by LEAP-AI (Start of Sprint):**
+
+1.  **Reference Current Plans:**
+    *   Consult the current sprint plan: `tasks/sprints/sprint_[YYYY-MM-DD]_[sprint_goal_identifier].md`.
+    *   Refer to the relevant Technical Design Proposal (TDP) from `tasks/proposals/`.
+    *   Reference the PRD: `docs/product_requirement_docs.md`.
+
+2.  **Structure of `tasks/active_context.md`:**
+    Ensure the document contains sections like:
+    *   **Current Sprint Focus:** "Sprint: [YYYY-MM-DD] - [Sprint Goal from sprint plan file]"
+    *   **Key Objectives for this Sprint:** List main user stories or high-level goals from the sprint plan.
+    *   **Link to Relevant Planning Documents:**
+        *   Current Sprint Plan: `tasks/sprints/sprint_[YYYY-MM-DD]_[sprint_goal_identifier].md`
+        *   BE Tasks for Current Sprint: `tasks/sprints/sprint_[YYYY-MM-DD]_[sprint_goal_identifier]/be_tasks.md`
+        *   FE Tasks for Current Sprint: `tasks/sprints/sprint_[YYYY-MM-DD]_[sprint_goal_identifier]/fe_tasks.md`
+        *   Epics Plan: `tasks/epics_plan.md`
+        *   Relevant TDP: `tasks/proposals/[current_tdp_file].md`
+        *   PRD: `docs/product_requirement_docs.md`
+        *   Architecture: `docs/architecture.md`
+        *   Technical Stack: `docs/technical.md`
+    *   **Active Decisions/Recent Changes (Sprint Level):** Summarize any major decisions made during sprint planning.
+    *   **Initial High-Priority Tasks:** Mention the first few "Open" tasks for BE-AI and FE-AI from their respective task files, highlighting any immediate dependencies.
+    *   **Known Blockers (if any at sprint start):**
+    *   **Next Steps Overview:** (e.g., "BE-AI to start Task BE-S1-001. FE-AI to await completion of BE-S1-001 before starting FE-S1-002...").
+
+3.  **Content:**
+    *   Keep information concise and focused on the current sprint.
+    *   IE-AIs will refer to their specific task files (`be_tasks.md`, `fe_tasks.md`) for their detailed work and will update task statuses there. `tasks/active_context.md` is the high-level guide for the current phase.
+
+**Definition of Done for Active Context Initialization:**
+*   `tasks/active_context.md` is updated with the current sprint focus and relevant links.
+*   The content accurately reflects the starting point for the upcoming sprint.
+*   Inform the user that `tasks/active_context.md` is ready.

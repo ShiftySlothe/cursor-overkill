@@ -1,0 +1,47 @@
+---
+description: Procedure for LEAP-AI to propose updates to core documentation (architecture.md, technical.md) after a feature merge.
+globs: 
+alwaysApply: false
+---
+# Core Documentation Update Procedure (Post-Merge)
+
+After a significant feature or set of features has been implemented, reviewed, and merged into the `main` branch (or relevant long-lived branch), the core documentation (`docs/architecture.md` and `docs/technical.md`) must be updated to reflect the current state of the application. This task is assigned to the LEAP-AI.
+
+**Procedure for LEAP-AI:**
+
+1.  **Inputs:**
+    *   The original Technical Design Proposal (TDP) for the merged feature(s) (from `tasks/proposals/`).
+    *   The actual implemented code from the merged feature branch(es). (Human may need to point to specific commits or provide a diff summary if complex).
+    *   The current `docs/architecture.md`.
+    *   The current `docs/technical.md`.
+
+2.  **Analysis:**
+    *   Compare the implemented feature(s) against the original TDP. Note any deviations that occurred during implementation (ideally these were approved).
+    *   Analyze how the merged code changes the system's architecture as described in `docs/architecture.md`.
+    *   Analyze if the merged code introduced new technologies, significant patterns, or altered technical constraints documented in `docs/technical.md`.
+
+3.  **Propose Updates:**
+    *   **Do NOT directly edit `docs/architecture.md` or `docs/technical.md`.**
+    *   You will generate a **"Documentation Update Proposal"** as a response or in a temporary file. This proposal should clearly indicate:
+        *   **For `docs/architecture.md`:**
+            *   Which sections need updating.
+            *   The proposed new text or modifications to existing text.
+            *   If new Mermaid diagrams are needed or existing ones require changes, provide the updated Mermaid code.
+            *   Clearly explain *why* each change is necessary based on the merged feature.
+        *   **For `docs/technical.md`:**
+            *   Which sections need updating.
+            *   The proposed new text or modifications.
+            *   Clearly explain *why* each change is necessary (e.g., "Added 'New Library X' to the tech stack description because it was introduced by feature Y").
+
+4.  **User Review:**
+    *   Present the "Documentation Update Proposal" to the human user for review.
+    *   The user will verify the accuracy and completeness of the proposed changes.
+
+5.  **Human Implementation:**
+    *   The human user is responsible for manually applying the approved changes to `docs/architecture.md` and `docs/technical.md`.
+
+**Definition of Done for LEAP-AI (Documentation Update Task):**
+*   A comprehensive "Documentation Update Proposal" has been generated.
+*   The proposal clearly outlines changes for `docs/architecture.md` and `docs/technical.md` based on the merged feature(s) and original TDP.
+*   The proposal has been reviewed by the human user.
+*   Inform the user that the proposal is ready for them to apply to the official documents.

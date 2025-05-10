@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Technical Design Proposal (TDP) Generation
+
+Your primary output is a Technical Design Proposal (TDP). This document details the high-level technical solution for the requirements outlined in `docs/product_requirement_docs.md`. The TDP serves as the blueprint for the Lead Engineer / Agile Planner AI (LEAP-AI).
+This process must adhere to the universal tenets outlined in @planning_principles.
+
+**Procedure:**
+
+1.  **Input Analysis:**
+    *   Thoroughly review the approved `docs/product_requirement_docs.md`.
+    *   Carefully analyze the current system architecture documented in `docs/architecture.md`.
+    *   Understand the existing technology stack, patterns, and constraints outlined in `docs/technical.md`.
+    *   Review the codebase in `src/` for existing patterns, reusable components, and modules.
+    *   Consult @directory_structure for file organization conventions.
+    *   Reference @system_analysis for guidance on analysis.
+    *   Ensure your approach aligns with @planning_principles.
+
+2.  **TDP Document Creation:**
+    *   Create a new TDP file in `tasks/proposals/` using the naming convention: `technical_design_proposal_[feature-name]_[YYYY-MM-DD].md` (as per @file_naming). Replace `[feature-name]` with a concise identifier for the feature and use the current date.
+    *   The TDP must include the following sections:
+
+        *   **1. Introduction:**
+            *   Brief overview of the feature being addressed (link to or summarize from `docs/product_requirement_docs.md`).
+            *   Purpose of this TDP.
+        *   **2. Proposed Technical Solution:**
+            *   High-level description of how the feature will be implemented.
+            *   Architectural changes: Detail any new components, services, or modules required. Illustrate with Mermaid diagrams if complex. Explain how they integrate with `docs/architecture.md`.
+            *   Data model changes: Specify any new database tables, columns, or relationships (for Prisma).
+            *   API design: Outline new tRPC procedures (queries/mutations), their inputs, and outputs.
+            *   Key algorithms or logic flows.
+        *   **3. Impact on Existing System:**
+            *   Identify which existing modules, components, or services will be affected.
+            *   Describe the nature of the impact (e.g., modification, extension, deprecation).
+        *   **4. Technology & Patterns:**
+            *   Confirm adherence to `docs/technical.md`.
+            *   If new technologies, libraries, or significant design patterns are proposed (and not already in `docs/technical.md`), justify their use, discuss alternatives, and **seek user guidance** (see point 3).
+        *   **5. Integration Points:**
+            *   Detail how new components will interact with existing ones or external services.
+        *   **6. Scalability, Performance, and Security Considerations:**
+            *   Briefly address how these non-functional requirements (from the PRD) are considered in the design.
+        *   **7. Out of Scope for this Design / Future Considerations (Technical):**
+            *   Technical aspects deferred or potential future technical enhancements related to this design.
+        *   **8. Open Questions / Points for Discussion:**
+            *   List any unresolved technical questions or areas needing further user input.
+
+3.  **Decision Making & User Guidance:**
+    *   If proposing significant architectural changes diverging from `docs/architecture.md`, or introducing new core technologies/libraries not listed in `docs/technical.md`, clearly present the rationale, alternatives considered, and **explicitly seek user guidance and approval** before finalizing these parts of the TDP.
+    *   If technical ambiguities arise from the PRD that impact the design, list them in "Open Questions" and seek clarification.
+
+4.  **Review and Iteration:**
+    *   Present the draft TDP to the user for review.
+    *   Incorporate feedback and iterate on the design until approved.
+
+**Definition of Done for TDP Generation:**
+*   A complete TDP document is created in `tasks/proposals/` following the specified structure and naming convention from @file_naming.
+*   The TDP accurately reflects a viable high-level technical solution for the PRD.
+*   All major technical decisions have been justified, and user guidance has been sought and incorporated where necessary.
+*   The TDP has been reviewed and approved by the user.
+*   Inform the user that the TDP is complete and ready for the Lead Engineer / Agile Planner AI (LEAP-AI).
+
+**Important Notes:**
+*   You do **not** update `docs/architecture.md` or `docs/technical.md` directly. These documents reflect the *current built state* of the application. Your TDP *proposes changes* that, if implemented, will later lead to updates in those core documents (per @documentation_update).
+*   Avoid overly detailed implementation specifics; focus on the architectural and design level. The LEAP-AI will break this down further.

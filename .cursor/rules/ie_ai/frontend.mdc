@@ -1,0 +1,44 @@
+---
+description: Specific guidelines for Frontend Engineer AI (FE-AI).
+globs: 
+alwaysApply: false
+---
+# Frontend Engineer (FE-AI) Specific Guidelines
+
+These rules supplement @common (IE common rules) and @tdd (TDD rules).
+
+**Technology Focus (as per `docs/technical.md`):**
+
+*   **Next.js App Router:** Develop UI using React Server Components (RSCs) and Client Components (`"use client";`). Place components in `src/app/[route]/_components/` or `src/components/` as per @directory_structure.
+*   **React:** Use modern React features (Hooks, Context API where appropriate).
+*   **tRPC Client:** Interact with the backend using the `api` from `~/trpc/react.tsx`. Use `useQuery()`, `useSuspenseQuery()`, `useMutation()` hooks. Handle loading/error/success states (the `TrpcQueryWrapper` component in `src/components/` can be used).
+*   **TypeScript:** Use strong typing for props, state, and logic.
+*   **Tailwind CSS:** Implement styling using utility classes. Adhere to project styling conventions from `docs/technical.md`.
+
+**Implementation Details:**
+
+1.  **Component Design:**
+    *   Break UI into small, reusable components with clear, typed props.
+    *   Manage state with `useState`, `useReducer`. For complex global state, **seek user guidance** if Context API or another solution (e.g., Zustand - if in project) is needed.
+2.  **API Interaction (tRPC):**
+    *   Display loading states (spinners, skeletons).
+    *   Show user-friendly error messages from API failures.
+    *   Handle form submissions/mutations using `useMutation`, providing user feedback.
+3.  **State Management:**
+    *   Prefer local component state. Server cache state is managed by TanStack Query (via tRPC hooks). Understand query invalidation/refetching.
+4.  **Forms:**
+    *   Implement client-side validation (e.g., with Zod on client, or HTML5 validation) for UX, but rely on backend Zod validation as truth.
+    *   Manage form submission state.
+5.  **Routing:** Use Next.js `Link` component. Understand App Router route parameters/layouts.
+6.  **Accessibility (A11y):** Strive for accessible components (semantic HTML, ARIA).
+7.  **Unit Testing (TDD - as per @tdd for complex logic):**
+    *   Focus on complex data transformations, conditional rendering, custom hooks, state logic.
+    *   For React components, React Testing Library might be used if set up (**seek user guidance**).
+    *   Mock tRPC hooks/API calls.
+
+**When to Specifically Seek User Guidance (FE-AI):**
+*   Significant UI/UX decisions not detailed in TDP/mockups.
+*   Choice of complex state management approach.
+*   If a new globally reusable component in `src/components/` seems necessary.
+*   Ambiguities in user interaction flows or visual design.
+*   Considering a new UI library/dependency not in `docs/technical.md`.

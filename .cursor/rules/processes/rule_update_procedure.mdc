@@ -1,0 +1,57 @@
+---
+description: Procedure for AIs to suggest updates or additions to .cursor/rules/ files or other process documentation like lessons-learned.mdc.
+globs: 
+alwaysApply: false
+---
+# Suggesting Rule/Process Documentation Updates
+
+As you work, you may identify situations where existing rules (`.cursor/rules/`) could be improved, where new rules are needed, or where valuable insights should be captured in @lessons_learned or @error_documentation. This procedure outlines how to propose such changes. The human user is always responsible for actually modifying these files.
+
+**When to Suggest an Update:**
+
+*   A decision was made by the user that has broad applicability and should guide future AI actions.
+*   An existing rule is ambiguous, incomplete, or led to suboptimal behavior.
+*   A new, recurring pattern or best practice is identified (for @lessons_learned).
+*   A common error and its resolution are identified (for @error_documentation).
+*   A process (like @git_workflow, @tdd) needs clarification or refinement.
+
+**Procedure for AI Suggesting an Update:**
+
+1.  **Identify the Need:** Clearly state *why* an update is needed.
+    *   Example: "During Task FE-S1-005, the user decided all primary action buttons should use specific Tailwind CSS classes (`bg-blue-600`, `text-white`, etc.) for consistency. This specific class list is not in @frontend."
+
+2.  **Specify Target Document(s):**
+    *   Identify the exact rule file(s) that should be updated (e.g., @frontend, @lessons_learned).
+    *   If a new rule file seems appropriate, suggest a file name and location (e.g., "A new rule `.cursor/rules/processes/new_ui_interaction_pattern.mdc` could be created for this."). Reference @file_naming for conventions.
+
+3.  **Propose Specific Text Change:**
+    *   **For existing rule files:**
+        *   Clearly state which section should be modified.
+        *   Provide the *exact new or modified text*. Use Markdown.
+        *   Example: "In @frontend, under 'Implementation Details' > 'Component Design,' please add: '- All primary call-to-action buttons must use Tailwind classes: `bg-blue-600 hover:bg-blue-700 text-white ...`.'"
+    *   **For @lessons_learned or @error_documentation:**
+        *   Propose the entry in the structured format defined within those respective rule files.
+        *   Example for @lessons_learned:
+            ```markdown
+            ---
+            **Date:** YYYY-MM-DD
+            **Topic/Pattern:** Consistent Primary Button Styling (Tailwind)
+            **Context:** User decision during Task FE-S1-005.
+            **Lesson:** All primary call-to-action buttons must use Tailwind CSS classes: `bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`.
+            **Action:** FE-AI should apply these classes to new primary buttons.
+            **Keywords:** [button, styling, Tailwind, frontend]
+            ---
+            ```
+
+4.  **Request User Action:**
+    *   Conclude by clearly stating that the user needs to review the proposal and manually update the relevant file(s).
+    *   Example: "Please review this suggestion and, if you agree, update the specified rule file(s) accordingly."
+
+**AI Role-Specific Triggers:**
+
+*   **All AIs:** Can suggest updates based on user interactions and decisions.
+*   **IE-AIs:** When user guidance clarifies a reusable implementation detail or a novel issue/solution arises.
+*   **LEAP-AI:** When refining processes or observing patterns across sprints.
+*   **SRE-Gemini:** Can suggest additions to @lessons_learned or @error_documentation.
+
+**Important:** You do NOT modify rule files or process documents directly. Your role is to provide clear, actionable suggestions for the human user to implement.

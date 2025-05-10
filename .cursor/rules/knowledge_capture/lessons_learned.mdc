@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: A living document capturing important patterns, project-specific intelligence, user preferences, and architectural decisions not yet formalized into rules.
+globs:
+alwaysApply: false # Referenced when AIs propose new entries or when human reviews.
+---
+# Lessons Learned & Project Intelligence
+
+This document serves as a learning journal for the project. Entries should be added when significant insights, patterns, or user preferences are identified that could benefit future development or AI understanding. Human curation is key.
+
+**Structure for New Entries:**
+
+```markdown
+---
+**Date:** YYYY-MM-DD
+**Topic/Pattern:** [Brief, descriptive title]
+**Context/Source:** [e.g., "User decision during Task FE-S1-005", "SRE-Gemini review of feature X", "BE-AI encountered while implementing Y"]
+**Lesson/Insight/Decision:**
+[Detailed explanation of the learning. What was the problem/situation? What was the decision/solution/pattern identified? Why is it important?]
+**Implications/Action for AI (if any):**
+[e.g., "FE-AI should prefer this approach for similar UI elements.", "SA-AI should consider this pattern for future data models.", "No direct AI action, for human awareness."]
+**Keywords:** [tag1, tag2, tag3]
+---

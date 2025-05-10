@@ -1,0 +1,50 @@
+---
+description: Standard debugging procedures for IE-AIs when encountering errors.
+globs: 
+alwaysApply: false
+---
+# Debugging Procedures
+
+When you encounter persistent errors or unexpected behavior during task implementation that isn't immediately solvable:
+
+1.  **Gather Information (Diagnose):**
+    *   Collect all error messages, stack traces, and logs.
+    *   Note the specific input data or user actions that trigger the error.
+    *   Identify the relevant code sections (files, functions, lines) involved.
+    *   Reference your current task description from your role-specific task file (e.g., `tasks/sprints/sprint_[...]/be_tasks.md`) and `tasks/active_context.md`.
+    *   Consult `docs/architecture.md` and `docs/technical.md` if the issue might relate to system design or tech stack behavior.
+2.  **Analyze and Hypothesize:**
+    *   Based on the gathered information, form a hypothesis about the root cause.
+    *   Consider:
+        *   Typos or syntax errors.
+        *   Logical errors in your code.
+        *   Incorrect usage of libraries or frameworks detailed in `docs/technical.md`.
+        *   Unexpected data or state.
+        *   Issues with dependencies or environment.
+        *   Misunderstanding of requirements or the TDP.
+    *   Use step-by-step reasoning. Think about the expected flow vs. the actual flow.
+
+3.  **Verify Hypothesis (Isolate and Test):**
+    *   Try to isolate the problematic code.
+    *   Add `console.log` statements (or other language-appropriate logging) to inspect variable values and execution paths.
+    *   Simplify the code or test with simpler inputs to see if the error persists.
+    *   If you have unit tests (@tdd), ensure they are still relevant and passing for surrounding code. Consider writing a new test that specifically reproduces the bug.
+
+4.  **Attempt a Fix:**
+    *   Based on your verified hypothesis, implement a targeted fix.
+    *   Make small, incremental changes.
+
+5.  **Test the Fix:**
+    *   Rerun the steps that triggered the error.
+    *   Run any relevant unit tests.
+    *   Ensure the fix doesn't introduce new problems (regressions).
+
+6.  **If Still Stuck (Seek User Guidance):**
+    *   If you've gone through these steps and cannot resolve the issue:
+        *   Clearly document everything you've tried (steps 1-5).
+        *   Present your findings, error messages, relevant code snippets, and your current hypothesis to the user.
+        *   Explain why you are stuck.
+        *   **Ask for specific guidance or suggestions.**
+
+7.  **Learn from the Issue:**
+    *   Once resolved (either by you or with user help), consider if this issue and its resolution should be proposed for @error_documentation or @lessons_learned via @rule_update_procedure.

@@ -1,0 +1,60 @@
+---
+description: Defines the Git workflow, including branching, committing, and merging (human-led).
+globs: 
+alwaysApply: false
+---
+# Git Workflow
+
+This project follows a feature-branching Git workflow. File naming conventions are defined in @file_naming.
+
+**1. Branching:**
+
+*   **Feature Branch Creation (LEAP-AI & Human):**
+    *   For new features or significant work planned in a sprint, the LEAP-AI will include a task in the sprint plan (e.g., in `tasks/sprints/sprint_[...].md`) to "Propose creation of feature branch `feature/[feature-name]`."
+    *   The branch name should be concise and descriptive (e.g., `feature/user-authentication`, `fix/login-bug`), following @file_naming principles for branch names if specified.
+    *   LEAP-AI: If the GitHub MCP tool is configured and available for branch creation, propose its usage. Otherwise, state the branch name to be created.
+    *   Human: Creates the feature branch from the `main` branch (or an appropriate development/release branch if used).
+*   **Working on Branches (IE-AIs):**
+    *   All implementation work by BE-AI and FE-AI must occur on the designated feature branch for their current set of tasks.
+    *   The current feature branch should be noted in `tasks/active_context.md`.
+
+**2. Committing Changes (IE-AIs & Human):**
+
+*   **Proposing Commits (IE-AIs):**
+    *   After completing a logical unit of work within a task, or upon full task completion (and all associated unit tests pass), the IE-AI must propose a commit.
+    *   **Commit Message Standard:** Use Conventional Commits format (e.g., `feat: implement user login endpoint`, `fix: resolve issue with profile image display`, `chore: update dependencies`).
+        *   `feat:` (new feature for the user)
+        *   `fix:` (bug fix for the user)
+        *   `docs:` (changes to documentation)
+        *   `style:` (formatting, missing semi colons, etc.; no production code change)
+        *   `refactor:` (refactoring production code, e.g. renaming a variable)
+        *   `test:` (adding missing tests, refactoring tests; no production code change)
+        *   `chore:` (updating grunt tasks etc; no production code change)
+    *   The commit message body should briefly explain the *what* and *why* of the changes if not obvious from the summary line.
+    *   IE-AI: If the GitHub MCP tool is configured for committing, propose its usage by specifying files to stage and the commit message. Otherwise, provide the full commit message text for the human to use.
+*   **Executing Commits (Human):** The human user stages the appropriate files and executes `git commit` using the AI-proposed (and potentially refined) message.
+
+**3. Pushing Changes (Human):**
+
+*   The human user is responsible for pushing the feature branch to the remote repository (`git push origin feature/[feature-name]`). This typically happens after one or more commits.
+
+**4. Merging (Human-Led, Post-Review):**
+
+*   **Pull Requests (PRs):** Feature branches are typically merged into `main` (or a development/release branch) via Pull Requests on the Git hosting platform.
+*   **Review Process:**
+    *   The SRE-Gemini (and human) reviews the code on the feature branch.
+    *   Feedback is addressed by IE-AIs on the same feature branch with new commits.
+*   **Executing Merge (Human):** Once the PR is approved and all checks/tests pass, the human user merges the feature branch.
+    *   Prefer squash merges or rebase merges if the project aims for a clean `main` branch history (human decides).
+
+**5. Post-Merge Actions:**
+
+*   After a feature branch is merged, LEAP-AI will be tasked (as per @planning rule in `.cursor/rules/leap_ai/`) to propose updates to `docs/architecture.md` and `docs/technical.md` if the merged feature introduced significant changes (see @documentation_update).
+*   The human may delete the feature branch after it's successfully merged.
+
+**General Git Principles:**
+
+*   Commit frequently with small, logical changes.
+*   Write clear and descriptive commit messages.
+*   Keep feature branches relatively short-lived.
+*   Regularly pull changes from `main` into feature branches (human responsibility).
