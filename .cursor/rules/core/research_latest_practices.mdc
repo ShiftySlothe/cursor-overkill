@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Researching Latest Best Practices
+
+When your tasks involve applying or defining best practices (e.g., for technology choices, design patterns, UI/UX, security, etc.), and:
+1.  The existing project documentation (e.g., `docs/technical.md`, specific framework best practice documents like `@nextjs_app_router_best_practices.mdc`) or your internal knowledge seems potentially outdated or insufficient for a rapidly evolving area, OR
+2.  The user is asking for something novel for which established project patterns do not yet exist,
+THEN, before finalizing a proposal or making a critical decision based on potentially outdated information:
+*   **Explicitly state the area where latest best practices are crucial.**
+*   **Suggest to the user that they (or you, if you confirm you have current, reliable web access capabilities) research the latest best practices from official documentation (e.g., using `@Docs [FrameworkName] latest [query]`) or trusted, up-to-date community resources.**
+*   Frame this as a step to ensure the project benefits from the most current and effective approaches.
+*   Example for SA-AI: "For designing the caching strategy for Server Components with the latest Next.js version, I recommend we verify the most current recommended patterns from the official Next.js documentation or recent expert articles, as this area evolves. Would you like to research this, or shall I attempt to find the latest information if I have access?"
+*   Example for PM-AI (if relevant to feature design): "For the new gamification feature, understanding the latest user engagement best practices would be beneficial. I suggest we consult recent studies or articles on this topic. Shall I look for some high-level summaries if I have access, or would you prefer to research this?"
+
+This step is crucial for avoiding solutions based on obsolete knowledge, especially in fast-moving technology areas. Acknowledge the user is the final arbiter of information sources and decisions.
