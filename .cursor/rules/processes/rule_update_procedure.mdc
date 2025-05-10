@@ -1,5 +1,5 @@
 ---
-description: Procedure for AIs to suggest updates or additions to .cursor/rules/ files or other process documentation like lessons-learned.mdc.
+description: 
 globs: 
 alwaysApply: false
 ---

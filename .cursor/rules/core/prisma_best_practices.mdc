@@ -3,173 +3,77 @@ description:
 globs: 
 alwaysApply: false
 ---
----
-description: Comprehensive best practices for using Prisma ORM, including schema design, client usage, migrations, testing, performance, and security. This is the central reference for all Prisma-related AI tasks.
-globs: 
-alwaysApply: false 
----
-# Prisma ORM Best Practices
-
-You are expected to adhere to these guidelines when working with Prisma ORM for database interactions, schema management, and related tasks. These guidelines are derived from official Prisma recommendations and general database best practices.
+You are expected to adhere to these guidelines when working with Prisma ORM. These are derived from official Prisma recommendations and tailored for a T3 Stack environment.
 
 **A. General Principles:**
 
-*   **Prisma Documentation as Truth:** When in doubt, or for advanced features, the official Prisma documentation (accessible via `@Prisma`) is the ultimate source of truth.
-*   **Type Safety:** Leverage Prisma's strong type safety at all times. Avoid `any` types in relation to Prisma inputs or outputs.
-*   **Readability:** Write clear, self-documenting Prisma queries and schema definitions.
+*   **Prisma Documentation as Truth:** When in doubt, the official Prisma documentation (`@Prisma`) is the ultimate source.
+*   **Type Safety:** Leverage Prisma's strong type safety. Avoid `any` types.
+*   **Readability:** Write clear Prisma queries and schema definitions.
 
 **B. Schema Design (`prisma/schema.prisma`):**
 
-1.  **Meaningful Naming:**
-    *   Use PascalCase for model names (e.g., `UserProfile`, `ProductOrder`).
-    *   Use camelCase for field names (e.g., `firstName`, `orderDate`).
-    *   Make names domain-driven and intuitive.
-2.  **Primary Keys:**
-    *   Use `@id` for primary keys. Prefer `cuid()` or `uuid()` for auto-generated string IDs: `id String @id @default(cuid())`.
-3.  **Unique Constraints:**
-    *   Use `@unique` for fields that must have unique values (e.g., `email String @unique`).
-    *   Use `@@unique` for multi-field unique constraints.
-4.  **Relations:**
-    *   Define relations explicitly using `@relation`.
-    *   Specify `fields` and `references` clearly.
-    *   Choose appropriate referential actions (e.g., `onDelete: Cascade`, `onUpdate: Cascade`). Be mindful of their implications.
-5.  **Scalar Types:**
-    *   Use appropriate Prisma scalar types (`String`, `Int`, `Boolean`, `DateTime`, `Json`, etc.).
-    *   Use native database type decorators (`@db.VarChar(255)`) when specific database types are needed.
-6.  **Enums:**
-    *   Use Prisma `enum` for predefined sets of values (e.g., `enum Role { USER ADMIN }`).
-7.  **Timestamps:**
-    *   Include `createdAt DateTime @default(now())`.
-    *   Include `updatedAt DateTime @updatedAt`.
-8.  **Soft Deletes (Optional but Recommended):**
-    *   Implement with a `deletedAt DateTime?` field.
-    *   Use Prisma middleware to filter out soft-deleted records by default (see Client Usage).
-9.  **Normalization & DRY:**
-    *   Keep schemas normalized to reduce data redundancy.
-    *   Avoid unnecessary duplication.
-10. **Indexes:**
-    *   Use `@@index` for fields frequently used in `where` clauses to improve query performance.
-    *   Use `@@fulltext` for full-text search capabilities if supported by your database.
-**C. Prisma Client Usage (in tRPC resolvers, services, etc.):**
+1.  **Meaningful Naming:** PascalCase for models, camelCase for fields.
+2.  **Primary Keys:** Prefer `cuid()` or `uuid()`: `id String @id @default(cuid())`.
+3.  **Unique Constraints:** Use `@unique` or `@@unique`.
+4.  **Relations:** Define explicitly. Choose referential actions carefully.
+5.  **Scalar Types:** Use appropriate Prisma types. Use `@db.VarChar(255)` if needed.
+6.  **Enums:** Use Prisma `enum` for predefined sets.
+7.  **Timestamps:** Include `createdAt DateTime @default(now())` and `updatedAt DateTime @updatedAt`.
+8.  **NextAuth.js Models (If applicable):**
+    *   If using NextAuth.js, ensure your schema includes the necessary models (`Account`, `Session`, `User`, `VerificationToken`) as defined in the T3 Stack documentation (`usage/next-auth.mdx`, `usage/prisma.md`) and the project's boilerplate `prisma/schema.prisma`. Pay attention to required fields and relations for the Prisma Adapter.
+9.  **Soft Deletes (Optional):** Consider `deletedAt DateTime?` and middleware.
+10. **Normalization & DRY:** Keep schemas normalized.
+11. **Indexes:** Use `@@index` for frequently queried fields. Use `@@fulltext` if needed.
 
-1.  **Instantiation:** The Prisma client (`ctx.db` or similar) is typically instantiated once and provided via context.
-2.  **Type-Safe Operations:**
-    *   Always use the generated Prisma Client methods (`findUnique`, `findMany`, `create`, `update`, `delete`, `upsert`, etc.).
+**C. Prisma Client Usage (in tRPC resolvers, `src/server/api/routers/`):**
+
+1.  **Instantiation:** The Prisma client is instantiated in `src/server/db.ts` and provided as `ctx.db` in tRPC context.
+2.  **Type-Safe Operations:** Use generated Prisma Client methods (`findUnique`, `create`, etc.).
 3.  **Selecting Fields (`select` and `include`):**
-    *   **Be Specific:** Only select the data you need using `select` to avoid over-fetching.
-    *   Use `include` to fetch related records. Be mindful of N+1 problems; Prisma often optimizes this, but complex scenarios might need care.
-    *   Example: `ctx.db.user.findUnique({ where: { id: userId }, select: { id: true, email: true, posts: { select: { title: true } } } })`
-4.  **Filtering (`where`):**
-    *   Use comprehensive filter conditions.
-    *   Leverage Prisma's rich set of filter operators (e.g., `contains`, `startsWith`, `AND`, `OR`, `NOT`).
-5.  **Ordering (`orderBy`):**
-    *   Use `orderBy` to sort results.
-6.  **Pagination (`skip` and `take`):**
-    *   Implement pagination using `skip` and `take` for `findMany` queries.
-7.  **Transactions:**
-    *   Use `await ctx.db.$transaction([...])` for operations that must be atomic (all succeed or all fail).
-    *   Pass an array of Prisma client operations: `[ctx.db.user.create(...), ctx.db.profile.create(...)]`.
-    *   For interactive transactions where operations depend on previous results within the transaction, use the function-based API: `await ctx.db.$transaction(async (tx) => { ... })`.
+    *   **Be Specific:** Only select needed data with `select`.
+    *   Use `include` for related records mindfully.
+4.  **Filtering (`where`):** Use comprehensive filter conditions and operators.
+5.  **Ordering (`orderBy`):** Use to sort results.
+6.  **Pagination (`skip` and `take`):** Implement for `findMany`.
+7.  **Transactions:** Use `await ctx.db.$transaction([...])` or `await ctx.db.$transaction(async (tx) => { ... })`.
 8.  **Raw Queries (`$queryRaw`, `$executeRaw`):**
-    *   **Use Sparingly:** Prefer Prisma Client methods for type safety.
-    *   Use raw queries only when a specific SQL feature isn't exposed by Prisma Client or for complex performance optimizations.
-    *   Be extremely cautious about SQL injection; use Prisma's tagged template literals or `Prisma.sql` for parameterization.
-9.  **Middleware:**
-    *   Use Prisma middleware for cross-cutting concerns:
-        *   **Logging:** Log queries or mutations.
-        *   **Soft Deletes:** Intercept queries to automatically add `deletedAt: null` conditions or to set `deletedAt` on delete operations.
-        *   **Auditing:** Track changes to records.
-    *   Example (Soft Delete Middleware - conceptual):
-        ```typescript
-        // In your Prisma client setup
-        prisma.$use(async (params, next) => {
-          if (params.action === 'findUnique' || params.action === 'findFirst') {
-            params.action = 'findFirst'; // findUnique does not work with this
-            params.args.where['deletedAt'] = null;
-          }
-          if (params.action === 'findMany') {
-            if (params.args.where) {
-              if (params.args.where.deletedAt === undefined) {
-                params.args.where['deletedAt'] = null;
-              }
-            } else {
-              params.args['where'] = { deletedAt: null };
-            }
-          }
-          // Similar logic for update, delete (to set deletedAt)
-          return next(params);
-        });
-        ```
-10. **Error Handling:**
-    *   Catch and handle Prisma-specific errors:
-        *   `PrismaClientKnownRequestError`: For errors tied to specific database constraints (e.g., unique constraint violation - `P2002`). Check `error.code`.
-        *   `PrismaClientUnknownRequestError`: For unexpected database errors.
-        *   `PrismaClientValidationError`: For issues with your query structure (e.g., invalid arguments).
-        *   `PrismaClientInitializationError`: For problems connecting to the database.
-    *   Map these to appropriate application-level errors (e.g., tRPC errors).
+    *   **Use Sparingly.** Prefer Prisma Client methods.
+    *   Use for specific SQL features or optimizations.
+    *   Parameterize carefully (Prisma's tagged template literals or `Prisma.sql`).
+9.  **Middleware:** For logging, soft deletes, auditing.
+10. **Error Handling:** Catch Prisma-specific errors (e.g., `PrismaClientKnownRequestError` P2002 for unique constraints) and map to `TRPCError`.
 
 **D. Database Migrations (Human-Executed, AI-Identified):**
 
 1.  **Generation:**
-    *   When BE-AI tasks imply schema changes based on an approved TDP, the BE-AI should note that `prisma migrate dev --name [descriptive-name]` (or similar) needs to be run by the human.
-    *   Migration names should be descriptive (e.g., `add_user_roles`, `create_post_model`).
-2.  **Review:** Migrations should be reviewed by a human before applying to staging or production.
-3.  **Immutability:** Never modify an already-applied migration file. Create a new migration to make further changes.
-4.  **Idempotency:** Migrations should be designed to be runnable multiple times without adverse effects (though `prisma migrate` handles much of this).
-5.  **Production:** Use `prisma migrate deploy` for production environments.
+    *   When schema changes are needed, note that `pnpm db:generate` (or `prisma migrate dev --name [descriptive-name]`) needs to be run by the human. T3 Stack uses `prisma migrate dev` for development.
+    *   Migration names should be descriptive.
+2.  **Review:** Human reviews migrations before applying to staging/production.
+3.  **Immutability:** Never modify applied migration files. Create new ones.
+4.  **Production:** Use `pnpm db:migrate` (or `prisma migrate deploy`).
+5.  **DB Push (Development):** `pnpm db:push` can be used in early development to sync schema without creating migration files (as per T3 `usage/first-steps.md`).
 
 **E. Testing Prisma Code:**
 
-1.  **Unit Tests (e.g., for tRPC resolvers or services):**
-    *   **Mock Prisma Client:** Use Jest's mocking capabilities (`jest.mock`, `mockResolvedValue`, `mockRejectedValue`) to mock the Prisma client (`ctx.db`).
-    *   Test different scenarios:
-        *   Successful data retrieval/mutation.
-        *   Prisma errors (e.g., record not found, unique constraint violation).
-        *   Edge cases.
-    *   Example Mock:
-        ```typescript
-        // __mocks__/db.ts or setup file
-        export const mockPrismaClient = {
-          user: {
-            findUnique: jest.fn(),
-            create: jest.fn(),
-            // ... other methods
-          },
-          // ... other models
-          $transaction: jest.fn(),
-        };
-        jest.mock('~/server/db', () => ({
-          prisma: mockPrismaClient, // Assuming your client is exported as 'prisma'
-        }));
-
-        // In your test file
-        import { mockPrismaClient } from '../path/to/your/mock';
-        mockPrismaClient.user.findUnique.mockResolvedValue({ id: '1', email: 'test@example.com' });
-        ```
-2.  **Integration Tests:**
-    *   Consider using a separate test database (e.g., spun up via Docker).
-    *   Test end-to-end flows involving actual database interactions.
-    *   Use a library like `prisma-test-utils` or roll your own setup/teardown logic for test data.
-3.  **Factories:**
-    *   Use factory functions/libraries (e.g., `@faker-js/faker` with custom factories) to generate realistic test data.
+1.  **Unit Tests (e.g., for tRPC resolvers):**
+    *   Mock Prisma Client (`ctx.db`) using Jest (`jest.mock`, `mockResolvedValue`).
+    *   Test success, errors (record not found, unique constraint), edge cases.
+2.  **Integration Tests:** Consider a test database.
+3.  **Factories:** Use for realistic test data.
 
 **F. Performance Considerations:**
 
-1.  **Avoid N+1 Problems:** While Prisma's `include` is often optimized, be vigilant with deeply nested includes or in loops. Use tools like Prisma's logging (or a dedicated APM) to identify N+1s. Consider restructuring queries or using `$queryRaw` for highly complex scenarios if necessary.
-2.  **Batch Operations:** Use `createMany`, `updateMany`, `deleteMany` for bulk operations where appropriate (be aware of their limitations, e.g., `createMany` might not return IDs on all databases).
-3.  **Connection Pooling:** Prisma handles connection pooling. Ensure your database server is configured to handle the expected number of connections.
-4.  **Query Logging:** Enable query logging during development (`log: ['query', 'info', 'warn', 'error']` in Prisma Client constructor options) to understand and optimize queries.
-5.  **Database Indexes:** Crucial for read performance. Ensure frequently queried fields, especially in `where` clauses or used for `orderBy`, are indexed (see Schema Design).
+1.  **Avoid N+1 Problems:** Be vigilant with `include`.
+2.  **Batch Operations:** Use `createMany`, `updateMany`, `deleteMany` where appropriate.
+3.  **Connection Pooling:** Prisma handles this. Ensure DB server is configured.
+4.  **Query Logging:** Enable in development via `src/server/db.ts` PrismaClient options.
+5.  **Database Indexes:** Crucial for read performance.
 
 **G. Security Best Practices:**
 
-1.  **Input Validation:**
-    *   **Always** validate and sanitize inputs (e.g., using Zod in tRPC) *before* they reach Prisma Client operations. Prisma helps prevent SQL injection, but business logic validation is still your responsibility.
-2.  **Authorization:**
-    *   Implement authorization logic in your application layer (e.g., tRPC procedures) to ensure users can only access or modify data they are permitted to. Prisma itself does not handle authorization.
-3.  **Principle of Least Privilege:** Database users configured for Prisma should only have the necessary permissions.
-4.  **Sensitive Data:** Be cautious about logging sensitive data from Prisma queries or results.
-5.  **Row-Level Security (RLS):** For more fine-grained database-level access control, explore RLS if your database supports it. Prisma can work with RLS policies.
-
-By following these guidelines, AIs can generate more robust, maintainable, and performant Prisma-related code.
-</file>
+1.  **Input Validation:** Always validate inputs (e.g., Zod in tRPC) *before* Prisma operations.
+2.  **Authorization:** Implement in tRPC procedures. Prisma doesn't handle authorization.
+3.  **Principle of Least Privilege:** For database users.
+4.  **Sensitive Data:** Be cautious with logging.
+5.  **Row-Level Security (RLS):** Explore if needed.

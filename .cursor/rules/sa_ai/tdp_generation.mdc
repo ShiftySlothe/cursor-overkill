@@ -3,11 +3,6 @@ description:
 globs: 
 alwaysApply: false
 ---
----
-description: Guidelines for the SA-AI on generating the Technical Design Proposal (TDP).
-globs: 
-alwaysApply: false
----
 # Technical Design Proposal (TDP) Generation
 
 Your primary output is a Technical Design Proposal (TDP). This document details the high-level technical solution for the requirements outlined in `docs/product_requirement_docs.md`. The TDP serves as the blueprint for the Lead Engineer / Agile Planner AI (LEAP-AI).

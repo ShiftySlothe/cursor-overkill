@@ -3,12 +3,6 @@ description:
 globs: 
 alwaysApply: false
 ---
----
-description: A log of common or tricky errors encountered during development, their root causes, and confirmed resolutions.
-globs:
-alwaysApply: false # Referenced when AIs propose new entries or when debugging.
----
-
 # Error Documentation & Resolutions
 
 This document tracks specific errors, their diagnosis, and how they were resolved. This helps prevent redundant debugging efforts.

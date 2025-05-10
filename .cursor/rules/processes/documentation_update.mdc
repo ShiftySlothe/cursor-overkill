@@ -1,5 +1,5 @@
 ---
-description: Procedure for LEAP-AI to propose updates to core documentation (architecture.md, technical.md) after a feature merge.
+description: 
 globs: 
 alwaysApply: false
 ---

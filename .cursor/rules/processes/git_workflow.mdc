@@ -1,5 +1,5 @@
 ---
-description: Defines the Git workflow, including branching, committing, and merging (human-led).
+description: 
 globs: 
 alwaysApply: false
 ---

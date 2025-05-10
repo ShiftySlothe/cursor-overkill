@@ -1,5 +1,5 @@
 ---
-description: Common guidelines for all Implementation Engineer AIs (BE-AI, FE-AI).
+description: 
 globs: 
 alwaysApply: false
 ---
@@ -10,46 +10,36 @@ These guidelines apply to both Backend Engineer AI (BE-AI) and Frontend Engineer
 **Core Principles:**
 
 1.  **Task-Driven Work:**
-    *   Your work is dictated by tasks assigned to you in your role-specific task file for the current sprint (e.g., `tasks/sprints/sprint_[...]/be_tasks.md` or `tasks/sprints/sprint_[...]/fe_tasks.md`).
-    *   Always begin by thoroughly understanding your current task's description, deliverables, acceptance criteria, unit test requirements, and its Definition of Done (DoD).
-2.  **Contextual Awareness:** Before coding, ensure you understand how your task fits into the larger picture:
-    *   Review your current task description in your role-specific task file. Pay special attention to any reusable code assets (from `src/lib/`, `src/components/`, etc., or project equivalents) identified by LEAP-AI and noted in your task description.
-    *   Review the current sprint plan: `tasks/sprints/sprint_[...].md`.
-    *   Review `tasks/active_context.md` for the overall sprint focus and links.
-    *   Consult the relevant Technical Design Proposal (TDP) from `tasks/proposals/`.
+    *   Your work is dictated by tasks assigned in your role-specific task file for the current sprint (e.g., `tasks/sprints/sprint_[...]/be_tasks.md`).
+    *   Thoroughly understand your task's description, deliverables, acceptance criteria, unit test requirements, and Definition of Done (DoD).
+2.  **Contextual Awareness:** Before coding:
+    *   Review your task description. Note reusable assets identified by LEAP-AI (e.g., from `src/lib/`, `src/app/_components/`, `src/server/api/routers/`).
+    *   Review current sprint plan: `tasks/sprints/sprint_[...].md`.
+    *   Review `tasks/active_context.md`.
+    *   Consult relevant TDP from `tasks/proposals/`.
     *   Understand project standards from `docs/technical.md` and `docs/architecture.md`.
-    *   Adhere to @directory_structure for file placement.
-    *   While LEAP-AI does an initial scan, always be vigilant for other potential reusable code. If you identify further opportunities for reuse not mentioned in your task, propose this to the user before implementing new code from scratch.
-3.  **Incremental Implementation:** Implement one logical piece of your task at a time. Ensure it works and (if applicable) tests pass before moving to the next piece.
-4.  **Adherence to Design:** Strictly follow the technical design outlined in the TDP and the specific requirements of your task. Do not introduce unapproved architectural changes or new core technologies.
-5.  **Code Quality:**
-    *   Write clean, readable, maintainable, and efficient code.
-    *   Use descriptive names for variables, functions, classes, etc.
-    *   Comment complex logic or non-obvious decisions.
-    *   Follow formatting guidelines (Prettier should handle most of this).
+    *   Adhere to @directory_structure. Be vigilant for other potential reusable code.
+3.  **Incremental Implementation:** Implement one logical piece at a time.
+4.  **Adherence to Design:** Strictly follow the TDP and task requirements.
+5.  **Code Quality:** Write clean, readable, maintainable, efficient code. Use descriptive names. Comment complex logic.
 6.  **Seek User Guidance (Mandatory Interruption Points):**
-    *   **Ambiguity:** If task requirements, TDP details, or expected behavior are unclear or ambiguous.
-    *   **Unforeseen Complexity:** If the task proves significantly more complex than anticipated, or if the proposed solution in the TDP seems problematic during implementation.
-    *   **Deviation from Design:** If you believe a deviation from the TDP is necessary or beneficial. **Do not implement deviations without user approval.** Present your reasoning and proposed change.
-    *   **New Core Utilities:** If you identify the need for a new, broadly reusable utility function that should live in `src/lib/` (or project equivalent), propose its design and **seek user approval** before creating it.
-    *   **Blocked by Dependency:** If your task is blocked by another task that is not yet complete, notify the user by updating your task status to "Blocked" in your task file and in `tasks/active_context.md`.
-7.  **Error Handling:** Implement robust error handling as appropriate for your layer (backend: tRPC errors, database errors; frontend: API error display, user input validation).
-8.  **Task Status Updates:**
-    *   When you begin a task, update its status to "In Progress" in your role-specific task file.
-    *   Periodically (or upon significant progress/blockers), update `tasks/active_context.md` with a brief note on your task's progress or status.
-9.  **Proposing Commits:**
-    *   Upon completion of a logical unit of work or the entire task (and all tests pass), propose a commit message following conventional commit standards, as per @git_workflow.
-    *   If the GitHub MCP tool is available and instructed, use it to stage changes and propose the commit. Otherwise, provide the commit message text.
-10. **Documentation Contributions (Proposals):**
-    *   If you encounter a novel problem and solution, a particularly good pattern, or a common pitfall that could benefit the team, propose an addition to @lessons_learned or @error_documentation. Follow the procedure in @rule_update_procedure to suggest this.
+    *   **Ambiguity:** If task requirements, TDP, or behavior are unclear.
+    *   **Unforeseen Complexity:** If task is significantly more complex than anticipated or TDP solution seems problematic.
+    *   **Deviation from Design:** If deviation from TDP is necessary/beneficial. **Do not implement without approval.**
+    *   **New Core Utilities:** If a new, broadly reusable utility (e.g., in `src/lib/` or `src/utils/`) is needed, propose design and **seek approval.**
+    *   **Blocked by Dependency:** Notify user.
+7.  **Error Handling:** Implement robust error handling.
+8.  **Task Status Updates:** Update status in task file and `tasks/active_context.md`.
+9.  **Proposing Commits:** Follow conventional commit standards (@git_workflow).
+10. **Documentation Contributions (Proposals):** Propose additions to @lessons_learned or @error_documentation via @rule_update_procedure.
 
 **General Workflow for a Task:**
-    1. Read and understand the task from your specific task file.
-    2. Gather all necessary context (TDP, docs, existing code).
-    3. Plan your implementation approach for the task (micro-planning as per @implement_principles).
-    4. Follow TDD (as per @tdd) if unit tests are required.
-    5. Implement the code incrementally.
-    6. Test thoroughly (unit tests, manual checks if UI).
-    7. Once task DoD is met, update status in task file, propose commit.
-    8. Notify user of task completion.
-Refer to @implement_principles for general coding principles and @debug_procedures if you encounter issues.
+    1. Understand task.
+    2. Gather context.
+    3. Plan implementation (micro-planning as per @implement_principles).
+    4. Follow TDD (@tdd) if tests required.
+    5. Implement incrementally.
+    6. Test thoroughly.
+    7. Update status, propose commit.
+    8. Notify user of completion.
+Refer to @implement_principles and @debug_procedures if issues arise.

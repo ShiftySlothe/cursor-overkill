@@ -1,0 +1,1 @@
+This files are to be used as the system prompts for custom cursor roles.

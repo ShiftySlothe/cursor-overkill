@@ -3,11 +3,6 @@ description:
 globs: 
 alwaysApply: false
 ---
----
-description: A living document capturing important patterns, project-specific intelligence, user preferences, and architectural decisions not yet formalized into rules.
-globs:
-alwaysApply: false # Referenced when AIs propose new entries or when human reviews.
----
 # Lessons Learned & Project Intelligence
 
 This document serves as a learning journal for the project. Entries should be added when significant insights, patterns, or user preferences are identified that could benefit future development or AI understanding. Human curation is key.

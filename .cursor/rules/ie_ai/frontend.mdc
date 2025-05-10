@@ -1,54 +1,42 @@
 ---
-description: Specific guidelines for Frontend Engineer AI (FE-AI).
+description: 
 globs: 
 alwaysApply: false
 ---
----
-description: Specific guidelines for Frontend Engineer AI (FE-AI).
-globs: 
-alwaysApply: false
----
-# Frontend Engineer (FE-AI) Specific Guidelines
+# Frontend Engineer (FE-AI) Specific Guidelines (T3 Stack)
 
-These rules supplement @common (IE common rules), @tdd (TDD rules), and **@trpc_best_practices (Section D for Client-Side)**.
+These rules supplement @common, @tdd, and **@trpc_best_practices (Section D for Client-Side)**.
 
-**Technology Focus (as per `docs/technical.md`):**
+**Technology Focus (as per `docs/technical.md` & T3 Boilerplate):**
 
-*   **Next.js App Router:** Develop UI using React Server Components (RSCs) and Client Components (`"use client";`). Place components in `src/app/[route]/_components/` or `src/components/` as per @directory_structure.
-*   **React:** Use modern React features (Hooks, Context API where appropriate, Suspense).
+*   **Next.js App Router:** Develop UI using React Server Components (RSCs) and Client Components (`"use client";`). Place components in `src/app/[route]/_components/` or `src/components/` (global reusable) as per @directory_structure.
+*   **React:** Modern React features (Hooks, Context, Suspense).
 *   **tRPC Client (with TanStack Query v5+):**
-    *   Utilize the `trpc` proxy and hooks (`useQuery`, `useSuspenseQuery`, `useMutation`, `useInfiniteQuery`, `useSubscription`) set up in `src/lib/trpc/client.tsx` (or equivalent) as per **@trpc_best_practices (Section D)**.
-    *   Handle loading/error/success states provided by TanStack Query hooks.
-    *   For Server Components, use server-side tRPC helpers for prefetching/data fetching as outlined in **@trpc_best_practices (Section D.3)**.
-*   **TypeScript:** Use strong typing for props, state, and logic.
-*   **Tailwind CSS:** Implement styling using utility classes. Adhere to project styling conventions from `docs/technical.md`.
+    *   **Client Components:** Utilize the `api` object exported from `~/trpc/react` (setup in `src/trpc/react.tsx`) for hooks like `api.procedure.useQuery()`, `api.procedure.useMutation()`, etc. Refer to **@trpc_best_practices (Section D.3)**.
+    *   **Server Components:** Utilize the `api` object and `HydrateClient` exported from `~/trpc/server` (setup in `src/trpc/server.ts`) for data fetching and hydration. Refer to **@trpc_best_practices (Section D.2)**.
+    *   `src/trpc/query-client.ts` provides the `QueryClient` factory.
+*   **TypeScript:** Strong typing for props, state, logic.
+*   **Tailwind CSS:** Implement styling using utility classes. Adhere to `docs/technical.md`.
 
 **Implementation Details:**
 
-1.  **Component Design:**
-    *   Break UI into small, reusable components with clear, typed props.
-    *   Manage state with `useState`, `useReducer`. For complex global state, **seek user guidance** if Context API or another solution (e.g., Zustand - if in project) is needed.
+1.  **Component Design:** Small, reusable components. Typed props.
 2.  **API Interaction (tRPC & TanStack Query):**
-    *   Use `useQuery` or `useSuspenseQuery` for data fetching.
-    *   Display loading states (spinners, skeletons) using hook status (`isLoading`, `isPending`) or React Suspense.
-    *   Show user-friendly error messages from API failures using hook status (`isError`, `error`).
-    *   Handle form submissions/mutations using `useMutation`, providing user feedback based on `isPending`, `isSuccess`, `isError`.
-    *   Invalidate queries appropriately in `onSuccess` callbacks of mutations as per **@trpc_best_practices (Section D.5)**.
-3.  **State Management:**
-    *   Prefer local component state. Server cache state is managed by TanStack Query (via tRPC hooks). Understand query invalidation/refetching mechanisms.
-4.  **Forms:**
-    *   Implement client-side validation (e.g., with Zod on client, or HTML5 validation) for UX, but rely on backend Zod validation (defined in tRPC procedures) as the source of truth.
-    *   Manage form submission state (e.g., `isPending` from `useMutation`).
-5.  **Routing:** Use Next.js `Link` component or `next/navigation` hooks. Understand App Router route parameters/layouts.
-6.  **Accessibility (A11y):** Strive for accessible components (semantic HTML, ARIA attributes).
+    *   Use appropriate hooks from `api` object (`useQuery`, `useSuspenseQuery`, `useMutation`).
+    *   Handle loading/error/success states.
+    *   Invalidate queries using `const utils = api.useUtils(); utils.path.invalidate();`.
+3.  **State Management:** Prefer local state. Server cache state via TanStack Query.
+4.  **Forms:** Client-side validation for UX, backend Zod validation as truth. Manage submission state.
+5.  **Routing:** Next.js `Link` or `next/navigation`.
+6.  **Accessibility (A11y):** Strive for accessible components.
 7.  **Unit Testing (TDD - as per @tdd for complex logic):**
-    *   Focus on complex data transformations, conditional rendering, custom hooks, state logic.
-    *   For React components, React Testing Library might be used if set up (**seek user guidance**).
-    *   Mock tRPC hooks/API calls using Jest mocks or MSW if integrated. Test loading, error, and success states.
+    *   Focus on complex data transformations, conditional rendering, custom hooks.
+    *   Mock tRPC hooks/API calls. Test loading, error, success states.
 
 **When to Specifically Seek User Guidance (FE-AI):**
-*   Significant UI/UX decisions not detailed in TDP/mockups.
-*   Choice of complex state management approach beyond local state or TanStack Query.
+*   Significant UI/UX decisions not in TDP/mockups.
+*   Choice of complex state management beyond local state or TanStack Query.
 *   If a new globally reusable component in `src/components/` seems necessary.
 *   Ambiguities in user interaction flows or visual design.
-*   Considering a new UI library/dependency not in `docs/technical.md`.*   Uncertainty about the correct tRPC hook usage or TanStack Query pattern for a specific scenario not clearly covered by @trpc_best_practices.
+*   Considering a new UI library/dependency not in `docs/technical.md`.
+*   Uncertainty about correct tRPC hook usage or TanStack Query pattern for a specific scenario not clearly covered by @trpc_best_practices.
