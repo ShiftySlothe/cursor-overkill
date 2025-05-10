@@ -6,7 +6,7 @@ Context Files:
 - docs/product_requirement_docs.md (relevant sections for Shape Comments)
 - docs/architecture.md (current version, detailing Next.js App Router setup)
 - docs/technical.md (current version, detailing Next.js App Router patterns, tRPC, Prisma)
-- src/ (for context on existing components/services, especially real-time collaboration parts, Server/Client components in `src/app/`, `src/components/`, existing tRPC routers in `src/server/api/routers/`)
+- app/src (for context on existing components/services, especially real-time collaboration parts, Server/Client components in `app/srcapp/`, `app/srccomponents/`, existing tRPC routers in `app/srcserver/api/routers/`)
 - Use `@Docs Next.js App Router`, `@Docs tRPC` for framework-specific guidance if needed.
 
 Please generate the TDP following @tdp_generation and @system_analysis. Pay specific attention to:

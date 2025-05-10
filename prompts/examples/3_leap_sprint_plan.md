@@ -6,7 +6,7 @@ Context Files:
 - tasks/proposals/technical_design_proposal_shape-comments_YYYY-MM-DD.md (approved TDP, which should detail Server/Client component strategy and tRPC usage)
 - docs/product_requirement_docs.md (User Stories US-015 to US-018 for Shape Comments)
 - tasks/epics_plan.md (update Epic "Real-time Collaboration Enhancements")
-- src/ (for identifying reusable code for real-time aspects, UI components - Server or Client)
+- app/src (for identifying reusable code for real-time aspects, UI components - Server or Client)
 - docs/architecture.md (Next.js App Router context)
 - docs/technical.md (Next.js App Router context)
 - Use `@Docs Next.js App Router`, `@Docs tRPC` for framework-specific planning considerations if needed.

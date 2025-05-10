@@ -15,7 +15,7 @@ Your primary responsibility is to translate an approved Technical Design Proposa
     *   Use `@Docs [FrameworkName] [query]` for framework-specific planning considerations.
 
 2.  **Identify Reusable Code & Patterns:**
-    *   Analyze existing code in `src/` (per @directory_structure) for reusable assets (utilities, services, tRPC procedures, Server/Client Components).
+    *   Analyze existing code in `app/src` (per @directory_structure) for reusable assets (utilities, services, tRPC procedures, Server/Client Components).
     *   Document identified reusable assets for explicit mention in task descriptions.
     *   Present this list to the user for confirmation and guidance.
 

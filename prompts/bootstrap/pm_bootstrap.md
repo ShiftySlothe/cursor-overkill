@@ -12,7 +12,7 @@ Your tasks are:
 2.  Confirm with me that the following directories and key rule files for this workflow have been created:
     *   `docs/` (and `docs/prd_archive/`)
     *   `tasks/` (and `tasks/proposals/`, `tasks/sprints/`)
-    *   `src/` (conceptually, user will set up for Next.js)
+    *   `app/src` (conceptually, user will set up for Next.js)
     *   `.cursor/rules/core/`, `.cursor/rules/pm_ai/`, `.cursor/rules/sa_ai/`, `.cursor/rules/leap_ai/`, `.cursor/rules/ie_ai/`, `.cursor/rules/processes/`, `.cursor/rules/knowledge_capture/`
     *   `prompts/master/`
 3.  Propose initial, empty (or with placeholder content if appropriate, referencing the structure from relevant rules) versions of the following key files, assuming they might be missing:

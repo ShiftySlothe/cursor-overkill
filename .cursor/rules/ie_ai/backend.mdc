@@ -9,28 +9,28 @@ These rules supplement your master prompt's references to @common, @tdd, @git_wo
 
 **Technology Focus (refer to `docs/technical.md` & T3 Boilerplate):**
 
-*   **tRPC:** Implement API logic in tRPC routers (e.g., in `src/server/api/routers/` as per @directory_structure).
-    *   Base procedures (`publicProcedure`, `protectedProcedure`) and context are typically defined in `src/server/api/trpc.ts`.
+*   **tRPC:** Implement API logic in tRPC routers (e.g., in `app/srcserver/api/routers/` as per @directory_structure).
+    *   Base procedures (`publicProcedure`, `protectedProcedure`) and context are typically defined in `app/srcserver/api/trpc.ts`.
     *   Adhere strictly to server-side guidelines in **@trpc_best_practices (Section C)**.
-*   **Prisma ORM:** Interact with the database via the Prisma client (typically `ctx.db` from `src/server/db.ts`).
+*   **Prisma ORM:** Interact with the database via the Prisma client (typically `ctx.db` from `app/srcserver/db.ts`).
     *   **All Prisma usage must adhere to @prisma_best_practices.**
     *   For schema changes (`prisma/schema.prisma`), detail them clearly. The human user will execute `pnpm db:generate` / `pnpm db:migrate` / `pnpm db:push`.
 *   **TypeScript/Node.js:** Employ strong typing and Node.js best practices.
-*   **NextAuth.js:** Understand session structure (`ctx.session`) when using `protectedProcedure`. Auth configuration is typically in `src/server/auth/` (per @directory_structure).
+*   **NextAuth.js:** Understand session structure (`ctx.session`) when using `protectedProcedure`. Auth configuration is typically in `app/srcserver/auth/` (per @directory_structure).
 
 **Implementation Details:**
 
 1.  **Router and Procedure Structure:**
     *   Organize tRPC procedures into logical routers.
-    *   Validate all inputs using Zod schemas (co-locate or in `src/lib/schemas/` as per @directory_structure).
+    *   Validate all inputs using Zod schemas (co-locate or in `app/srclib/schemas/` as per @directory_structure).
 2.  **Service Layer (for complex logic):**
-    *   For complex business logic not suitable for resolvers, consider placement in `src/server/services/` (per @directory_structure). **Seek user guidance** via @common before creating new services.
+    *   For complex business logic not suitable for resolvers, consider placement in `app/srcserver/services/` (per @directory_structure). **Seek user guidance** via @common before creating new services.
 3.  **Error Handling:** Throw `TRPCError` as appropriate. Log server-side errors.
-4.  **Configuration and Environment Variables:** Access via `env` from `src/env.js`.
+4.  **Configuration and Environment Variables:** Access via `env` from `app/srcenv.js`.
 5.  **Unit Testing (TDD):** Follow @tdd. For tRPC procedures, mock `ctx.db` (Prisma) and `ctx.session` as detailed in @prisma_best_practices (Section E) and @trpc_best_practices.
 
 **Specific BE-AI Triggers for Seeking User Guidance (refer to @common for general triggers):**
 *   Before proposing significant `prisma/schema.prisma` changes that deviate from the TDP.
 *   For highly complex database queries or transactions with potential performance implications not covered by TDP or @prisma_best_practices.
-*   If a new shared service in `src/server/services/` or a core utility in `src/lib/` seems necessary and wasn't planned.
+*   If a new shared service in `app/srcserver/services/` or a core utility in `app/srclib/` seems necessary and wasn't planned.
 *   Ambiguities in API contracts, data transformations, or specific tRPC middleware/context modifications not covered by @trpc_best_practices or existing project patterns.

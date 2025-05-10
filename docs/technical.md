@@ -11,24 +11,24 @@ This document details the primary technologies, libraries, and established patte
 *   **Language:** **TypeScript** (Strict mode, used across frontend and backend).
 *   **Frontend Framework:** **Next.js (App Router)**
     *   Utilizes Server Components and Client Components (`"use client;"`).
-    *   Routing is file-system based within the `src/app/` directory.
+    *   Routing is file-system based within the `app/srcapp/` directory.
     *   Reference: `@nextjs_app_router_best_practices.mdc`.
 *   **UI Library:** **React**
 *   **Styling:** **Tailwind CSS**
 *   **UI Component Source:** **ShadCN/UI**
-    *   Primary source for UI components, expected to be integrated into `src/components/ui/`.
+    *   Primary source for UI components, expected to be integrated into `app/srccomponents/ui/`.
     *   Custom components require justification and should align stylistically.
 *   **API Layer:** **tRPC**
     *   End-to-end type-safe APIs.
-    *   Server setup in `src/server/api/trpc.ts` and `root.ts`. Client setup in `src/trpc/`.
+    *   Server setup in `app/srcserver/api/trpc.ts` and `root.ts`. Client setup in `app/srctrpc/`.
     *   Reference: `@trpc_best_practices.mdc`.
 *   **Backend Runtime:** **Node.js**
 *   **Database ORM:** **Prisma**
-    *   Schema in `prisma/schema.prisma`. Client in `src/server/db.ts`.
+    *   Schema in `prisma/schema.prisma`. Client in `app/srcserver/db.ts`.
     *   Reference: `@prisma_best_practices.mdc`.
 *   **Database:** **PostgreSQL**
 *   **Authentication:** **NextAuth.js**
-    *   Configuration in `src/server/auth/config.ts`.
+    *   Configuration in `app/srcserver/auth/config.ts`.
     *   Prisma Adapter for database session/user storage.
 *   **State Management (Client Components):**
     *   Primarily local React state (`useState`, `useReducer`).
@@ -40,7 +40,7 @@ This document details the primary technologies, libraries, and established patte
 *   **Unit Testing:** **Jest**
     *   Using `@testing-library/react` for frontend components.
     *   TDD principles are encouraged, guided by `@tdd.mdc`.
-*   **Environment Variables:** Managed via `@t3-oss/env-nextjs` (`src/env.js`).
+*   **Environment Variables:** Managed via `@t3-oss/env-nextjs` (`app/srcenv.js`).
 *   **Linting & Formatting:** ESLint and Prettier (configurations in project root).
 
 ## 3. Key Design Patterns & Conventions

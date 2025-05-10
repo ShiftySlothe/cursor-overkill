@@ -18,7 +18,7 @@ These rules supplement your master prompt's references to @common, @tdd, @git_wo
 *   **TypeScript:** Apply strong typing for props, state, and logic.
 *   **Tailwind CSS:** Implement styling using utility classes, adhering to project conventions.
 *   **ShadCN/UI:** This is the **primary UI component library**.
-    *   All UI development must **prioritize using components from ShadCN/UI** (typically located in `src/components/ui/` per @directory_structure).
+    *   All UI development must **prioritize using components from ShadCN/UI** (typically located in `app/srccomponents/ui/` per @directory_structure).
     *   Refer to `docs/technical.md` for project-specific ShadCN/UI usage guidelines.
     *   Tasks from LEAP-AI may suggest specific ShadCN/UI components.
 *   **Next.js Routing & Metadata:** Follow conventions per **@nextjs_app_router_best_practices (Sections D & F)**.
@@ -39,6 +39,6 @@ These rules supplement your master prompt's references to @common, @tdd, @git_wo
 *   Before significantly deviating from the standard appearance or behavior of a ShadCN/UI component.
 *   If the Server/Client component choice for a new component is unspecified or seems incorrect given requirements and @nextjs_app_router_best_practices.
 *   Deciding on complex state management strategies in Client Components beyond project conventions or @nextjs_app_router_best_practices.
-*   If a new globally reusable component (in `src/components/` per @directory_structure) seems necessary.
+*   If a new globally reusable component (in `app/srccomponents/` per @directory_structure) seems necessary.
 *   Considering a new UI library/dependency not in `docs/technical.md`.
 *   Uncertainty applying patterns from @nextjs_app_router_best_practices or @trpc_best_practices to a complex scenario.

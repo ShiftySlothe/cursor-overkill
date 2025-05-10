@@ -11,7 +11,7 @@ Adhere to these guidelines for tRPC development within a T3 Stack project.
 *   Routers, Procedures, Context, Middleware, Adapters, Links, Input/Output Validation, Data Transformers.
 
 **B. T3 Stack Project Structure (Illustrative for tRPC):**
-src/
+app/src
 ├── app/
 │   ├── api/
 │   │   └── trpc/
@@ -36,7 +36,7 @@ src/
 └── prisma/
     └── schema.prisma
 
-**C. Server-Side Best Practices (`src/server/api/`):**
+**C. Server-Side Best Practices (`app/srcserver/api/`):**
 
 1.  **Initialization (`trpc.ts`):**
     *   Use `initTRPC.context<ContextType>().create({ transformer: superjson, ... })`. T3 boilerplate uses `superjson`.
@@ -44,7 +44,7 @@ src/
     *   Export `createTRPCRouter = t.router`, `createCallerFactory = t.createCallerFactory`.
     *   The T3 boilerplate includes a `timingMiddleware`; if used, apply it to base procedures.
 2.  **Context (`trpc.ts` based on T3 boilerplate):**
-    *   `createTRPCContext` function (example in T3's `src/server/api/trpc.ts`):
+    *   `createTRPCContext` function (example in T3's `app/srcserver/api/trpc.ts`):
         ```typescript
         // Simplified from T3 boilerplate
         export const createTRPCContext = async (opts: { headers: Headers }) => {
@@ -73,14 +73,14 @@ src/
 
 **D. Client-Side Best Practices (Next.js App Router & TanStack Query v5+ - T3 Stack):**
 
-1.  **Setup (`src/trpc/` directory):**
+1.  **Setup (`app/srctrpc/` directory):**
     *   **`query-client.ts`**: Exports `createQueryClient()` creating `QueryClient` instances. Configures `superjson` for de/serialization.
     *   **`react.tsx`**:
         *   `'use client';`
         *   `api = createTRPCReact<AppRouter>();`
         *   Implements `TRPCReactProvider` managing `QueryClient` and `trpcClient` (using `httpBatchStreamLink` with `SuperJSON`, URL to `/api/trpc`).
         *   Exports `RouterInputs`, `RouterOutputs`.
-        *   Mount `TRPCReactProvider` in `src/app/layout.tsx`.
+        *   Mount `TRPCReactProvider` in `app/srcapp/layout.tsx`.
     *   **`server.ts`**:
         *   `'server-only';`
         *   `createContext` (RSC version), `getQueryClient` (cached), `caller`.
@@ -104,7 +104,7 @@ src/
 
 **E. Advanced Topics & Other Considerations:** (As originally defined, adapted for T3 paths if needed)
 *   Non-JSON Content Types.
-*   Server-Side Calls (using `createCaller` from `src/server/api/root.ts`).
+*   Server-Side Calls (using `createCaller` from `app/srcserver/api/root.ts`).
 *   Caching.
 *   Security (auth middleware via `protectedProcedure`).
 

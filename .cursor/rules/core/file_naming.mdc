@@ -24,7 +24,7 @@ Consistent file naming improves project organization and readability.
     - `template.tsx`
     - `route.ts` (for Route Handlers)
 - **tRPC Files:**
-    - Routers: `[featureName]Router.ts` (e.g., `postRouter.ts`) or `[featureName].ts` within `src/server/api/routers/`.
+    - Routers: `[featureName]Router.ts` (e.g., `postRouter.ts`) or `[featureName].ts` within `app/srcserver/api/routers/`.
     - Root router: `root.ts`
     - Initialization: `trpc.ts`
 

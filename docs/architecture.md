@@ -17,15 +17,15 @@ The system architecture is composed of the following key components:
     *   Styling is handled by Tailwind CSS, with UI elements primarily sourced from **ShadCN/UI**.
 *   **API Layer (tRPC):**
     *   Provides a type-safe API for communication between the frontend (both Server and Client Components) and the backend.
-    *   Defined in `src/server/api/`, with the root router in `root.ts` and individual feature routers in `routers/`.
+    *   Defined in `app/srcserver/api/`, with the root router in `root.ts` and individual feature routers in `routers/`.
 *   **Backend Logic (Node.js/TypeScript):**
     *   tRPC resolvers and any additional business logic are written in TypeScript and execute in a Node.js environment on the server.
 *   **Data Access Layer (Prisma):**
-    *   Prisma ORM facilitates type-safe interactions with the PostgreSQL database. The Prisma client is typically instantiated in `src/server/db.ts`.
+    *   Prisma ORM facilitates type-safe interactions with the PostgreSQL database. The Prisma client is typically instantiated in `app/srcserver/db.ts`.
 *   **Database (PostgreSQL):**
     *   The primary relational database for storing application data. Schema is defined in `prisma/schema.prisma`.
 *   **Authentication (NextAuth.js):**
-    *   Handles user authentication and session management, configured in `src/server/auth/`.
+    *   Handles user authentication and session management, configured in `app/srcserver/auth/`.
 
 ### 2.1 System Architecture Diagram (High-Level)
 

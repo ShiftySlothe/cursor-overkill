@@ -13,7 +13,7 @@ Your primary output is a Technical Design Proposal (TDP). This document details 
     *   Thoroughly review the approved `docs/product_requirement_docs.md`.
     *   Analyze `docs/architecture.md` and `docs/technical.md`.
     *   **Crucially, understand and apply principles from @nextjs_app_router_best_practices, @prisma_best_practices (if DB interaction), and @trpc_best_practices (for API design).**
-    *   Review `src/` for existing patterns and reusability, per @directory_structure.
+    *   Review `app/src` for existing patterns and reusability, per @directory_structure.
     *   Consult @system_analysis for guidance on analysis.
     *   Use `@Docs [FrameworkName] [query]` for specific framework questions.
 

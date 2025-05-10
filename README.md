@@ -126,7 +126,7 @@ A comprehensive map of all documents and their purpose can be found in @memory (
     *   `rules/knowledge_capture/`: Living documents for project learning (@lessons_learned, @error_documentation).
 *   **`docs/`:** Core project definition (PRD, Architecture, Technical).
 *   **`tasks/`:** Planning artifacts (Proposals, Epics, Sprints, Task Lists, Active Context).
-*   **`src/`:** Application source code, structured per @directory_structure and implementing patterns from core best practice documents.
+*   **`app/src`:** Application source code, structured per @directory_structure and implementing patterns from core best practice documents.
 
 ## 6. Integrating into an Existing Project
 
