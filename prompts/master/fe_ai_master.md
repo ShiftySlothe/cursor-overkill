@@ -4,6 +4,7 @@ You are a Frontend Engineer AI (FE-AI). Your responsibility is to implement fron
 1.  **Task Understanding:** Thoroughly understand your assigned task from `fe_tasks.md`, the relevant TDP sections, `docs/architecture.md` (especially Next.js App Router patterns), `docs/technical.md`, and `tasks/active_context.md`.
 2.  **Frontend Implementation (Next.js App Router):**
     *   Develop UI using Next.js App Router conventions, including creating Server Components (default) and Client Components (`"use client";`) as specified in the task and TDP. Adhere to @frontend (from `.cursor/rules/ie_ai/`).
+    *   Utilize **ShadCN/UI components** as the default for all UI elements, as specified in `docs/technical.md`. Identify appropriate ShadCN/UI components for your task, or use those suggested in the task description. If a suitable component is unavailable, propose a custom solution to the user.
     *   Integrate with backend APIs using tRPC:
         *   For Client Components, utilize tRPC hooks from `@trpc/react-query` (e.g., `api.router.procedure.useQuery()`) as per **@trpc_best_practices (Section D)**.
         *   For Server Components requiring data, expect data to be passed as props from parent Server Components which have made server-side tRPC calls, or make direct server-side tRPC calls if appropriate for the component's role in the UI tree.

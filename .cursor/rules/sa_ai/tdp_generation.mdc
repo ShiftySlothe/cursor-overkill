@@ -31,7 +31,7 @@ This process must adhere to the universal tenets outlined in @planning_principle
             *   Purpose of this TDP.
         *   **2. Proposed Technical Solution:**
             *   **High-level description:** How the feature will be implemented within the Next.js App Router architecture.
-            *   **Component Strategy (Server vs. Client):** Following @nextjs_app_router_best_practices (Section A), identify key new/modified components, specify if they are Server or Client Components, and justify Client Component choices based on interactivity or browser API needs.
+            *   **Component Strategy (Server vs. Client):** Following @nextjs_app_router_best_practices (Section A). Identify key new/modified UI components. Specify if they are Server or Client Components. **For UI elements, explicitly recommend or mandate the use of specific ShadCN/UI components** (e.g., "User login form should use ShadCN/UI Input, Button, and Form components"). If custom components are deemed necessary, justify this decision and ensure their design aligns with the ShadCN/UI aesthetic.
             *   **Architectural changes:** Detail any new components, services, or modules required. Illustrate with Mermaid diagrams if complex, showing interaction between Server Components, Client Components, and tRPC API. Explain how they integrate with `docs/architecture.md`.
             *   **Data Model Changes (Prisma):**
                 *   Specify any new database tables/models, columns, or relationships for Prisma.

@@ -17,6 +17,7 @@ These rules supplement @common, @tdd, **@trpc_best_practices (Section D for Clie
     *   **Server Components Data Access:** Implement Server Components that receive data via props or make their own server-side tRPC calls using the server-side tRPC client (e.g., `import { api } from "~/trpc/server"`), as detailed in **@nextjs_app_router_best_practices (Section B)**.
 *   **TypeScript:** Strong typing for props, state, and logic.
 *   **Tailwind CSS:** Implement styling using utility classes. Adhere to design tokens and conventions specified in `docs/technical.md` or project style guides.
+*   **ShadCN/UI:** The designated UI component library. All UI development must prioritize using components from ShadCN/UI. Refer to `docs/technical.md` for detailed guidelines on usage, customization, and directory structure (e.g. `src/components/ui`).
 *   **Next.js Routing & Metadata:** Follow conventions for linking, programmatic navigation, and metadata as outlined in **@nextjs_app_router_best_practices (Sections D & F)**.
 *   **Forms & Server Actions:** Implement forms and handle mutations as specified in the TDP, adhering to patterns in **@nextjs_app_router_best_practices (Sections G & H)**.
 
@@ -24,6 +25,8 @@ These rules supplement @common, @tdd, **@trpc_best_practices (Section D for Clie
 
 1.  **Component Design:**
     *   Adhere to principles of modularity and reusability.
+    *   Always prioritize using components from **ShadCN/UI** as outlined in `docs/technical.md` and potentially suggested in your task description from LEAP-AI.
+    *   If a required UI element cannot be reasonably built using an existing ShadCN/UI component or its customization, you must propose the design and necessity of a custom component to the user for approval before implementation. Shad CN docs can be referenced at @ShadCN.
     *   For component type (Server/Client) and data fetching/state management strategies, strictly follow the guidance in **@nextjs_app_router_best_practices (Sections A, B)** and the task-specific TDP.
 2.  **API Interaction (tRPC):**
     *   Implement as per **@nextjs_app_router_best_practices (Section B)** and **@trpc_best_practices**.
@@ -37,6 +40,8 @@ These rules supplement @common, @tdd, **@trpc_best_practices (Section D for Clie
 
 **When to Specifically Seek User Guidance (FE-AI):**
 *   Significant UI/UX decisions not clearly defined in the TDP or accompanying mockups.
+*   If a suitable **ShadCN/UI component** cannot be found for a core UI requirement detailed in the task, and a non-trivial custom component seems necessary.
+*   Before significantly deviating from the standard appearance or behavior of a ShadCN/UI component through customization.
 *   If the Server/Client component choice for a new component is not specified in the task/TDP or seems incorrect given the requirements and @nextjs_app_router_best_practices.
 *   Deciding on complex state management strategies in Client Components that go beyond what's covered in @nextjs_app_router_best_practices or project conventions.
 *   If a new globally reusable component in `src/components/` seems necessary (propose its design and purpose).

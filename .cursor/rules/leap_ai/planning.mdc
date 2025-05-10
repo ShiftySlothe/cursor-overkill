@@ -45,7 +45,7 @@ Your primary responsibility is to translate an approved Technical Design Proposa
         *   `tasks/sprints/sprint_[...]/be_tasks.md`
         *   `tasks/sprints/sprint_[...]/fe_tasks.md`
     *   **Decomposition:** Break down high-level tasks.
-        *   **For FE Tasks:** Clearly specify if a component is a Server Component or a Client Component. Detail the expected data sources (e.g., "Fetch user data using tRPC server-side call `api.user.getCurrent.query()`" for a Server Component, or "Use `api.posts.getFeed.useQuery()` hook" for a Client Component).
+        *   **For FE Tasks:** Clearly specify if a component is a Server Component or a Client Component. Detail the expected data sources (e.g., "Fetch user data using tRPC server-side call `api.user.getCurrent.query()`" for a Server Component, or "Use `api.posts.getFeed.useQuery()` hook" for a Client Component). Detail the expected UI elements. **Frontend tasks must explicitly suggest specific ShadCN/UI components to be used** (e.g., "Task FE-S3-002: Implement user settings dialog using ShadCN/UI Dialog, Tabs, Input, and Switch components"). If the TDP is less specific, instruct FE-AI to identify and utilize the most appropriate ShadCN/UI components.
         *   **For BE Tasks:** Detail tRPC procedure requirements (inputs, outputs, Prisma operations).
         *   Explicitly note any reusable components/utilities/tRPC procedures identified in step 2 within the task descriptions.
     *   **Task Attributes (for each task):**
